@@ -9,10 +9,14 @@ namespace AWSSimpleDBPersistence
 	{
 		String GetTableName ();
 
+		Task<T> Get (T entity);
+
+		Task<T> Get (long id);
+
 		Task<bool> Delete (T entity);
 
 		Task<bool> SaveOrReplace (T entity);
 
-		Task<int> SaveOrReplaceMultiple (List<T> entity);
+		Task<bool> SaveOrReplaceMultiple (List<T> entity);
 	}
 }
