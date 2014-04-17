@@ -37,3 +37,5 @@ Save Entities like so:
     
     TransactionDAO dao = new TransactionDAO ();
     dao.SaveOrReplace (transaction);
+
+Requires AWS SDK at https://github.com/aws/aws-sdk-net add dll to references.

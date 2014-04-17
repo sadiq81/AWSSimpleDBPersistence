@@ -6,9 +6,6 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
 using System.Net;
-using Amazon.CloudFront;
-using System.Net.Mail;
-using System.Runtime.InteropServices;
 using System.Globalization;
 
 namespace AWSSimpleDBPersistence

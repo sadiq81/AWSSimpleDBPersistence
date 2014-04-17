@@ -3,10 +3,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{CF07A286-FCB8-4F1F-8F68-E18594D75C62}</ProjectGuid>
+    <ProjectGuid>{9AE7FFE6-05A7-46B4-B80A-EB9EEABEBD70}</ProjectGuid>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
-    <RootNamespace>AWSSimpleDBPersistence</RootNamespace>
-    <AssemblyName>AWSPersistence</AssemblyName>
+    <RootNamespace>AWSSimpleDBPersistence2</RootNamespace>
+    <AssemblyName>AWSSimpleDBPersistence2</AssemblyName>
+    <TargetFrameworkProfile>Profile49</TargetFrameworkProfile>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -28,13 +30,6 @@
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="AWSSDK">
-      <HintPath>..\packages\AWSSDK.2.0.13.2\lib\net45\AWSSDK.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="DAO\GenericDAO.cs" />
     <Compile Include="DAO\IGenericDAO.cs" />
@@ -43,8 +38,10 @@
     <Compile Include="SimpleDB\SimpleDBDomainAttribute.cs" />
     <Compile Include="SimpleDB\SimpleDBFieldAttribute.cs" />
   </ItemGroup>
-  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <ItemGroup>
-    <None Include="packages.config" />
+    <Reference Include="AWSSDK">
+      <HintPath>..\..\aws-sdk-net\AWSSDK_DotNet45\bin\Debug\AWSSDK.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>
