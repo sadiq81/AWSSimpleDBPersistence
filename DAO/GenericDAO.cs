@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
 using System.Net;
+using Mono.Security.X509;
 
 namespace AWSSimpleDBPersistence
 {
@@ -45,15 +46,39 @@ namespace AWSSimpleDBPersistence
 			return HttpStatusCode.OK.Equals (response.HttpStatusCode);
 		}
 
-		public async Task<int> SaveOrReplaceMultiple (List<T> entities)
+		public async Task<bool> SaveOrReplaceMultiple (List<T> entities)
 		{
-			int count = 0;
-			foreach (T entity in entities) {
-				if (await SaveOrReplace (entity)) {
-					count++;
+		
+			BatchPutAttributesRequest request;
+			BatchPutAttributesResponse response;
+			bool success = true;
+
+			List<ReplaceableItem> ReplaceableItems = new List<ReplaceableItem> ();
+			foreach (T Entity in entities) {
+				ReplaceableItem Item = new ReplaceableItem ();
+				Item.Name = Entity.Id.ToString ();
+				Item.Attributes = BuildPutAttributesRequest (Entity);
+				ReplaceableItems.Add (Item);
+
+				if (ReplaceableItems.Count == 25) {
+					request = new BatchPutAttributesRequest ();
+					request.DomainName = GetTableName ();
+					request.Items = ReplaceableItems;
+					response = await client.BatchPutAttributesAsync (request);
+					success = HttpStatusCode.OK.Equals (response.HttpStatusCode) && success;
+					ReplaceableItems.Clear ();
 				}
 			}
-			return count;
+
+			if (ReplaceableItems.Count > 0) {
+				request = new BatchPutAttributesRequest ();
+				request.DomainName = GetTableName ();
+				request.Items = ReplaceableItems;
+				response = await client.BatchPutAttributesAsync (request);
+				success = HttpStatusCode.OK.Equals (response.HttpStatusCode) && success;
+			}
+
+			return success;
 		}
 
 		protected List<ReplaceableAttribute>  BuildPutAttributesRequest (T entity)
