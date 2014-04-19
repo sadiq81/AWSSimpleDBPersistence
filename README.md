@@ -1,7 +1,7 @@
 AWSSimpleDBPersistence
 ======================
 
-Persistence framework for Amazons SimpleDB framework in C#
+Persistence framework for Amazons SimpleDB framework in C#. This is a complete rewrite with inspiration from the Amazon .NET SDK but designed to work in Xamarin mobile applications.
 
 Setup:
 
@@ -38,4 +38,3 @@ Save Entities like so:
     TransactionDAO dao = new TransactionDAO ();
     dao.SaveOrReplace (transaction);
 
-Requires AWS SDK at https://github.com/aws/aws-sdk-net add dll to references.
