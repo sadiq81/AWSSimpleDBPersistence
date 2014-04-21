@@ -6,9 +6,9 @@
     <ProjectGuid>{9AE7FFE6-05A7-46B4-B80A-EB9EEABEBD70}</ProjectGuid>
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
-    <RootNamespace>AWSSimpleDBPersistence2</RootNamespace>
+    <RootNamespace>AWSSimpleDBPersistence</RootNamespace>
     <AssemblyName>AWSSimpleDBPersistence2</AssemblyName>
-    <TargetFrameworkProfile>Profile49</TargetFrameworkProfile>
+    <TargetFrameworkProfile>Profile7</TargetFrameworkProfile>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -35,13 +35,47 @@
     <Compile Include="DAO\IGenericDAO.cs" />
     <Compile Include="Domain\Entity.cs" />
     <Compile Include="Service\ServiceContainer.cs" />
-    <Compile Include="SimpleDB\SimpleDBDomainAttribute.cs" />
-    <Compile Include="SimpleDB\SimpleDBFieldAttribute.cs" />
+    <Compile Include="SimpleDB\SimpleDBClient.cs" />
+    <Compile Include="SimpleDB\Region.cs" />
+    <Compile Include="SimpleDB\Item.cs" />
+    <Compile Include="SimpleDB\Model\Request\Request.cs" />
+    <Compile Include="SimpleDB\Model\Response\Response.cs" />
+    <Compile Include="SimpleDB\Model\Response\ResponseMetadata.cs" />
+    <Compile Include="SimpleDB\Model\Response\BatchDeleteAttributesResponse.cs" />
+    <Compile Include="SimpleDB\Model\SimpleDBDomainAttribute.cs" />
+    <Compile Include="SimpleDB\Model\SimpleDBFieldAttribute.cs" />
+    <Compile Include="SimpleDB\Model\Request\BatchDeleteAttributesRequest.cs" />
+    <Compile Include="SimpleDB\Model\Request\BatchPutAttributesRequest.cs" />
+    <Compile Include="SimpleDB\Model\Response\BatchPutAttributesResponse.cs" />
+    <Compile Include="SimpleDB\Model\Response\CreateDomainResponse.cs" />
+    <Compile Include="SimpleDB\Model\Request\CreateDomainRequest.cs" />
+    <Compile Include="SimpleDB\Model\Request\DeleteAttributesRequest.cs" />
+    <Compile Include="SimpleDB\Model\Response\DeleteAttributesResponse.cs" />
+    <Compile Include="SimpleDB\Model\Request\DeleteDomainRequest.cs" />
+    <Compile Include="SimpleDB\Model\Response\DeleteDomainResponse.cs" />
+    <Compile Include="SimpleDB\Model\Request\DomainMetadataRequest.cs" />
+    <Compile Include="SimpleDB\Model\Response\DomainMetadataResponse.cs" />
+    <Compile Include="SimpleDB\Model\Request\GetAttributesRequest.cs" />
+    <Compile Include="SimpleDB\Model\Response\GetAttributesResponse.cs" />
+    <Compile Include="SimpleDB\Model\Request\ListDomainsRequest.cs" />
+    <Compile Include="SimpleDB\Model\Response\ListDomainsResponse.cs" />
+    <Compile Include="SimpleDB\Model\Request\PutAttributesRequest.cs" />
+    <Compile Include="SimpleDB\Model\Response\PutAttributesResponse.cs" />
+    <Compile Include="SimpleDB\Model\Response\SelectResponse.cs" />
+    <Compile Include="SimpleDB\Model\Request\SelectRequest.cs" />
+    <Compile Include="SimpleDB\Model\ReplaceableAttribute.cs" />
+    <Compile Include="SimpleDB\Model\UpdateCondition.cs" />
+    <Compile Include="SimpleDB\Model\Marshalling\Response\PutAttributesResponseUnmarshaller.cs" />
+    <Compile Include="Service\ISHA256Service.cs" />
+    <Compile Include="SimpleDB\Model\Marshalling\Request\BatchPutAttributesRequestMarshaller.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <ItemGroup>
-    <Reference Include="AWSSDK">
-      <HintPath>..\..\aws-sdk-net\AWSSDK_DotNet45\bin\Debug\AWSSDK.dll</HintPath>
-    </Reference>
+    <Folder Include="SimpleDB\Model\" />
+    <Folder Include="SimpleDB\Model\Request\" />
+    <Folder Include="SimpleDB\Model\Response\" />
+    <Folder Include="SimpleDB\Model\Marshalling\" />
+    <Folder Include="SimpleDB\Model\Marshalling\Request\" />
+    <Folder Include="SimpleDB\Model\Marshalling\Response\" />
   </ItemGroup>
 </Project>

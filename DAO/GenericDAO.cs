@@ -1,12 +1,12 @@
 ﻿using System;
-using Amazon.SimpleDB;
-using Amazon.SimpleDB.Model;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Linq;
 using System.Net;
 using System.Globalization;
+using AWSSimpleDBPersistence;
+using System.Xml.Linq;
 
 namespace AWSSimpleDBPersistence
 {
@@ -14,31 +14,33 @@ namespace AWSSimpleDBPersistence
 	{
 		const string FMT = "yyyy-MM-dd HH:mm:ss.fff";
 
-		public string GetTableName ()
+		public string GetTableName (T entity)
 		{
-			SimpleDBDomainAttribute attribute = typeof(T).GetTypeInfo ().GetCustomAttribute <SimpleDBDomainAttribute> ();
+
+			SimpleDBDomainAttribute attribute = entity.GetType ().GetTypeInfo ().GetCustomAttribute <SimpleDBDomainAttribute> ();
 			return attribute.Domain;
 		}
 
-		AmazonSimpleDBClient client = ServiceContainer.Resolve<AmazonSimpleDBClient> ();
+		SimpleDBClient client = ServiceContainer.Resolve<SimpleDBClient> ();
 
 		public async Task<bool> SaveOrReplace (T entity)
 		{
 			PutAttributesRequest request = new PutAttributesRequest ();
-			request.DomainName = GetTableName ();
-			request.ItemName = entity.Id.ToString ();
-			if (entity.Created == DateTime.MinValue) {
+			request.DomainName = GetTableName (entity);
+			Item item = new Item ();
+			item.ItemName = entity.Id.ToString ();
+			/*if (entity.Created == DateTime.MinValue) {
 				entity.Created = DateTime.Now;
 			}
-			entity.LastUpdated = DateTime.Now;
-			request.Attributes = BuildPutAttributesRequest (entity);
+			entity.LastUpdated = DateTime.Now;*/
+			item.Attributes = BuildReplaceableAttributes (entity);
+			request.Item = item;
 
-			PutAttributesResponse response = await client.PutAttributesAsync (request);
+			PutAttributesResponse response = await client.PutAttributes (request);
 
 			return HttpStatusCode.OK.Equals (response.HttpStatusCode);
 		}
-
-		public async Task<bool> SaveOrReplaceMultiple (List<T> entities)
+		/*public async Task<bool> SaveOrReplaceMultiple (List<T> entities)
 		{
 		
 			BatchPutAttributesRequest request;
@@ -97,9 +99,8 @@ namespace AWSSimpleDBPersistence
 			request.ItemName = entity.Id.ToString ();
 			DeleteAttributesResponse response = await client.DeleteAttributesAsync (request);
 			return HttpStatusCode.OK.Equals (response.HttpStatusCode);
-		}
-
-		protected List<ReplaceableAttribute>  BuildPutAttributesRequest (T entity)
+		}*/
+		protected List<ReplaceableAttribute>  BuildReplaceableAttributes (T entity)
 		{
 			List<ReplaceableAttribute> list = new List<ReplaceableAttribute> ();
 			List<PropertyInfo> propertyInfoList = typeof(T).GetRuntimeProperties ().ToList ();
@@ -129,7 +130,7 @@ namespace AWSSimpleDBPersistence
 			return list;
 		}
 
-		protected T MarshallAttributes (List<Amazon.SimpleDB.Model.Attribute> attributes)
+		protected T MarshallAttributes (List<ReplaceableAttribute> attributes)
 		{
 			T entity = (T)Activator.CreateInstance (typeof(T));
 
@@ -144,7 +145,7 @@ namespace AWSSimpleDBPersistence
 				}
 			}
 
-			foreach (Amazon.SimpleDB.Model.Attribute attribute in attributes) {
+			foreach (ReplaceableAttribute attribute in attributes) {
 				string name = attribute.Name;
 				string value = attribute.Value;
 

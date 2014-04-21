@@ -2,7 +2,7 @@
 
 namespace AWSSimpleDBPersistence
 {
-	public class SimpleDBFieldAttribute : Attribute
+	public class SimpleDBFieldAttribute : System.Attribute
 	{
 		public string Name { get; set; }
 
