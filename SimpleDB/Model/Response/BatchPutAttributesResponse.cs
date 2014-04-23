@@ -6,6 +6,9 @@ namespace AWSSimpleDBPersistence
 {
 	public class BatchPutAttributesResponse : Response
 	{
+		public BatchPutAttributesResponse ()
+		{
+		}
 	}
 }
 

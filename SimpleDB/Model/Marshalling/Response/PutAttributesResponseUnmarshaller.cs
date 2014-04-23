@@ -2,10 +2,11 @@
 
 namespace AWSSimpleDBPersistence
 {
-	public class PutAttributesResponseUnmarshaller
+	public class PutAttributesResponseUnmarshaller : IUnMarshaller
 	{
-		public PutAttributesResponseUnmarshaller ()
+		public PutAttributesResponseUnmarshaller (string responseMessage)
 		{
+
 		}
 	}
 }

@@ -12,7 +12,7 @@ namespace AWSSimpleDBPersistence
 {
 	public abstract class GenericDAO<T> : IGenericDAO<T> where T : Entity
 	{
-		const string FMT = "yyyy-MM-dd HH:mm:ss.fff";
+		const string FMT = "yyyy-MM-dd-HH-mm-ss";
 
 		public string GetTableName (T entity)
 		{
@@ -29,16 +29,19 @@ namespace AWSSimpleDBPersistence
 			request.DomainName = GetTableName (entity);
 			Item item = new Item ();
 			item.ItemName = entity.Id.ToString ();
-			/*if (entity.Created == DateTime.MinValue) {
+			if (entity.Created == DateTime.MinValue) {
 				entity.Created = DateTime.Now;
 			}
-			entity.LastUpdated = DateTime.Now;*/
+			entity.LastUpdated = DateTime.Now;
 			item.Attributes = BuildReplaceableAttributes (entity);
 			request.Item = item;
 
-			PutAttributesResponse response = await client.PutAttributes (request);
-
-			return HttpStatusCode.OK.Equals (response.HttpStatusCode);
+			Response response = client.PutAttributes (request).Result;
+			if (response.GetType ().Equals (typeof(PutAttributesResponse))) {
+				return HttpStatusCode.OK.Equals (response.HttpStatusCode);
+			} else {
+				throw new AWSErrorException (response);
+			}
 		}
 		/*public async Task<bool> SaveOrReplaceMultiple (List<T> entities)
 		{

@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Text;
 using System.Collections.Generic;
-using System.Dynamic;
-using System.Collections;
-using System.Runtime.CompilerServices;
-using System.Net.Http;
 using System.Net;
 
 namespace AWSSimpleDBPersistence
 {
-	public class BatchPutAttributesRequestMarshaller
+	public class BatchPutAttributesRequestMarshaller : IMarshaller
 	{
 		private const string PROTOCOL = "https";
 		private const string ACTION = "BatchPutAttributes";
@@ -39,7 +35,6 @@ namespace AWSSimpleDBPersistence
 					}
 				}
 			}
-			//TimeStamp = "2014-04-20T22:15:00.4558970Z";
 			TimeStamp = DateTime.UtcNow.ToString ("o");
 		}
 

@@ -65,9 +65,12 @@
     <Compile Include="SimpleDB\Model\Request\SelectRequest.cs" />
     <Compile Include="SimpleDB\Model\ReplaceableAttribute.cs" />
     <Compile Include="SimpleDB\Model\UpdateCondition.cs" />
-    <Compile Include="SimpleDB\Model\Marshalling\Response\PutAttributesResponseUnmarshaller.cs" />
     <Compile Include="Service\ISHA256Service.cs" />
     <Compile Include="SimpleDB\Model\Marshalling\Request\BatchPutAttributesRequestMarshaller.cs" />
+    <Compile Include="SimpleDB\Model\Marshalling\Response\IUnMarshaller.cs" />
+    <Compile Include="SimpleDB\Model\Marshalling\Request\IMarshaller.cs" />
+    <Compile Include="SimpleDB\Model\Marshalling\Response\BatchPutAttributtesResponseUnMarshaller.cs" />
+    <Compile Include="SimpleDB\Model\AWSException\AWSErrorException.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <ItemGroup>
@@ -77,5 +80,6 @@
     <Folder Include="SimpleDB\Model\Marshalling\" />
     <Folder Include="SimpleDB\Model\Marshalling\Request\" />
     <Folder Include="SimpleDB\Model\Marshalling\Response\" />
+    <Folder Include="SimpleDB\Model\AWSException\" />
   </ItemGroup>
 </Project>

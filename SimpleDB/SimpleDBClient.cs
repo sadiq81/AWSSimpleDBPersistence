@@ -1,11 +1,8 @@
-﻿using System;
-using System.Net;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.IO;
+﻿using System.Threading.Tasks;
 using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Diagnostics;
+using System.Xml.Linq;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace AWSSimpleDBPersistence
 {
@@ -65,40 +62,23 @@ namespace AWSSimpleDBPersistence
 		{
 
 		}*/
-		public async Task<PutAttributesResponse> PutAttributes (PutAttributesRequest request)
+		public async Task<Response> PutAttributes (PutAttributesRequest request)
 		{
 			BatchPutAttributesRequest batchRequest = new BatchPutAttributesRequest (request);
-			await BatchPutAttributes (batchRequest);
-
-			return new PutAttributesResponse ();
+			return await BatchPutAttributes (batchRequest);
 		}
 
-		public async Task<BatchPutAttributesResponse> BatchPutAttributes (BatchPutAttributesRequest request)
+		public async Task<Response> BatchPutAttributes (BatchPutAttributesRequest request)
 		{
 			using (Client = new HttpClient ()) {
 
 				BatchPutAttributesRequestMarshaller marshaller = new BatchPutAttributesRequestMarshaller (request);
+				HttpResponseMessage responseMessage = await Client.GetAsync (marshaller.Marshal ());
 
-				var response = Client.GetAsync (marshaller.Marshal ());
-
-				if (response.Result.IsSuccessStatusCode) {
-					// by calling .Result you are performing a synchronous call
-					var responseContent = response.Result.Content; 
-
-					// by calling .Result you are synchronously reading the result
-					string responseString = responseContent.ReadAsStringAsync ().Result;
-
-					Debug.WriteLine (responseString);
-				}
-
+				BatchPutAttributtesResponseUnMarshaller unmarshaler = new BatchPutAttributtesResponseUnMarshaller (responseMessage);
+				return unmarshaler.Response;
 			}
-			return new BatchPutAttributesResponse ();
 		}
-		/*		public async Task<SelectResponse> Select (SelectRequest request)
-		{
-
-		}
-		*/
 	}
 }
 
