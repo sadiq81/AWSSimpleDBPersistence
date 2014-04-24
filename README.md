@@ -1,6 +1,8 @@
 AWSSimpleDBPersistence
 ======================
 
+CURRENTLY UNDER DEVELOPMENT
+
 Persistence framework for Amazons SimpleDB framework in C#. This is a complete rewrite with inspiration from the Amazon .NET SDK but designed to work in Xamarin mobile applications.
 
 Setup:
