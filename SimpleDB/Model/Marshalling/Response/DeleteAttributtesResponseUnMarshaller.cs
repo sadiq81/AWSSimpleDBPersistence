@@ -6,19 +6,19 @@ using System.Xml.Linq;
 
 namespace AWSSimpleDBPersistence
 {
-	public class DeleteAttributtesResponseUnMarshaller
+	public class PutAttributtesResponseUnMarshaller
 	{
 		protected XmlSerializer Serializer;
 
 		public Response Response { get; set; }
 
-		public DeleteAttributtesResponseUnMarshaller (HttpResponseMessage message)
+		public PutAttributtesResponseUnMarshaller (HttpResponseMessage message)
 		{
 			XDocument doc = XDocument.Load (message.Content.ReadAsStreamAsync ().Result);
 
 			if (message.StatusCode.Equals (HttpStatusCode.OK)) {
-				Serializer = new XmlSerializer (typeof(DeleteAttributesResponse), Response.NameSpace);
-				Response = (DeleteAttributesResponse)Serializer.Deserialize (doc.CreateReader ());
+				Serializer = new XmlSerializer (typeof(PutAttributesResponse), Response.NameSpace);
+				Response = (PutAttributesResponse)Serializer.Deserialize (doc.CreateReader ());
 				Response.HttpStatusCode = message.StatusCode;
 				Response.ContentLength = (long)message.Content.Headers.ContentLength;
 			} else {

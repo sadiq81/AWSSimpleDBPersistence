@@ -11,8 +11,9 @@ namespace AWSSimpleDBPersistence
 		/*Task<T> Get (T entity);
 
 		Task<T> Get (long id);
+		*/
+		Task<bool> Delete (T entity);
 
-		Task<bool> Delete (T entity);*/
 		Task<bool> SaveOrReplace (T entity);
 		//Task<bool> SaveOrReplaceMultiple (List<T> entity);
 	}

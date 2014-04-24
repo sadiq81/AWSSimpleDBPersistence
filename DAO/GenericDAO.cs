@@ -35,7 +35,7 @@ namespace AWSSimpleDBPersistence
 			request.ItemName = entity.Id.ToString ();
 			request.ReplaceableAttributes = BuildReplaceableAttributes (entity);
 
-			Response response = client.PutAttributes (request).Result;
+			Response response = await client.PutAttributes (request);
 
 			//TODO Fails because its a batch attribute response
 			if (response.GetType ().Equals (typeof(PutAttributesResponse))) {
@@ -43,6 +43,22 @@ namespace AWSSimpleDBPersistence
 			} else {
 				throw new AWSErrorException (response);
 			}
+		}
+
+		public async Task<bool> Delete (T entity)
+		{
+			DeleteAttributesRequest request = new DeleteAttributesRequest ();
+			request.DomainName = GetTableName (entity);
+			request.ItemName = entity.Id.ToString ();
+
+			Response response = await client.DeleteAttributes (request);
+
+			if (response.GetType ().Equals (typeof(DeleteAttributesResponse))) {
+				return HttpStatusCode.OK.Equals (response.HttpStatusCode);
+			} else {
+				throw new AWSErrorException (response);
+			}
+
 		}
 
 		public async Task<bool> SaveOrReplaceMultiple (List<T> entities)
@@ -171,15 +187,7 @@ namespace AWSSimpleDBPersistence
 			entity.Id = id;
 			return entity;
 		}
-
-		public async Task<bool> Delete (T entity)
-		{
-			DeleteAttributesRequest request = new DeleteAttributesRequest ();
-			request.DomainName = GetTableName ();
-			request.ItemName = entity.Id.ToString ();
-			DeleteAttributesResponse response = await client.DeleteAttributesAsync (request);
-			return HttpStatusCode.OK.Equals (response.HttpStatusCode);
-		}*/
+			*/
 	}
 }
 

@@ -76,6 +76,8 @@
     <Compile Include="SimpleDB\Model\Marshalling\Request\BatchPutAttributesRequestMarshaller %28copy%29.cs" />
     <Compile Include="SimpleDB\Model\Marshalling\Request\PutAttributesRequestMarshaller.cs" />
     <Compile Include="SimpleDB\Model\Marshalling\Response\PutAttributtesResponseUnMarshaller %28copy%29.cs" />
+    <Compile Include="SimpleDB\Model\Marshalling\Request\DeleteAttributesRequestMarshaller %28copy%29.cs" />
+    <Compile Include="SimpleDB\Model\Marshalling\Response\DeleteAttributtesResponseUnMarshaller.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <ItemGroup>
