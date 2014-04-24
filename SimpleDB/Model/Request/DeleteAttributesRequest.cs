@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace AWSSimpleDBPersistence
 {
-	public class DeleteAttributesRequest : Request
+	public class DeleteAttributesRequest
 	{
 	}
 }

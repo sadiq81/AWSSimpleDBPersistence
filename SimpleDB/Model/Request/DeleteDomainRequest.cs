@@ -4,8 +4,11 @@ using System.Collections.Generic;
 
 namespace AWSSimpleDBPersistence
 {
-	public class DeleteDomainRequest : Request
+	public class DeleteDomainRequest : DomainRequest
 	{
+		public DeleteDomainRequest (string domainName) : base (domainName)
+		{
+		}
 	}
 }
 

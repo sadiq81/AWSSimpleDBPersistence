@@ -64,15 +64,23 @@ namespace AWSSimpleDBPersistence
 		}*/
 		public async Task<Response> PutAttributes (PutAttributesRequest request)
 		{
-			BatchPutAttributesRequest batchRequest = new BatchPutAttributesRequest (request);
-			return await BatchPutAttributes (batchRequest);
+			using (Client = new HttpClient ()) {
+
+				PutAttributesRequestMarshaller marshaller = new PutAttributesRequestMarshaller ();
+				marshaller.Configure (request);
+				HttpResponseMessage responseMessage = await Client.GetAsync (marshaller.Marshal ());
+
+				PutAttributtesResponseUnMarshaller unmarshaler = new PutAttributtesResponseUnMarshaller (responseMessage);
+				return unmarshaler.Response;
+			}
 		}
 
 		public async Task<Response> BatchPutAttributes (BatchPutAttributesRequest request)
 		{
 			using (Client = new HttpClient ()) {
 
-				BatchPutAttributesRequestMarshaller marshaller = new BatchPutAttributesRequestMarshaller (request);
+				BatchPutAttributesRequestMarshaller marshaller = new BatchPutAttributesRequestMarshaller ();
+				marshaller.Configure (request);
 				HttpResponseMessage responseMessage = await Client.GetAsync (marshaller.Marshal ());
 
 				BatchPutAttributtesResponseUnMarshaller unmarshaler = new BatchPutAttributtesResponseUnMarshaller (responseMessage);

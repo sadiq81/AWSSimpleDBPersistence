@@ -4,8 +4,11 @@ using System.Collections.Generic;
 
 namespace AWSSimpleDBPersistence
 {
-	public class ListDomainsRequest : Request
+	public class ListDomainsRequest
 	{
+		public string MaxNumberOfDomains { get; set; }
+
+		public string NextToken { get; set; }
 	}
 }
 

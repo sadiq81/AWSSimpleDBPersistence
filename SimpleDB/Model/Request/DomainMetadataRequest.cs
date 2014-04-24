@@ -4,8 +4,11 @@ using System.Collections.Generic;
 
 namespace AWSSimpleDBPersistence
 {
-	public class DomainMetadataRequest : Request
+	public class DomainMetadataRequest : DomainRequest
 	{
+		public DomainMetadataRequest (string domainName) : base (domainName)
+		{
+		}
 	}
 }
 

@@ -2,17 +2,17 @@
 
 namespace AWSSimpleDBPersistence
 {
-	public class UpdateCondition
+	public class Attribute
 	{
+		public Attribute (string name, string value)
+		{
+			this.Name = name;
+			this.Value = value;
+		}
+
 		public string Name { get; set; }
 
 		public string Value { get; set; }
-
-		public bool Exists { get; set; }
-
-		public UpdateCondition ()
-		{
-		}
 	}
 }
 

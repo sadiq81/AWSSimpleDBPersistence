@@ -2,7 +2,7 @@
 
 namespace AWSSimpleDBPersistence
 {
-	public class SelectRequest : Request
+	public class SelectRequest
 	{
 		public SelectRequest ()
 		{

@@ -25,84 +25,76 @@ namespace AWSSimpleDBPersistence
 
 		public async Task<bool> SaveOrReplace (T entity)
 		{
-			PutAttributesRequest request = new PutAttributesRequest ();
-			request.DomainName = GetTableName (entity);
-			Item item = new Item ();
-			item.ItemName = entity.Id.ToString ();
 			if (entity.Created == DateTime.MinValue) {
 				entity.Created = DateTime.Now;
 			}
 			entity.LastUpdated = DateTime.Now;
-			item.Attributes = BuildReplaceableAttributes (entity);
-			request.Item = item;
+
+			PutAttributesRequest request = new PutAttributesRequest ();
+			request.DomainName = GetTableName (entity);
+			request.ItemName = entity.Id.ToString ();
+			request.ReplaceableAttributes = BuildReplaceableAttributes (entity);
 
 			Response response = client.PutAttributes (request).Result;
+
+			//TODO Fails because its a batch attribute response
 			if (response.GetType ().Equals (typeof(PutAttributesResponse))) {
 				return HttpStatusCode.OK.Equals (response.HttpStatusCode);
 			} else {
 				throw new AWSErrorException (response);
 			}
 		}
-		/*public async Task<bool> SaveOrReplaceMultiple (List<T> entities)
+
+		public async Task<bool> SaveOrReplaceMultiple (List<T> entities)
 		{
-		
+			if (entities.Count == 0) {
+				return true;
+			}
+
+			string Domain = GetTableName (entities [0]);
+
+			foreach (Entity entity in entities) {
+				if (entity.Created == DateTime.MinValue) {
+					entity.Created = DateTime.Now;
+				}
+				entity.LastUpdated = DateTime.Now;
+			}
+
+			Response response;
 			BatchPutAttributesRequest request;
-			BatchPutAttributesResponse response;
+
 			bool success = true;
 
 			List<ReplaceableItem> ReplaceableItems = new List<ReplaceableItem> ();
+
 			foreach (T Entity in entities) {
 				ReplaceableItem Item = new ReplaceableItem ();
-				Item.Name = Entity.Id.ToString ();
-				Item.Attributes = BuildPutAttributesRequest (Entity);
+				Item.ItemName = Entity.Id.ToString ();
+				Item.ReplaceableAttributes = BuildReplaceableAttributes (Entity);
 				ReplaceableItems.Add (Item);
 
 				if (ReplaceableItems.Count == 25) {
 					request = new BatchPutAttributesRequest ();
-					request.DomainName = GetTableName ();
-					request.Items = ReplaceableItems;
-					response = await client.BatchPutAttributesAsync (request);
+					request.DomainName = Domain;
+					request.ReplaceableItems = ReplaceableItems;
+					response = await client.BatchPutAttributes (request);
 					success = HttpStatusCode.OK.Equals (response.HttpStatusCode) && success;
 					ReplaceableItems.Clear ();
 				}
 			}
 
+			//TODO Delete persisted if fails 
 			if (ReplaceableItems.Count > 0) {
 				request = new BatchPutAttributesRequest ();
-				request.DomainName = GetTableName ();
-				request.Items = ReplaceableItems;
-				response = await client.BatchPutAttributesAsync (request);
+				request.DomainName = Domain;
+				request.ReplaceableItems = ReplaceableItems;
+				response = await client.BatchPutAttributes (request);
 				success = HttpStatusCode.OK.Equals (response.HttpStatusCode) && success;
 			}
 
 			return success;
 		}
 
-		public async Task<T> Get (T entity)
-		{
-			return  await Get (entity.Id);
-		}
-
-		public async Task<T> Get (long id)
-		{
-			GetAttributesRequest request = new GetAttributesRequest ();
-			request.DomainName = GetTableName ();
-			request.ItemName = id.ToString ();
-			request.ConsistentRead = true;
-			GetAttributesResponse response = await client.GetAttributesAsync (request);
-			T entity = MarshallAttributes (response.Attributes);
-			entity.Id = id;
-			return entity;
-		}
-
-		public async Task<bool> Delete (T entity)
-		{
-			DeleteAttributesRequest request = new DeleteAttributesRequest ();
-			request.DomainName = GetTableName ();
-			request.ItemName = entity.Id.ToString ();
-			DeleteAttributesResponse response = await client.DeleteAttributesAsync (request);
-			return HttpStatusCode.OK.Equals (response.HttpStatusCode);
-		}*/
 		protected List<ReplaceableAttribute>  BuildReplaceableAttributes (T entity)
 		{
 			List<ReplaceableAttribute> list = new List<ReplaceableAttribute> ();
@@ -123,10 +115,7 @@ namespace AWSSimpleDBPersistence
 						throw new NullReferenceException ("Unknown type being parsed" + propertyInfo.PropertyType.ToString ());
 					}
 
-					ReplaceableAttribute replaceableAttribute = new ReplaceableAttribute ();
-					replaceableAttribute.Name = name;
-					replaceableAttribute.Value = value;
-					replaceableAttribute.Replace = true;
+					ReplaceableAttribute replaceableAttribute = new ReplaceableAttribute (name, value, true);
 					list.Add (replaceableAttribute);
 				}
 			}
@@ -165,6 +154,32 @@ namespace AWSSimpleDBPersistence
 			}
 			return entity;
 		}
+		/*
+		public async Task<T> Get (T entity)
+		{
+			return  await Get (entity.Id);
+		}
+
+		public async Task<T> Get (long id)
+		{
+			GetAttributesRequest request = new GetAttributesRequest ();
+			request.DomainName = GetTableName ();
+			request.ItemName = id.ToString ();
+			request.ConsistentRead = true;
+			GetAttributesResponse response = await client.GetAttributesAsync (request);
+			T entity = MarshallAttributes (response.Attributes);
+			entity.Id = id;
+			return entity;
+		}
+
+		public async Task<bool> Delete (T entity)
+		{
+			DeleteAttributesRequest request = new DeleteAttributesRequest ();
+			request.DomainName = GetTableName ();
+			request.ItemName = entity.Id.ToString ();
+			DeleteAttributesResponse response = await client.DeleteAttributesAsync (request);
+			return HttpStatusCode.OK.Equals (response.HttpStatusCode);
+		}*/
 	}
 }
 

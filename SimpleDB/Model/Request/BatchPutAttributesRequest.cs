@@ -4,18 +4,22 @@ using System.Collections.Generic;
 
 namespace AWSSimpleDBPersistence
 {
-	public class BatchPutAttributesRequest : Request
+	public class BatchPutAttributesRequest : DomainRequest
 	{
-		public BatchPutAttributesRequest (PutAttributesRequest request)
+		public List<ReplaceableItem> ReplaceableItems { get; set; }
+
+		public BatchPutAttributesRequest ()
 		{
-			this.DomainName = request.DomainName;
-			this.Items = new List<Item> ();
-			this.Items.Add (request.Item);
 		}
 
-		public string DomainName { get; set; }
+		public BatchPutAttributesRequest (string domainName) : base (domainName)
+		{
+		}
 
-		public List<Item> Items { get; set; }
+		public BatchPutAttributesRequest (string domainName, List<ReplaceableItem> replaceableItems) : base (domainName)
+		{
+			this.ReplaceableItems = replaceableItems;
+		}
 	}
 }
 

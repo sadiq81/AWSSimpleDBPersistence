@@ -37,8 +37,6 @@
     <Compile Include="Service\ServiceContainer.cs" />
     <Compile Include="SimpleDB\SimpleDBClient.cs" />
     <Compile Include="SimpleDB\Region.cs" />
-    <Compile Include="SimpleDB\Item.cs" />
-    <Compile Include="SimpleDB\Model\Request\Request.cs" />
     <Compile Include="SimpleDB\Model\Response\Response.cs" />
     <Compile Include="SimpleDB\Model\Response\ResponseMetadata.cs" />
     <Compile Include="SimpleDB\Model\Response\BatchDeleteAttributesResponse.cs" />
@@ -63,14 +61,21 @@
     <Compile Include="SimpleDB\Model\Response\PutAttributesResponse.cs" />
     <Compile Include="SimpleDB\Model\Response\SelectResponse.cs" />
     <Compile Include="SimpleDB\Model\Request\SelectRequest.cs" />
-    <Compile Include="SimpleDB\Model\ReplaceableAttribute.cs" />
-    <Compile Include="SimpleDB\Model\UpdateCondition.cs" />
     <Compile Include="Service\ISHA256Service.cs" />
-    <Compile Include="SimpleDB\Model\Marshalling\Request\BatchPutAttributesRequestMarshaller.cs" />
     <Compile Include="SimpleDB\Model\Marshalling\Response\IUnMarshaller.cs" />
     <Compile Include="SimpleDB\Model\Marshalling\Request\IMarshaller.cs" />
     <Compile Include="SimpleDB\Model\Marshalling\Response\BatchPutAttributtesResponseUnMarshaller.cs" />
     <Compile Include="SimpleDB\Model\AWSException\AWSErrorException.cs" />
+    <Compile Include="SimpleDB\Model\Marshalling\Request\BaseMarshaller.cs" />
+    <Compile Include="SimpleDB\Model\Parameters\Item.cs" />
+    <Compile Include="SimpleDB\Model\Parameters\Attribute.cs" />
+    <Compile Include="SimpleDB\Model\Parameters\ReplaceableAttribute.cs" />
+    <Compile Include="SimpleDB\Model\Request\DomainRequest.cs" />
+    <Compile Include="SimpleDB\Model\Parameters\ReplaceableItem.cs" />
+    <Compile Include="SimpleDB\Model\Parameters\Expected.cs" />
+    <Compile Include="SimpleDB\Model\Marshalling\Request\BatchPutAttributesRequestMarshaller %28copy%29.cs" />
+    <Compile Include="SimpleDB\Model\Marshalling\Request\PutAttributesRequestMarshaller.cs" />
+    <Compile Include="SimpleDB\Model\Marshalling\Response\PutAttributtesResponseUnMarshaller %28copy%29.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <ItemGroup>
@@ -81,5 +86,6 @@
     <Folder Include="SimpleDB\Model\Marshalling\Request\" />
     <Folder Include="SimpleDB\Model\Marshalling\Response\" />
     <Folder Include="SimpleDB\Model\AWSException\" />
+    <Folder Include="SimpleDB\Model\Parameters\" />
   </ItemGroup>
 </Project>
