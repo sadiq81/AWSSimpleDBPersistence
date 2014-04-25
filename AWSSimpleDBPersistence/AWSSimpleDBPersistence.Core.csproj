@@ -7,7 +7,7 @@
     <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <RootNamespace>AWSSimpleDBPersistence</RootNamespace>
-    <AssemblyName>AWSSimpleDBPersistence2</AssemblyName>
+    <AssemblyName>AWSSimpleDBPersistence</AssemblyName>
     <TargetFrameworkProfile>Profile7</TargetFrameworkProfile>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
   </PropertyGroup>
@@ -84,6 +84,9 @@
     <Compile Include="SimpleDB\Model\Marshalling\Response\CreateDomainResponseUnMarshaller.cs" />
     <Compile Include="SimpleDB\Model\Marshalling\Response\DeleteDomainResponseUnMarshaller %28copy%29.cs" />
     <Compile Include="SimpleDB\Model\Marshalling\Request\DeleteDomainRequestMarshaller.cs" />
+    <Compile Include="SimpleDB\Model\Parameters\ListDomainsResult.cs" />
+    <Compile Include="SimpleDB\Model\Marshalling\Request\ListDomainsRequestMarshaller.cs" />
+    <Compile Include="SimpleDB\Model\Marshalling\Response\ListDomainsResponseUnMarshaller %28copy%29.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <ItemGroup>

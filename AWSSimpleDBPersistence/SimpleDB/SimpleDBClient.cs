@@ -1,12 +1,11 @@
 ﻿using System.Threading.Tasks;
 using System.Net.Http;
-using System.Xml.Linq;
-using System.Linq;
 using System.Collections.Generic;
+using System;
 
 namespace AWSSimpleDBPersistence
 {
-	public class SimpleDBClient
+	public abstract class SimpleDBClient
 	{
 		public string AWSAccessKeyId { get; set; }
 
@@ -21,6 +20,19 @@ namespace AWSSimpleDBPersistence
 			this.AWSAccessKeyId = aWSAccessKeyId;
 			this.AWSSecretKey = aWSSecretKey;
 			this.Region = region;
+		}
+
+		protected abstract void Initialize ();
+
+		public async Task<Response> ListDomains (ListDomainsRequest request)
+		{
+			using (Client = new HttpClient ()) {
+				ListDomainsRequestMarshaller marshaller = new ListDomainsRequestMarshaller ();
+				marshaller.Configure ();
+				HttpResponseMessage responseMessage = await Client.GetAsync (marshaller.Marshal ());
+				ListDomainsResponseUnMarshaller unmarshaler = new ListDomainsResponseUnMarshaller (responseMessage);
+				return unmarshaler.Response;
+			}
 		}
 
 		public async Task<Response> CreateDomain (CreateDomainRequest request)
