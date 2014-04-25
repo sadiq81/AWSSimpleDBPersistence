@@ -14,6 +14,8 @@ namespace AWSSimpleDBPersistence
 		*/
 		Task<bool> CreateTable ();
 
+		Task<bool> DeleteTable ();
+
 		Task<bool> Delete (T entity);
 
 		Task<bool> DeleteMultiple (List<T> entity);

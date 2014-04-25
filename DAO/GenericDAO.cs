@@ -30,7 +30,21 @@ namespace AWSSimpleDBPersistence
 			Response response = await client.CreateDomain (request);
 
 			//TODO Fails because its a batch attribute response
-			if (response.GetType ().Equals (typeof(PutAttributesResponse))) {
+			if (response.GetType ().Equals (typeof(CreateDomainResponse))) {
+				return HttpStatusCode.OK.Equals (response.HttpStatusCode);
+			} else {
+				throw new AWSErrorException (response);
+			}
+		}
+
+		public async Task<bool> DeleteTable ()
+		{
+			DeleteDomainRequest request = new DeleteDomainRequest ();
+			request.DomainName = GetTableName ();
+			Response response = await client.DeleteDomain (request);
+
+			//TODO Fails because its a batch attribute response
+			if (response.GetType ().Equals (typeof(DeleteDomainResponse))) {
 				return HttpStatusCode.OK.Equals (response.HttpStatusCode);
 			} else {
 				throw new AWSErrorException (response);

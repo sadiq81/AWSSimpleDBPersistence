@@ -36,6 +36,20 @@ namespace AWSSimpleDBPersistence
 			}
 		}
 
+		public async Task<Response> DeleteDomain (DeleteDomainRequest request)
+		{
+			using (Client = new HttpClient ()) {
+
+				DeleteDomainRequestMarshaller marshaller = new DeleteDomainRequestMarshaller ();
+				marshaller.Configure (request);
+				HttpResponseMessage responseMessage = await Client.GetAsync (marshaller.Marshal ());
+
+				DeleteDomainResponseUnMarshaller unmarshaler = new DeleteDomainResponseUnMarshaller (responseMessage);
+				return unmarshaler.Response;
+			}
+
+		}
+
 		public async Task<Response> PutAttributes (PutAttributesRequest request)
 		{
 			using (Client = new HttpClient ()) {
