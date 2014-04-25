@@ -6,7 +6,11 @@ namespace AWSSimpleDBPersistence
 {
 	public class BatchDeleteAttributesRequest : DomainRequest
 	{
-		List<Item> Items { get; set; }
+		public List<Item> Items { get; set; }
+
+		public BatchDeleteAttributesRequest ()
+		{
+		}
 
 		public BatchDeleteAttributesRequest (string domainName, List<Item> items) : base (domainName)
 		{

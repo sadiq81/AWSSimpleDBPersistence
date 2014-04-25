@@ -101,6 +101,19 @@ namespace AWSSimpleDBPersistence
 				return unmarshaler.Response;
 			}
 		}
+
+		public async Task<Response> BatchDeleteAttributes (BatchDeleteAttributesRequest request)
+		{
+			using (Client = new HttpClient ()) {
+
+				BatchDeleteAttributesRequestMarshaller marshaller = new BatchDeleteAttributesRequestMarshaller ();
+				marshaller.Configure (request);
+				HttpResponseMessage responseMessage = await Client.GetAsync (marshaller.Marshal ());
+
+				BatchDeleteAttributtesResponseUnMarshaller unmarshaler = new BatchDeleteAttributtesResponseUnMarshaller (responseMessage);
+				return unmarshaler.Response;
+			}
+		}
 	}
 }
 

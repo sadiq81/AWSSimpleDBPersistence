@@ -61,6 +61,48 @@ namespace AWSSimpleDBPersistence
 
 		}
 
+		public async Task<bool> DeleteMultiple (List<T> entities)
+		{
+			if (entities.Count == 0) {
+				return true;
+			}
+
+			string Domain = GetTableName (entities [0]);
+
+			Response response;
+			BatchDeleteAttributesRequest request;
+
+			bool success = true;
+
+			List<Item> Items = new List<Item> ();
+
+			foreach (T Entity in entities) {
+				Item Item = new Item ();
+				Item.ItemName = Entity.Id.ToString ();
+				Items.Add (Item);
+
+				if (Items.Count == 25) {
+					request = new BatchDeleteAttributesRequest ();
+					request.DomainName = Domain;
+					request.Items = Items;
+					response = await client.BatchDeleteAttributes (request);
+					success = HttpStatusCode.OK.Equals (response.HttpStatusCode) && success;
+					Items.Clear ();
+				}
+			}
+
+			//TODO Undo delete persisted if fails 
+			if (Items.Count > 0) {
+				request = new BatchDeleteAttributesRequest ();
+				request.DomainName = Domain;
+				request.Items = Items;
+				response = await client.BatchDeleteAttributes (request);
+				success = HttpStatusCode.OK.Equals (response.HttpStatusCode) && success;
+			}
+
+			return success;
+		}
+
 		public async Task<bool> SaveOrReplaceMultiple (List<T> entities)
 		{
 			if (entities.Count == 0) {

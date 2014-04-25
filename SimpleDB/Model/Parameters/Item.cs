@@ -9,6 +9,10 @@ namespace AWSSimpleDBPersistence
 
 		public List<Attribute> Attributes { get; set; }
 
+		public Item ()
+		{
+		}
+
 		public Item (string itemName)
 		{
 			this.ItemName = itemName;
