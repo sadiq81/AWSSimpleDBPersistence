@@ -22,46 +22,20 @@ namespace AWSSimpleDBPersistence
 			this.AWSSecretKey = aWSSecretKey;
 			this.Region = region;
 		}
-		/*public async Task<BatchDeleteAttributesResponse> BatchDeleteAttributes (BatchDeleteAttributesRequest request)
+
+		public async Task<Response> CreateDomain (CreateDomainRequest request)
 		{
+			using (Client = new HttpClient ()) {
 
+				CreateDomainRequestMarshaller marshaller = new CreateDomainRequestMarshaller ();
+				marshaller.Configure (request);
+				HttpResponseMessage responseMessage = await Client.GetAsync (marshaller.Marshal ());
 
+				CreateDomainResponseUnMarshaller unmarshaler = new CreateDomainResponseUnMarshaller (responseMessage);
+				return unmarshaler.Response;
+			}
 		}
 
-		public async Task<BatchPutAttributesResponse> BatchPutAttributes (BatchPutAttributesRequest request)
-		{
-
-		}
-
-		public async Task<CreateDomainResponse> CreateDomain (CreateDomainRequest request)
-		{
-
-		}
-
-		public async Task<DeleteAttributesResponse> DeleteAttributes (DeleteAttributesRequest request)
-		{
-
-		}
-
-		public async Task<DeleteDomainResponse> DeleteDomain (DeleteDomainRequest request)
-		{
-
-		}
-
-		public async Task<DomainMetadataResponse> DomainMetadata (DomainMetadataRequest request)
-		{
-
-		}
-
-		public async Task<GetAttributesResponse> GetAttributes (GetAttributesRequest request)
-		{
-
-		}
-
-		public async Task<ListDomainsResponse> ListDomains (ListDomainsRequest request)
-		{
-
-		}*/
 		public async Task<Response> PutAttributes (PutAttributesRequest request)
 		{
 			using (Client = new HttpClient ()) {

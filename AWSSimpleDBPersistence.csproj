@@ -80,6 +80,8 @@
     <Compile Include="SimpleDB\Model\Marshalling\Response\DeleteAttributtesResponseUnMarshaller.cs" />
     <Compile Include="SimpleDB\Model\Marshalling\Request\BatchDeleteAttributesRequestMarshaller.cs" />
     <Compile Include="SimpleDB\Model\Marshalling\Response\BatchDeleteAttributtesResponseUnMarshaller %28copy%29.cs" />
+    <Compile Include="SimpleDB\Model\Marshalling\Request\CreateDomainRequestMarshaller %28copy%29.cs" />
+    <Compile Include="SimpleDB\Model\Marshalling\Response\CreateDomainResponseUnMarshaller.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <ItemGroup>

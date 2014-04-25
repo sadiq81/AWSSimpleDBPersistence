@@ -14,14 +14,28 @@ namespace AWSSimpleDBPersistence
 	{
 		const string FMT = "yyyy-MM-dd-HH-mm-ss";
 
-		public string GetTableName (T entity)
+		public string GetTableName ()
 		{
-
+			T entity = (T)Activator.CreateInstance (typeof(T));
 			SimpleDBDomainAttribute attribute = entity.GetType ().GetTypeInfo ().GetCustomAttribute <SimpleDBDomainAttribute> ();
 			return attribute.Domain;
 		}
 
 		SimpleDBClient client = ServiceContainer.Resolve<SimpleDBClient> ();
+
+		public async Task<bool> CreateTable ()
+		{
+			CreateDomainRequest request = new CreateDomainRequest ();
+			request.DomainName = GetTableName ();
+			Response response = await client.CreateDomain (request);
+
+			//TODO Fails because its a batch attribute response
+			if (response.GetType ().Equals (typeof(PutAttributesResponse))) {
+				return HttpStatusCode.OK.Equals (response.HttpStatusCode);
+			} else {
+				throw new AWSErrorException (response);
+			}
+		}
 
 		public async Task<bool> SaveOrReplace (T entity)
 		{
@@ -31,7 +45,7 @@ namespace AWSSimpleDBPersistence
 			entity.LastUpdated = DateTime.Now;
 
 			PutAttributesRequest request = new PutAttributesRequest ();
-			request.DomainName = GetTableName (entity);
+			request.DomainName = GetTableName ();
 			request.ItemName = entity.Id.ToString ();
 			request.ReplaceableAttributes = BuildReplaceableAttributes (entity);
 
@@ -48,7 +62,7 @@ namespace AWSSimpleDBPersistence
 		public async Task<bool> Delete (T entity)
 		{
 			DeleteAttributesRequest request = new DeleteAttributesRequest ();
-			request.DomainName = GetTableName (entity);
+			request.DomainName = GetTableName ();
 			request.ItemName = entity.Id.ToString ();
 
 			Response response = await client.DeleteAttributes (request);
@@ -67,7 +81,7 @@ namespace AWSSimpleDBPersistence
 				return true;
 			}
 
-			string Domain = GetTableName (entities [0]);
+			string Domain = GetTableName ();
 
 			Response response;
 			BatchDeleteAttributesRequest request;
@@ -109,7 +123,7 @@ namespace AWSSimpleDBPersistence
 				return true;
 			}
 
-			string Domain = GetTableName (entities [0]);
+			string Domain = GetTableName ();
 
 			foreach (Entity entity in entities) {
 				if (entity.Created == DateTime.MinValue) {
