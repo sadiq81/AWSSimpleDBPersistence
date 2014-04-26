@@ -73,6 +73,19 @@ namespace AWSSimpleDBPersistence
 			}
 		}
 
+		public async Task<Response> GetAttributes (GetAttributesRequest request)
+		{
+			using (Client = new HttpClient ()) {
+
+				GetAttributesRequestMarshaller marshaller = new GetAttributesRequestMarshaller ();
+				marshaller.Configure (request);
+				HttpResponseMessage responseMessage = await Client.GetAsync (marshaller.Marshal ());
+
+				GetAttributtesResponseUnMarshaller unmarshaler = new GetAttributtesResponseUnMarshaller (responseMessage);
+				return unmarshaler.Response;
+			}
+		}
+
 		public async Task<Response> DeleteAttributes (DeleteAttributesRequest request)
 		{
 			using (Client = new HttpClient ()) {

@@ -12,6 +12,10 @@ namespace AWSSimpleDBPersistence
 
 		public bool ConsistentRead { get; set; }
 
+		public GetAttributesRequest ()
+		{
+		}
+
 		public GetAttributesRequest (string domainName) : base (domainName)
 		{
 		}

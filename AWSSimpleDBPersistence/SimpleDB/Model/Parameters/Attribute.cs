@@ -4,6 +4,10 @@ namespace AWSSimpleDBPersistence
 {
 	public class Attribute
 	{
+		public Attribute ()
+		{
+		}
+
 		public Attribute (string name, string value)
 		{
 			this.Name = name;

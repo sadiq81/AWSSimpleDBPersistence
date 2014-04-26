@@ -21,7 +21,7 @@ namespace AWSSimpleDBPersistence
 			return attribute.Domain;
 		}
 
-		SimpleDBClient client = ServiceContainer.Resolve<SimpleDBClient> ();
+		SimpleDBClientCore client = ServiceContainer.Resolve<SimpleDBClientCore> ();
 
 		public async Task<bool> CreateTable ()
 		{
@@ -208,7 +208,7 @@ namespace AWSSimpleDBPersistence
 			return list;
 		}
 
-		protected T MarshallAttributes (List<ReplaceableAttribute> attributes)
+		protected T MarshallAttributes (List<Attribute> attributes)
 		{
 			T entity = (T)Activator.CreateInstance (typeof(T));
 
@@ -223,7 +223,7 @@ namespace AWSSimpleDBPersistence
 				}
 			}
 
-			foreach (ReplaceableAttribute attribute in attributes) {
+			foreach (Attribute attribute in attributes) {
 				string name = attribute.Name;
 				string value = attribute.Value;
 
@@ -240,7 +240,7 @@ namespace AWSSimpleDBPersistence
 			}
 			return entity;
 		}
-		/*
+
 		public async Task<T> Get (T entity)
 		{
 			return  await Get (entity.Id);
@@ -252,12 +252,18 @@ namespace AWSSimpleDBPersistence
 			request.DomainName = GetTableName ();
 			request.ItemName = id.ToString ();
 			request.ConsistentRead = true;
-			GetAttributesResponse response = await client.GetAttributesAsync (request);
-			T entity = MarshallAttributes (response.Attributes);
-			entity.Id = id;
-			return entity;
+			Response response = client.GetAttributes (request).Result;
+
+			if (response.GetType ().Equals (typeof(GetAttributesResponse))) {
+				T entity = MarshallAttributes (((GetAttributesResponse)response).GetAttributesResult.ToList ());
+				entity.Id = id;
+				return entity;
+			} else {
+				throw new AWSErrorException (response);
+			}
+
+
 		}
-			*/
 	}
 }
 

@@ -6,6 +6,7 @@ namespace AWSSimpleDBPersistence
 {
 	public class GetAttributesResponse : Response
 	{
+		public Attribute[] GetAttributesResult { get; set; }
 	}
 }
 

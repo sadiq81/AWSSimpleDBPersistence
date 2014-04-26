@@ -76,7 +76,6 @@
     <Compile Include="SimpleDB\Model\Marshalling\Request\PutAttributesRequestMarshaller.cs" />
     <Compile Include="SimpleDB\Model\Marshalling\Response\PutAttributtesResponseUnMarshaller %28copy%29.cs" />
     <Compile Include="SimpleDB\Model\Marshalling\Request\DeleteAttributesRequestMarshaller %28copy%29.cs" />
-    <Compile Include="SimpleDB\Model\Marshalling\Response\DeleteAttributtesResponseUnMarshaller.cs" />
     <Compile Include="SimpleDB\Model\Marshalling\Request\BatchDeleteAttributesRequestMarshaller.cs" />
     <Compile Include="SimpleDB\Model\Marshalling\Response\BatchDeleteAttributtesResponseUnMarshaller %28copy%29.cs" />
     <Compile Include="SimpleDB\Model\Marshalling\Request\CreateDomainRequestMarshaller %28copy%29.cs" />
@@ -87,6 +86,9 @@
     <Compile Include="SimpleDB\Model\Marshalling\Request\ListDomainsRequestMarshaller.cs" />
     <Compile Include="SimpleDB\Model\Marshalling\Response\ListDomainsResponseUnMarshaller %28copy%29.cs" />
     <Compile Include="SimpleDB\SimpleDBClientCore.cs" />
+    <Compile Include="SimpleDB\Model\Marshalling\Request\GetAttributesRequestMarshaller %28copy%29.cs" />
+    <Compile Include="SimpleDB\Model\Marshalling\Response\GetAttributtesResponseUnMarshaller.cs" />
+    <Compile Include="SimpleDB\Model\Marshalling\Response\PutAttributtesResponseUnMarshaller.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <ItemGroup>
