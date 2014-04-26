@@ -5,7 +5,7 @@ using System;
 
 namespace AWSSimpleDBPersistence
 {
-	public abstract class SimpleDBClient
+	public  class SimpleDBClientCore
 	{
 		public string AWSAccessKeyId { get; set; }
 
@@ -15,21 +15,19 @@ namespace AWSSimpleDBPersistence
 
 		private HttpClient Client;
 
-		public SimpleDBClient (string aWSAccessKeyId, string aWSSecretKey, string region)
+		public SimpleDBClientCore (string aWSAccessKeyId, string aWSSecretKey, string region)
 		{
 			this.AWSAccessKeyId = aWSAccessKeyId;
 			this.AWSSecretKey = aWSSecretKey;
 			this.Region = region;
 		}
 
-		protected abstract void Initialize ();
-
 		public async Task<Response> ListDomains (ListDomainsRequest request)
 		{
 			using (Client = new HttpClient ()) {
 				ListDomainsRequestMarshaller marshaller = new ListDomainsRequestMarshaller ();
-				marshaller.Configure ();
-				HttpResponseMessage responseMessage = await Client.GetAsync (marshaller.Marshal ());
+				marshaller.Configure (request);
+				HttpResponseMessage responseMessage = Client.GetAsync (marshaller.Marshal ()).Result;
 				ListDomainsResponseUnMarshaller unmarshaler = new ListDomainsResponseUnMarshaller (responseMessage);
 				return unmarshaler.Response;
 			}

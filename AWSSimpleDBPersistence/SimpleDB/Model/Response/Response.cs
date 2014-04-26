@@ -1,12 +1,5 @@
-﻿using System;
-using System.Net;
-using System.Net.Http;
-using System.Xml.Linq;
-using System.Linq;
-using System.Xml.Serialization;
+﻿using System.Net;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
-using System.ComponentModel;
 
 namespace AWSSimpleDBPersistence
 {
@@ -21,13 +14,6 @@ namespace AWSSimpleDBPersistence
 		public HttpStatusCode HttpStatusCode { get; set; }
 
 		public List<Error> Errors { get; set; }
-
-		public string RequestID { get; set; }
-
-		public Response ()
-		{
-
-		}
 
 		public class Error
 		{

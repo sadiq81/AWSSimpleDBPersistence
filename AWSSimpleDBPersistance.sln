@@ -51,7 +51,7 @@ Global
 		{C9D89E73-1D28-4DF0-8D63-1E3D1B238A51}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = AWSSimpleDBPersistence\AWSSimpleDBPersistence.Core.csproj
+		StartupItem = Test\Test.csproj
 		Policies = $0
 		$0.DotNetNamingPolicy = $1
 		$1.DirectoryNamespaceAssociation = None

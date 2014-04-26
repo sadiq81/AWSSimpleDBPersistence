@@ -90,9 +90,9 @@ namespace AWSSimpleDBPersistence
 			}
 		}
 
-		protected  SimpleDBClient Client {
+		protected  SimpleDBClientCore Client {
 			get {
-				return ServiceContainer.Resolve<SimpleDBClient> ();
+				return ServiceContainer.Resolve<SimpleDBClientCore> ();
 			}
 		}
 	}

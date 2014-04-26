@@ -35,7 +35,6 @@
     <Compile Include="DAO\IGenericDAO.cs" />
     <Compile Include="Domain\Entity.cs" />
     <Compile Include="Service\ServiceContainer.cs" />
-    <Compile Include="SimpleDB\SimpleDBClient.cs" />
     <Compile Include="SimpleDB\Region.cs" />
     <Compile Include="SimpleDB\Model\Response\Response.cs" />
     <Compile Include="SimpleDB\Model\Response\ResponseMetadata.cs" />
@@ -87,6 +86,7 @@
     <Compile Include="SimpleDB\Model\Parameters\ListDomainsResult.cs" />
     <Compile Include="SimpleDB\Model\Marshalling\Request\ListDomainsRequestMarshaller.cs" />
     <Compile Include="SimpleDB\Model\Marshalling\Response\ListDomainsResponseUnMarshaller %28copy%29.cs" />
+    <Compile Include="SimpleDB\SimpleDBClientCore.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <ItemGroup>
