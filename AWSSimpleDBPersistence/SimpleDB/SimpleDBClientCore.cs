@@ -22,12 +22,23 @@ namespace AWSSimpleDBPersistence
 			this.Region = region;
 		}
 
+		public async Task<Response> DomainMetadata (DomainMetadataRequest request)
+		{
+			using (Client = new HttpClient ()) {
+				DomainMetadataRequestMarshaller marshaller = new DomainMetadataRequestMarshaller ();
+				marshaller.Configure (request);
+				HttpResponseMessage responseMessage = Client.GetAsync (marshaller.Marshal ()).Result;
+				DomainMetadataResponseUnMarshaller unmarshaler = new DomainMetadataResponseUnMarshaller (responseMessage);
+				return unmarshaler.Response;
+			}
+		}
+
 		public async Task<Response> ListDomains (ListDomainsRequest request)
 		{
 			using (Client = new HttpClient ()) {
 				ListDomainsRequestMarshaller marshaller = new ListDomainsRequestMarshaller ();
 				marshaller.Configure (request);
-				HttpResponseMessage responseMessage = Client.GetAsync (marshaller.Marshal ()).Result;
+				HttpResponseMessage responseMessage = await Client.GetAsync (marshaller.Marshal ());
 				ListDomainsResponseUnMarshaller unmarshaler = new ListDomainsResponseUnMarshaller (responseMessage);
 				return unmarshaler.Response;
 			}

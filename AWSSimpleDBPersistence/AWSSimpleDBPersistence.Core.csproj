@@ -72,23 +72,26 @@
     <Compile Include="SimpleDB\Model\Request\DomainRequest.cs" />
     <Compile Include="SimpleDB\Model\Parameters\ReplaceableItem.cs" />
     <Compile Include="SimpleDB\Model\Parameters\Expected.cs" />
-    <Compile Include="SimpleDB\Model\Marshalling\Request\BatchPutAttributesRequestMarshaller %28copy%29.cs" />
     <Compile Include="SimpleDB\Model\Marshalling\Request\PutAttributesRequestMarshaller.cs" />
-    <Compile Include="SimpleDB\Model\Marshalling\Response\PutAttributtesResponseUnMarshaller %28copy%29.cs" />
-    <Compile Include="SimpleDB\Model\Marshalling\Request\DeleteAttributesRequestMarshaller %28copy%29.cs" />
     <Compile Include="SimpleDB\Model\Marshalling\Request\BatchDeleteAttributesRequestMarshaller.cs" />
-    <Compile Include="SimpleDB\Model\Marshalling\Response\BatchDeleteAttributtesResponseUnMarshaller %28copy%29.cs" />
-    <Compile Include="SimpleDB\Model\Marshalling\Request\CreateDomainRequestMarshaller %28copy%29.cs" />
     <Compile Include="SimpleDB\Model\Marshalling\Response\CreateDomainResponseUnMarshaller.cs" />
-    <Compile Include="SimpleDB\Model\Marshalling\Response\DeleteDomainResponseUnMarshaller %28copy%29.cs" />
     <Compile Include="SimpleDB\Model\Marshalling\Request\DeleteDomainRequestMarshaller.cs" />
     <Compile Include="SimpleDB\Model\Parameters\ListDomainsResult.cs" />
     <Compile Include="SimpleDB\Model\Marshalling\Request\ListDomainsRequestMarshaller.cs" />
-    <Compile Include="SimpleDB\Model\Marshalling\Response\ListDomainsResponseUnMarshaller %28copy%29.cs" />
     <Compile Include="SimpleDB\SimpleDBClientCore.cs" />
-    <Compile Include="SimpleDB\Model\Marshalling\Request\GetAttributesRequestMarshaller %28copy%29.cs" />
-    <Compile Include="SimpleDB\Model\Marshalling\Response\GetAttributtesResponseUnMarshaller.cs" />
     <Compile Include="SimpleDB\Model\Marshalling\Response\PutAttributtesResponseUnMarshaller.cs" />
+    <Compile Include="SimpleDB\Model\Parameters\DomainMetadataResult.cs" />
+    <Compile Include="SimpleDB\Model\Marshalling\Request\DomainMetaDataRequestMarshaller.cs" />
+    <Compile Include="SimpleDB\Model\Marshalling\Request\DeleteAttributesRequestMarshaller.cs" />
+    <Compile Include="SimpleDB\Model\Marshalling\Request\CreateDomainRequestMarshaller.cs" />
+    <Compile Include="SimpleDB\Model\Marshalling\Request\BatchPutAttributesRequestMarshaller.cs" />
+    <Compile Include="SimpleDB\Model\Marshalling\Request\GetAttributesRequestMarshaller.cs" />
+    <Compile Include="SimpleDB\Model\Marshalling\Response\BatchDeleteAttributtesResponseUnMarshaller.cs" />
+    <Compile Include="SimpleDB\Model\Marshalling\Response\DeleteDomainResponseUnMarshaller.cs" />
+    <Compile Include="SimpleDB\Model\Marshalling\Response\ListDomainsResponseUnMarshaller.cs" />
+    <Compile Include="SimpleDB\Model\Marshalling\Response\DeleteAttributtesResponseUnMarshaller.cs" />
+    <Compile Include="SimpleDB\Model\Marshalling\Response\GetAttributtesResponseUnMarshaller.cs" />
+    <Compile Include="SimpleDB\Model\Marshalling\Response\DomainMetadataResponseUnMarshaller.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <ItemGroup>

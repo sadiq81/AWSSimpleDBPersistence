@@ -6,6 +6,7 @@ namespace AWSSimpleDBPersistence
 {
 	public class DomainMetadataResponse : Response
 	{
+		public DomainMetadataResult DomainMetadataResult;
 	}
 }
 

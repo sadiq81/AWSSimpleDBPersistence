@@ -1,24 +1,23 @@
-﻿using System;
-using System.Xml.Serialization;
+﻿using System.Xml.Serialization;
 using System.Net.Http;
 using System.Net;
 using System.Xml.Linq;
 
 namespace AWSSimpleDBPersistence
 {
-	public class GetAttributtesResponseUnMarshaller
+	public class DomainMetadataResponseUnMarshaller
 	{
 		protected XmlSerializer Serializer;
 
 		public Response Response { get; set; }
 
-		public GetAttributtesResponseUnMarshaller (HttpResponseMessage message)
+		public DomainMetadataResponseUnMarshaller (HttpResponseMessage message)
 		{
 			XDocument doc = XDocument.Load (message.Content.ReadAsStreamAsync ().Result);
 
 			if (message.StatusCode.Equals (HttpStatusCode.OK)) {
-				Serializer = new XmlSerializer (typeof(GetAttributesResponse), Response.NameSpace);
-				Response = (GetAttributesResponse)Serializer.Deserialize (doc.CreateReader ());
+				Serializer = new XmlSerializer (typeof(DomainMetadataResponse), Response.NameSpace);
+				Response = (DomainMetadataResponse)Serializer.Deserialize (doc.CreateReader ());
 				Response.HttpStatusCode = message.StatusCode;
 				Response.ContentLength = (long)message.Content.Headers.ContentLength;
 			} else {
