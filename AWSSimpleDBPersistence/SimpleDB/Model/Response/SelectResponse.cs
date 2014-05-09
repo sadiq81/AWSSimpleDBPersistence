@@ -6,6 +6,7 @@ namespace AWSSimpleDBPersistence
 {
 	public class SelectResponse : Response
 	{
+		public SelectResult SelectResult { get; set; }
 	}
 }
 

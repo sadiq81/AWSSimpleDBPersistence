@@ -8,10 +8,11 @@ namespace AWSSimpleDBPersistence
 	public interface IGenericDAO<T> where T : Entity
 	{
 		String GetTableName ();
-		/*Task<T> Get (T entity);
+
+		Task<T> Get (T entity);
 
 		Task<T> Get (long id);
-		*/
+
 		Task<bool> CreateTable ();
 
 		Task<bool> DeleteTable ();
@@ -23,5 +24,7 @@ namespace AWSSimpleDBPersistence
 		Task<bool> SaveOrReplace (T entity);
 
 		Task<bool> SaveOrReplaceMultiple (List<T> entity);
+
+		Task<List<T>> Select (SelectQuery<T> query);
 	}
 }

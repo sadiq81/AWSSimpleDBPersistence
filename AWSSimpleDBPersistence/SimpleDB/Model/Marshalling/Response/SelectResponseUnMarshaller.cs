@@ -5,7 +5,7 @@ using System.Xml.Linq;
 
 namespace AWSSimpleDBPersistence
 {
-	public class DomainMetadataResponseUnMarshaller: BaseUnMarshaller<DomainMetadataResponse>
+	public class SelectResponseUnMarshaller: BaseUnMarshaller<SelectResponse>
 	{
 	}
 }

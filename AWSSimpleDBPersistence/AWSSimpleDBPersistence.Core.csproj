@@ -92,6 +92,16 @@
     <Compile Include="SimpleDB\Model\Marshalling\Response\DeleteAttributtesResponseUnMarshaller.cs" />
     <Compile Include="SimpleDB\Model\Marshalling\Response\GetAttributtesResponseUnMarshaller.cs" />
     <Compile Include="SimpleDB\Model\Marshalling\Response\DomainMetadataResponseUnMarshaller.cs" />
+    <Compile Include="SimpleDB\Model\Marshalling\Request\SelectRequestMarshaller.cs" />
+    <Compile Include="SimpleDB\Model\Marshalling\Response\SelectResponseUnMarshaller.cs" />
+    <Compile Include="SimpleDB\Model\Parameters\SelectResult.cs" />
+    <Compile Include="SimpleDB\Model\Parameters\SelectQuery.cs" />
+    <Compile Include="SimpleDB\Model\Marshalling\Response\BaseUnMarshaller.cs" />
+    <Compile Include="SimpleDB\Model\AWSException\ToManyArgumentsException.cs" />
+    <Compile Include="SimpleDB\Model\AWSException\AttributeDoesNotExistInEntityException.cs" />
+    <Compile Include="SimpleDB\Model\AWSException\FieldFormatException.cs" />
+    <Compile Include="SimpleDB\Model\Marshalling\Types\ITypeMarshaller.cs" />
+    <Compile Include="SimpleDB\Model\Marshalling\Types\BaseTypeMarshaller.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <ItemGroup>
@@ -103,5 +113,6 @@
     <Folder Include="SimpleDB\Model\Marshalling\Response\" />
     <Folder Include="SimpleDB\Model\AWSException\" />
     <Folder Include="SimpleDB\Model\Parameters\" />
+    <Folder Include="SimpleDB\Model\Marshalling\Types\" />
   </ItemGroup>
 </Project>

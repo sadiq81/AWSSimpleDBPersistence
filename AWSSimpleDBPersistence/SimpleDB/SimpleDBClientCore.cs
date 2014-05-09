@@ -22,29 +22,31 @@ namespace AWSSimpleDBPersistence
 			this.Region = region;
 		}
 
-		public async Task<Response> DomainMetadata (DomainMetadataRequest request)
+		public async Task<DomainMetadataResponse> DomainMetadata (DomainMetadataRequest request)
 		{
 			using (Client = new HttpClient ()) {
 				DomainMetadataRequestMarshaller marshaller = new DomainMetadataRequestMarshaller ();
 				marshaller.Configure (request);
-				HttpResponseMessage responseMessage = Client.GetAsync (marshaller.Marshal ()).Result;
-				DomainMetadataResponseUnMarshaller unmarshaler = new DomainMetadataResponseUnMarshaller (responseMessage);
-				return unmarshaler.Response;
+				HttpResponseMessage responseMessage = await Client.GetAsync (marshaller.Marshal ()).Result;
+				DomainMetadataResponseUnMarshaller unmarshaler = new DomainMetadataResponseUnMarshaller ();
+				unmarshaler.Configure (responseMessage);
+				return unmarshaler.UnMarshal ();
 			}
 		}
 
-		public async Task<Response> ListDomains (ListDomainsRequest request)
+		public async Task<ListDomainsResponse> ListDomains (ListDomainsRequest request)
 		{
 			using (Client = new HttpClient ()) {
 				ListDomainsRequestMarshaller marshaller = new ListDomainsRequestMarshaller ();
 				marshaller.Configure (request);
 				HttpResponseMessage responseMessage = await Client.GetAsync (marshaller.Marshal ());
-				ListDomainsResponseUnMarshaller unmarshaler = new ListDomainsResponseUnMarshaller (responseMessage);
-				return unmarshaler.Response;
+				ListDomainsResponseUnMarshaller unmarshaler = new ListDomainsResponseUnMarshaller ();
+				unmarshaler.Configure (responseMessage);
+				return unmarshaler.UnMarshal ();
 			}
 		}
 
-		public async Task<Response> CreateDomain (CreateDomainRequest request)
+		public async Task<CreateDomainResponse> CreateDomain (CreateDomainRequest request)
 		{
 			using (Client = new HttpClient ()) {
 
@@ -52,12 +54,13 @@ namespace AWSSimpleDBPersistence
 				marshaller.Configure (request);
 				HttpResponseMessage responseMessage = await Client.GetAsync (marshaller.Marshal ());
 
-				CreateDomainResponseUnMarshaller unmarshaler = new CreateDomainResponseUnMarshaller (responseMessage);
-				return unmarshaler.Response;
+				CreateDomainResponseUnMarshaller unmarshaler = new CreateDomainResponseUnMarshaller ();
+				unmarshaler.Configure (responseMessage);
+				return unmarshaler.UnMarshal ();
 			}
 		}
 
-		public async Task<Response> DeleteDomain (DeleteDomainRequest request)
+		public async Task<DeleteDomainResponse> DeleteDomain (DeleteDomainRequest request)
 		{
 			using (Client = new HttpClient ()) {
 
@@ -65,13 +68,15 @@ namespace AWSSimpleDBPersistence
 				marshaller.Configure (request);
 				HttpResponseMessage responseMessage = await Client.GetAsync (marshaller.Marshal ());
 
-				DeleteDomainResponseUnMarshaller unmarshaler = new DeleteDomainResponseUnMarshaller (responseMessage);
-				return unmarshaler.Response;
+				DeleteDomainResponseUnMarshaller unmarshaler = new DeleteDomainResponseUnMarshaller ();
+				unmarshaler.Configure (responseMessage);
+				return unmarshaler.UnMarshal ();
+
 			}
 
 		}
 
-		public async Task<Response> PutAttributes (PutAttributesRequest request)
+		public async Task<PutAttributesResponse> PutAttributes (PutAttributesRequest request)
 		{
 			using (Client = new HttpClient ()) {
 
@@ -79,12 +84,14 @@ namespace AWSSimpleDBPersistence
 				marshaller.Configure (request);
 				HttpResponseMessage responseMessage = await Client.GetAsync (marshaller.Marshal ());
 
-				PutAttributtesResponseUnMarshaller unmarshaler = new PutAttributtesResponseUnMarshaller (responseMessage);
-				return unmarshaler.Response;
+				PutAttributtesResponseUnMarshaller unmarshaler = new PutAttributtesResponseUnMarshaller ();
+				unmarshaler.Configure (responseMessage);
+				return unmarshaler.UnMarshal ();
+
 			}
 		}
 
-		public async Task<Response> GetAttributes (GetAttributesRequest request)
+		public async Task<GetAttributesResponse> GetAttributes (GetAttributesRequest request)
 		{
 			using (Client = new HttpClient ()) {
 
@@ -92,12 +99,13 @@ namespace AWSSimpleDBPersistence
 				marshaller.Configure (request);
 				HttpResponseMessage responseMessage = await Client.GetAsync (marshaller.Marshal ());
 
-				GetAttributtesResponseUnMarshaller unmarshaler = new GetAttributtesResponseUnMarshaller (responseMessage);
-				return unmarshaler.Response;
+				GetAttributtesResponseUnMarshaller unmarshaler = new GetAttributtesResponseUnMarshaller ();
+				unmarshaler.Configure (responseMessage);
+				return unmarshaler.UnMarshal ();
 			}
 		}
 
-		public async Task<Response> DeleteAttributes (DeleteAttributesRequest request)
+		public async Task<DeleteAttributesResponse> DeleteAttributes (DeleteAttributesRequest request)
 		{
 			using (Client = new HttpClient ()) {
 
@@ -105,13 +113,14 @@ namespace AWSSimpleDBPersistence
 				marshaller.Configure (request);
 				HttpResponseMessage responseMessage = await Client.GetAsync (marshaller.Marshal ());
 
-				DeleteAttributtesResponseUnMarshaller unmarshaler = new DeleteAttributtesResponseUnMarshaller (responseMessage);
-				return unmarshaler.Response;
+				DeleteAttributtesResponseUnMarshaller unmarshaler = new DeleteAttributtesResponseUnMarshaller ();
+				unmarshaler.Configure (responseMessage);
+				return unmarshaler.UnMarshal ();
 			}
 
 		}
 
-		public async Task<Response> BatchPutAttributes (BatchPutAttributesRequest request)
+		public async Task<BatchPutAttributesResponse> BatchPutAttributes (BatchPutAttributesRequest request)
 		{
 			using (Client = new HttpClient ()) {
 
@@ -119,12 +128,13 @@ namespace AWSSimpleDBPersistence
 				marshaller.Configure (request);
 				HttpResponseMessage responseMessage = await Client.GetAsync (marshaller.Marshal ());
 
-				BatchPutAttributtesResponseUnMarshaller unmarshaler = new BatchPutAttributtesResponseUnMarshaller (responseMessage);
-				return unmarshaler.Response;
+				BatchPutAttributtesResponseUnMarshaller unmarshaler = new BatchPutAttributtesResponseUnMarshaller ();
+				unmarshaler.Configure (responseMessage);
+				return unmarshaler.UnMarshal ();
 			}
 		}
 
-		public async Task<Response> BatchDeleteAttributes (BatchDeleteAttributesRequest request)
+		public async Task<BatchDeleteAttributesResponse> BatchDeleteAttributes (BatchDeleteAttributesRequest request)
 		{
 			using (Client = new HttpClient ()) {
 
@@ -132,8 +142,23 @@ namespace AWSSimpleDBPersistence
 				marshaller.Configure (request);
 				HttpResponseMessage responseMessage = await Client.GetAsync (marshaller.Marshal ());
 
-				BatchDeleteAttributtesResponseUnMarshaller unmarshaler = new BatchDeleteAttributtesResponseUnMarshaller (responseMessage);
-				return unmarshaler.Response;
+				BatchDeleteAttributtesResponseUnMarshaller unmarshaler = new BatchDeleteAttributtesResponseUnMarshaller ();
+				unmarshaler.Configure (responseMessage);
+				return unmarshaler.UnMarshal ();
+			}
+		}
+
+		public async Task<SelectResponse> Select (SelectRequest request)
+		{
+			using (Client = new HttpClient ()) {
+
+				SelectRequestMarshaller marshaller = new SelectRequestMarshaller ();
+				marshaller.Configure (request);
+				HttpResponseMessage responseMessage = await Client.GetAsync (marshaller.Marshal ());
+
+				SelectResponseUnMarshaller unmarshaler = new SelectResponseUnMarshaller ();
+				unmarshaler.Configure (responseMessage);
+				return unmarshaler.UnMarshal ();
 			}
 		}
 	}

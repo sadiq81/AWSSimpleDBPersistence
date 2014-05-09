@@ -5,8 +5,6 @@ namespace AWSSimpleDBPersistence
 {
 	public class Response
 	{
-		public static string NameSpace = "http://sdb.amazonaws.com/doc/2009-04-15/";
-
 		public ResponseMetadata ResponseMetadata{ get; set; }
 
 		public long ContentLength{ get; set; }

@@ -7,27 +7,31 @@ using System.Net;
 using System.Globalization;
 using AWSSimpleDBPersistence;
 using System.Xml.Linq;
+using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.WindowsRuntime;
 
 namespace AWSSimpleDBPersistence
 {
 	public abstract class GenericDAO<T> : IGenericDAO<T> where T : Entity
 	{
-		const string FMT = "yyyy-MM-dd-HH-mm-ss";
-
 		public string GetTableName ()
 		{
 			T entity = (T)Activator.CreateInstance (typeof(T));
 			SimpleDBDomainAttribute attribute = entity.GetType ().GetTypeInfo ().GetCustomAttribute <SimpleDBDomainAttribute> ();
-			return attribute.Domain;
+			if (attribute != null) {
+				return attribute.Domain;
+			} else {
+				return entity.GetType ().Name;
+			}
 		}
 
-		SimpleDBClientCore client = ServiceContainer.Resolve<SimpleDBClientCore> ();
+		private readonly SimpleDBClientCore Client = ServiceContainer.Resolve<SimpleDBClientCore> ();
 
 		public async Task<bool> CreateTable ()
 		{
 			CreateDomainRequest request = new CreateDomainRequest ();
 			request.DomainName = GetTableName ();
-			Response response = await client.CreateDomain (request);
+			Response response = await Client.CreateDomain (request);
 
 			//TODO Fails because its a batch attribute response
 			if (response.GetType ().Equals (typeof(CreateDomainResponse))) {
@@ -41,7 +45,7 @@ namespace AWSSimpleDBPersistence
 		{
 			DeleteDomainRequest request = new DeleteDomainRequest ();
 			request.DomainName = GetTableName ();
-			Response response = await client.DeleteDomain (request);
+			Response response = await Client.DeleteDomain (request);
 
 			//TODO Fails because its a batch attribute response
 			if (response.GetType ().Equals (typeof(DeleteDomainResponse))) {
@@ -63,7 +67,7 @@ namespace AWSSimpleDBPersistence
 			request.ItemName = entity.Id.ToString ();
 			request.ReplaceableAttributes = BuildReplaceableAttributes (entity);
 
-			Response response = await client.PutAttributes (request);
+			Response response = await Client.PutAttributes (request);
 
 			//TODO Fails because its a batch attribute response
 			if (response.GetType ().Equals (typeof(PutAttributesResponse))) {
@@ -79,7 +83,7 @@ namespace AWSSimpleDBPersistence
 			request.DomainName = GetTableName ();
 			request.ItemName = entity.Id.ToString ();
 
-			Response response = await client.DeleteAttributes (request);
+			Response response = await Client.DeleteAttributes (request);
 
 			if (response.GetType ().Equals (typeof(DeleteAttributesResponse))) {
 				return HttpStatusCode.OK.Equals (response.HttpStatusCode);
@@ -113,7 +117,7 @@ namespace AWSSimpleDBPersistence
 					request = new BatchDeleteAttributesRequest ();
 					request.DomainName = Domain;
 					request.Items = Items;
-					response = await client.BatchDeleteAttributes (request);
+					response = await Client.BatchDeleteAttributes (request);
 					success = HttpStatusCode.OK.Equals (response.HttpStatusCode) && success;
 					Items.Clear ();
 				}
@@ -124,7 +128,7 @@ namespace AWSSimpleDBPersistence
 				request = new BatchDeleteAttributesRequest ();
 				request.DomainName = Domain;
 				request.Items = Items;
-				response = await client.BatchDeleteAttributes (request);
+				response = await Client.BatchDeleteAttributes (request);
 				success = HttpStatusCode.OK.Equals (response.HttpStatusCode) && success;
 			}
 
@@ -163,7 +167,7 @@ namespace AWSSimpleDBPersistence
 					request = new BatchPutAttributesRequest ();
 					request.DomainName = Domain;
 					request.ReplaceableItems = ReplaceableItems;
-					response = await client.BatchPutAttributes (request);
+					response = await Client.BatchPutAttributes (request);
 					success = HttpStatusCode.OK.Equals (response.HttpStatusCode) && success;
 					ReplaceableItems.Clear ();
 				}
@@ -174,7 +178,7 @@ namespace AWSSimpleDBPersistence
 				request = new BatchPutAttributesRequest ();
 				request.DomainName = Domain;
 				request.ReplaceableItems = ReplaceableItems;
-				response = await client.BatchPutAttributes (request);
+				response = await Client.BatchPutAttributes (request);
 				success = HttpStatusCode.OK.Equals (response.HttpStatusCode) && success;
 			}
 
@@ -187,21 +191,43 @@ namespace AWSSimpleDBPersistence
 			List<PropertyInfo> propertyInfoList = typeof(T).GetRuntimeProperties ().ToList ();
 
 			foreach (PropertyInfo propertyInfo in propertyInfoList) {
+
 				SimpleDBFieldAttribute attribute = propertyInfo.GetCustomAttribute<SimpleDBFieldAttribute> ();
 				if (attribute != null) {
 
-					string name = attribute.Name;
 					string value = "";
+
+					Decimal numberValue = 0;
+					if (decimal.TryParse (propertyInfo.GetValue (entity).ToString (), out numberValue)) {
+
+						int zeroPadding = attribute.ZeroPadding;
+						int length = propertyInfo.GetValue (entity).ToString ().Length;
+
+						if (length > zeroPadding && zeroPadding > 0) {
+							throw new  FieldFormatException ("String length of value is greather than padding specified in attribute " + attribute.Name);
+						}
+
+						int offset = attribute.Offset; 
+
+						if (numberValue < 0 && offset > 0) {
+
+							numberValue = numberValue + offset;
+							if (numberValue < 0) {
+								throw new  FieldFormatException ("Negative value of attribute " + propertyInfo.Name + " is greather than specified offset");
+							} 
+						}
+						value = numberValue.ToString ();
+					}
 
 					if (typeof(string).Equals (propertyInfo.PropertyType)) {
 						value = (string)propertyInfo.GetValue (entity);
 					} else if (typeof(DateTime).Equals (propertyInfo.PropertyType)) {
-						value = ((DateTime)propertyInfo.GetValue (entity)).ToString (FMT);
+						value = ((DateTime)propertyInfo.GetValue (entity)).ToString ("o");
 					} else {
 						throw new NullReferenceException ("Unknown type being parsed" + propertyInfo.PropertyType.ToString ());
 					}
 
-					ReplaceableAttribute replaceableAttribute = new ReplaceableAttribute (name, value, true);
+					ReplaceableAttribute replaceableAttribute = new ReplaceableAttribute (attribute.Name, value, true);
 					list.Add (replaceableAttribute);
 				}
 			}
@@ -231,8 +257,16 @@ namespace AWSSimpleDBPersistence
 
 				if (typeof(string).Equals (propertyInfo.PropertyType)) {
 					propertyInfo.SetValue (entity, value);
+				} else if (typeof(Double).Equals (propertyInfo.PropertyType)) {
+				
+					//Test for negative numbers and remove offset
+
+				} else if (typeof(Decimal).Equals (propertyInfo.PropertyType)) {
+
+					//Test for negative numbers and remove offset
+
 				} else if (typeof(DateTime).Equals (propertyInfo.PropertyType)) {
-					DateTime time = DateTime.ParseExact (value, FMT, CultureInfo.InvariantCulture);
+					DateTime time = DateTime.ParseExact (value, "o", CultureInfo.InvariantCulture);
 					propertyInfo.SetValue (entity, time);
 				} else {
 					throw new NullReferenceException ("Unknown type being parsed" + propertyInfo.PropertyType.ToString ());
@@ -252,7 +286,7 @@ namespace AWSSimpleDBPersistence
 			request.DomainName = GetTableName ();
 			request.ItemName = id.ToString ();
 			request.ConsistentRead = true;
-			Response response = client.GetAttributes (request).Result;
+			Response response = await Client.GetAttributes (request);
 
 			if (response.GetType ().Equals (typeof(GetAttributesResponse))) {
 				T entity = MarshallAttributes (((GetAttributesResponse)response).GetAttributesResult.ToList ());
@@ -263,6 +297,50 @@ namespace AWSSimpleDBPersistence
 			}
 
 
+		}
+
+		public async Task<List<T>> Select (SelectQuery<T> query)
+		{
+			query.DomainName = GetTableName ();
+
+			List<T> entities = new List<T> ();
+			String NextToken = null;
+
+			do {
+
+				SelectRequest request = new SelectRequest ();
+				request.SelectExpression = query.ToString ();
+				request.ConsistentRead = query.ConsistentRead;
+				request.NextToken = NextToken;
+
+				SelectResponse response = await Client.Select (request);
+
+				NextToken = response.SelectResult.NextToken;
+
+				foreach (Item item in response.SelectResult.Item) {
+					T entity = MarshallAttributes (item.Attributes);
+					entity.Id = long.Parse (item.ItemName);
+					entities.Add (entity);
+				}
+
+			} while(NextToken != null);
+
+			return entities;
+		}
+
+		public static bool IsNumber (object value)
+		{
+			return value is sbyte
+			|| value is byte
+			|| value is short
+			|| value is ushort
+			|| value is int
+			|| value is uint
+			|| value is long
+			|| value is ulong
+			|| value is float
+			|| value is double
+			|| value is decimal;
 		}
 	}
 }
