@@ -11,6 +11,7 @@ namespace AWSSimpleDBPersistence
 	{
 		public  void Configure (ListDomainsRequest request)
 		{
+
 			Arguments.Add ("SignatureMethod", SignatureMethod);
 			Arguments.Add ("SignatureVersion", SignatureVersion);
 			Arguments.Add ("Timestamp", DateTime.UtcNow.ToString ("o"));

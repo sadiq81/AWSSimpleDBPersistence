@@ -6,6 +6,5 @@ namespace AWSSimpleDBPersistence
 	{
 		string CreateHash (string message, string secret);
 
-		string HashString (string requestDescription, string secret);
 	}
 }

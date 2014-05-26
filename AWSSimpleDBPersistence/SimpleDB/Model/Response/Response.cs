@@ -7,7 +7,7 @@ namespace AWSSimpleDBPersistence
 	{
 		public ResponseMetadata ResponseMetadata{ get; set; }
 
-		public long ContentLength{ get; set; }
+		public long? ContentLength{ get; set; }
 
 		public HttpStatusCode HttpStatusCode { get; set; }
 

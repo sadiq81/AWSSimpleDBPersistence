@@ -193,45 +193,85 @@ namespace AWSSimpleDBPersistence
 			foreach (PropertyInfo propertyInfo in propertyInfoList) {
 
 				SimpleDBFieldAttribute attribute = propertyInfo.GetCustomAttribute<SimpleDBFieldAttribute> ();
+
 				if (attribute != null) {
 
-					string value = "";
-
-					Decimal numberValue = 0;
-					if (decimal.TryParse (propertyInfo.GetValue (entity).ToString (), out numberValue)) {
-
-						int zeroPadding = attribute.ZeroPadding;
-						int length = propertyInfo.GetValue (entity).ToString ().Length;
-
-						if (length > zeroPadding && zeroPadding > 0) {
-							throw new  FieldFormatException ("String length of value is greather than padding specified in attribute " + attribute.Name);
-						}
-
-						int offset = attribute.Offset; 
-
-						if (numberValue < 0 && offset > 0) {
-
-							numberValue = numberValue + offset;
-							if (numberValue < 0) {
-								throw new  FieldFormatException ("Negative value of attribute " + propertyInfo.Name + " is greather than specified offset");
-							} 
-						}
-						value = numberValue.ToString ();
-					}
-
-					if (typeof(string).Equals (propertyInfo.PropertyType)) {
-						value = (string)propertyInfo.GetValue (entity);
-					} else if (typeof(DateTime).Equals (propertyInfo.PropertyType)) {
-						value = ((DateTime)propertyInfo.GetValue (entity)).ToString ("o");
-					} else {
-						throw new NullReferenceException ("Unknown type being parsed" + propertyInfo.PropertyType.ToString ());
-					}
+					string value = MarshallField (propertyInfo, attribute, entity);
 
 					ReplaceableAttribute replaceableAttribute = new ReplaceableAttribute (attribute.Name, value, true);
 					list.Add (replaceableAttribute);
 				}
 			}
 			return list;
+		}
+
+		protected string MarshallField (PropertyInfo propertyInfo, SimpleDBFieldAttribute attribute, T entity)
+		{
+
+			string value = "";
+
+			if (typeof(byte).Equals (propertyInfo.PropertyType) ||
+			    typeof(ushort).Equals (propertyInfo.PropertyType) ||
+			    typeof(uint).Equals (propertyInfo.PropertyType) ||
+			    typeof(ulong).Equals (propertyInfo.PropertyType)) {
+
+				value = ApplyPadding (attribute, propertyInfo.GetValue (entity).ToString ());
+			} else if (typeof(float).Equals (propertyInfo.PropertyType) ||
+			           typeof(double).Equals (propertyInfo.PropertyType) ||
+			           typeof(decimal).Equals (propertyInfo.PropertyType) ||
+			           typeof(sbyte).Equals (propertyInfo.PropertyType) ||
+			           typeof(short).Equals (propertyInfo.PropertyType) ||
+			           typeof(int).Equals (propertyInfo.PropertyType) ||
+			           typeof(long).Equals (propertyInfo.PropertyType)) {
+
+				value = ApplyOffset (attribute, Decimal.Parse (propertyInfo.GetValue (entity).ToString()));
+				value = ApplyPadding (attribute, value);
+			} else if (typeof(DateTime).Equals (propertyInfo.PropertyType)) {
+				value = ((DateTime)propertyInfo.GetValue (entity)).ToString ("o");
+			} else {
+				value = Newtonsoft.Json.JsonConvert.SerializeObject (propertyInfo.GetValue (entity));
+			}
+			return value;
+		}
+
+		protected string ApplyOffset (SimpleDBFieldAttribute attribute, Decimal value)
+		{
+
+			int offset = attribute.Offset; 
+
+			if (offset > 0) {
+				value = value + offset;
+				if (value < 0) {
+					throw new  FieldFormatException ("Negative value of attribute " + attribute.Name + " is greather than specified offset");
+				} 
+			}
+
+			return value.ToString ();
+		}
+
+		protected string SubstractOffset (SimpleDBFieldAttribute attribute, long value)
+		{
+			int offset = attribute.Offset; 
+
+			if (offset > 0) {
+				value = value - offset;
+			}
+			return value.ToString ();
+
+		}
+
+		protected string ApplyPadding (SimpleDBFieldAttribute attribute, string value)
+		{
+			int padding = attribute.ZeroPadding;
+			int length = value.Length;
+			if (padding > 0) {
+				if (length > padding) {
+					throw new  FieldFormatException ("String length of value is greather than padding specified in attribute " + attribute.Name);
+				} else {
+					return value.PadLeft (padding, '0');
+				}
+			}
+			return value;
 		}
 
 		protected T MarshallAttributes (List<Attribute> attributes)
@@ -241,11 +281,13 @@ namespace AWSSimpleDBPersistence
 			List<PropertyInfo> propertyInfoList = typeof(T).GetRuntimeProperties ().ToList ();
 
 			Dictionary<string, PropertyInfo> dic = new Dictionary<string, PropertyInfo> ();
+			Dictionary<string, SimpleDBFieldAttribute> dic2 = new Dictionary<string, SimpleDBFieldAttribute> ();
 
 			foreach (PropertyInfo propertyInfo in propertyInfoList) {
 				SimpleDBFieldAttribute attribute = propertyInfo.GetCustomAttribute<SimpleDBFieldAttribute> ();
 				if (attribute != null) {
 					dic.Add (attribute.Name, propertyInfo);
+					dic2.Add (attribute.Name, attribute);
 				}
 			}
 
@@ -255,23 +297,34 @@ namespace AWSSimpleDBPersistence
 
 				PropertyInfo propertyInfo = dic [name];
 
-				if (typeof(string).Equals (propertyInfo.PropertyType)) {
-					propertyInfo.SetValue (entity, value);
-				} else if (typeof(Double).Equals (propertyInfo.PropertyType)) {
-				
-					//Test for negative numbers and remove offset
+				if (typeof(byte).Equals (propertyInfo.PropertyType) ||
+				    typeof(ushort).Equals (propertyInfo.PropertyType) ||
+				    typeof(uint).Equals (propertyInfo.PropertyType) ||
+				    typeof(ulong).Equals (propertyInfo.PropertyType)) {
 
-				} else if (typeof(Decimal).Equals (propertyInfo.PropertyType)) {
+					propertyInfo.SetValue (entity, ulong.Parse (value));
 
-					//Test for negative numbers and remove offset
+				} else if (typeof(float).Equals (propertyInfo.PropertyType) ||
+				           typeof(double).Equals (propertyInfo.PropertyType) ||
+				           typeof(decimal).Equals (propertyInfo.PropertyType) ||
+				           typeof(sbyte).Equals (propertyInfo.PropertyType) ||
+				           typeof(short).Equals (propertyInfo.PropertyType) ||
+				           typeof(int).Equals (propertyInfo.PropertyType) ||
+				           typeof(long).Equals (propertyInfo.PropertyType)) {
+
+					propertyInfo.SetValue (entity, SubstractOffset (dic2 [name], long.Parse (value)));
 
 				} else if (typeof(DateTime).Equals (propertyInfo.PropertyType)) {
-					DateTime time = DateTime.ParseExact (value, "o", CultureInfo.InvariantCulture);
-					propertyInfo.SetValue (entity, time);
+						
+					propertyInfo.SetValue (entity, DateTime.ParseExact (value, "o", CultureInfo.InvariantCulture));
+
 				} else {
-					throw new NullReferenceException ("Unknown type being parsed" + propertyInfo.PropertyType.ToString ());
+
+					propertyInfo.SetValue (entity, Newtonsoft.Json.JsonConvert.DeserializeObject (value));
+
 				}
 			}
+
 			return entity;
 		}
 

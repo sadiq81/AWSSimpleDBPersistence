@@ -22,7 +22,7 @@ namespace AWSSimpleDBPersistence
 			this.Message = message;
 		}
 
-		public  T UnMarshal ()
+		public  T UnMarshal () 
 		{
 			XDocument doc = XDocument.Load (Message.Content.ReadAsStreamAsync ().Result);
 
@@ -30,14 +30,14 @@ namespace AWSSimpleDBPersistence
 				Serializer = new XmlSerializer (typeof(T), NameSpace);
 				Response = (T)Serializer.Deserialize (doc.CreateReader ());
 				Response.HttpStatusCode = Message.StatusCode;
-				Response.ContentLength = (long)Message.Content.Headers.ContentLength;
+				Response.ContentLength = Message.Content.Headers.ContentLength;
 				return Response;
 			} else {
 				Serializer = new XmlSerializer (typeof(Response));
-				Response = (T)Serializer.Deserialize (doc.CreateReader ());
-				Response.HttpStatusCode = Message.StatusCode;
-				Response.ContentLength = (long)Message.Content.Headers.ContentLength;
-				throw new AWSErrorException (Response);
+				Response response = (Response) Serializer.Deserialize (doc.CreateReader ());
+				response.HttpStatusCode = Message.StatusCode;
+				response.ContentLength = Message.Content.Headers.ContentLength;
+				throw new AWSErrorException (response);
 			}
 		}
 	}

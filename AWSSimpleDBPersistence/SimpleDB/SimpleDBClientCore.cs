@@ -22,37 +22,14 @@ namespace AWSSimpleDBPersistence
 			this.Region = region;
 		}
 
-		public async Task<DomainMetadataResponse> DomainMetadata (DomainMetadataRequest request)
-		{
-			using (Client = new HttpClient ()) {
-				DomainMetadataRequestMarshaller marshaller = new DomainMetadataRequestMarshaller ();
-				marshaller.Configure (request);
-				HttpResponseMessage responseMessage = await Client.GetAsync (marshaller.Marshal ()).Result;
-				DomainMetadataResponseUnMarshaller unmarshaler = new DomainMetadataResponseUnMarshaller ();
-				unmarshaler.Configure (responseMessage);
-				return unmarshaler.UnMarshal ();
-			}
-		}
-
-		public async Task<ListDomainsResponse> ListDomains (ListDomainsRequest request)
-		{
-			using (Client = new HttpClient ()) {
-				ListDomainsRequestMarshaller marshaller = new ListDomainsRequestMarshaller ();
-				marshaller.Configure (request);
-				HttpResponseMessage responseMessage = await Client.GetAsync (marshaller.Marshal ());
-				ListDomainsResponseUnMarshaller unmarshaler = new ListDomainsResponseUnMarshaller ();
-				unmarshaler.Configure (responseMessage);
-				return unmarshaler.UnMarshal ();
-			}
-		}
-
 		public async Task<CreateDomainResponse> CreateDomain (CreateDomainRequest request)
 		{
 			using (Client = new HttpClient ()) {
 
 				CreateDomainRequestMarshaller marshaller = new CreateDomainRequestMarshaller ();
 				marshaller.Configure (request);
-				HttpResponseMessage responseMessage = await Client.GetAsync (marshaller.Marshal ());
+
+				HttpResponseMessage responseMessage =  await Client.SendAsync (ConfigureClient(Client, marshaller));
 
 				CreateDomainResponseUnMarshaller unmarshaler = new CreateDomainResponseUnMarshaller ();
 				unmarshaler.Configure (responseMessage);
@@ -66,7 +43,8 @@ namespace AWSSimpleDBPersistence
 
 				DeleteDomainRequestMarshaller marshaller = new DeleteDomainRequestMarshaller ();
 				marshaller.Configure (request);
-				HttpResponseMessage responseMessage = await Client.GetAsync (marshaller.Marshal ());
+
+				HttpResponseMessage responseMessage = await Client.SendAsync (ConfigureClient(Client,marshaller));
 
 				DeleteDomainResponseUnMarshaller unmarshaler = new DeleteDomainResponseUnMarshaller ();
 				unmarshaler.Configure (responseMessage);
@@ -76,13 +54,42 @@ namespace AWSSimpleDBPersistence
 
 		}
 
+		public async Task<DomainMetadataResponse> DomainMetadata (DomainMetadataRequest request)
+		{
+			using (Client = new HttpClient ()) {
+				DomainMetadataRequestMarshaller marshaller = new DomainMetadataRequestMarshaller ();
+				marshaller.Configure (request);
+
+				HttpResponseMessage responseMessage = await Client.SendAsync (ConfigureClient(Client,marshaller));
+
+				DomainMetadataResponseUnMarshaller unmarshaler = new DomainMetadataResponseUnMarshaller ();
+				unmarshaler.Configure (responseMessage);
+				return unmarshaler.UnMarshal ();
+			}
+		}
+
+		public async Task<ListDomainsResponse> ListDomains (ListDomainsRequest request)
+		{
+			using (Client = new HttpClient ()) {
+				ListDomainsRequestMarshaller marshaller = new ListDomainsRequestMarshaller ();
+				marshaller.Configure (request);
+
+				HttpResponseMessage responseMessage = await Client.SendAsync (ConfigureClient(Client,marshaller));
+
+				ListDomainsResponseUnMarshaller unmarshaler = new ListDomainsResponseUnMarshaller ();
+				unmarshaler.Configure (responseMessage);
+				return unmarshaler.UnMarshal ();
+			}
+		}
+
 		public async Task<PutAttributesResponse> PutAttributes (PutAttributesRequest request)
 		{
 			using (Client = new HttpClient ()) {
 
 				PutAttributesRequestMarshaller marshaller = new PutAttributesRequestMarshaller ();
 				marshaller.Configure (request);
-				HttpResponseMessage responseMessage = await Client.GetAsync (marshaller.Marshal ());
+		
+				HttpResponseMessage responseMessage = await Client.SendAsync (ConfigureClient(Client,marshaller));
 
 				PutAttributtesResponseUnMarshaller unmarshaler = new PutAttributtesResponseUnMarshaller ();
 				unmarshaler.Configure (responseMessage);
@@ -91,13 +98,31 @@ namespace AWSSimpleDBPersistence
 			}
 		}
 
+		private HttpRequestMessage ConfigureClient(HttpClient client, BaseMarshaller marshaller){
+
+			client.BaseAddress = new Uri("https://" + Region);
+			HttpRequestMessage requestMessage = new HttpRequestMessage (HttpMethod.Post,"");
+			requestMessage.Content = new FormUrlEncodedContent (marshaller.MarshallPost());
+			requestMessage.Content.Headers.ContentType.CharSet = "utf-8";
+			return requestMessage;
+		}
+
+
+
+		//----------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
 		public async Task<GetAttributesResponse> GetAttributes (GetAttributesRequest request)
 		{
 			using (Client = new HttpClient ()) {
 
 				GetAttributesRequestMarshaller marshaller = new GetAttributesRequestMarshaller ();
 				marshaller.Configure (request);
-				HttpResponseMessage responseMessage = await Client.GetAsync (marshaller.Marshal ());
+
+				HttpResponseMessage responseMessage = await Client.SendAsync (ConfigureClient(Client,marshaller));
 
 				GetAttributtesResponseUnMarshaller unmarshaler = new GetAttributtesResponseUnMarshaller ();
 				unmarshaler.Configure (responseMessage);

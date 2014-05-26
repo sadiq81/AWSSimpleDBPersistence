@@ -25,6 +25,12 @@ namespace AWSSimpleDBPersistence
 			this.ItemName = itemName;
 		}
 
+		public GetAttributesRequest (string domainName, string itemName, bool consistentRead) : base (domainName)
+		{
+			this.ItemName = itemName;
+			this.ConsistentRead = consistentRead;
+		}
+
 		public GetAttributesRequest (string domainName, string itemName, List<string> attributeNames) : base (domainName)
 		{
 			this.ItemName = itemName;

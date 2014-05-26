@@ -8,7 +8,7 @@ namespace AWSSimpleDBPersistence
 	public  abstract class BaseMarshaller : IMarshaller
 	{
 		protected const string Protocol = "https";
-		protected const string Method = "GET";
+		protected const string Method = "POST";
 		protected const string SignatureMethod = "HmacSHA256";
 		protected const string SignatureVersion = "2";
 		protected const string Version = "2009-04-15";
@@ -24,6 +24,7 @@ namespace AWSSimpleDBPersistence
 			Arguments.Add ("Version", Version);
 			this.Action = request.GetType ().Name.Replace ("Request", "");
 		}
+
 
 		public  string Marshal ()
 		{
@@ -43,12 +44,21 @@ namespace AWSSimpleDBPersistence
 			return sb.ToString ();
 		}
 
+		public IEnumerable<KeyValuePair<string, string>> MarshallPost(){
+			SortedDictionary<string, string> content = new SortedDictionary<string, string> (Arguments);
+			content.Add ("Action", Action);
+			content.Add ("AWSAccessKeyId", AWSAccessKeyId);
+			content.Add("Signature",GenerateSignature());
+			return content;
+		}
+
 		public  string GenerateSignature ()
 		{
 			StringBuilder sb = new StringBuilder ();
 			sb.Append (string.Format ("{0}{1}{2}{3}/{4}", Method, Environment.NewLine, Region, Environment.NewLine, Environment.NewLine));
 			sb.Append (string.Format ("AWSAccessKeyId={0}", AWSAccessKeyId));
 			sb.Append (string.Format ("&Action={0}", Action));
+
 			sb.Append (Items);
 
 			string signature = sb.ToString ();
@@ -82,9 +92,9 @@ namespace AWSSimpleDBPersistence
 				while (enumerator.MoveNext ()) {
 					var entry = enumerator.Current;
 					sb.Append ("&");
-					sb.Append (WebUtility.UrlEncode (entry.Key));
+					sb.Append (entry.Key.ToRfc3986());
 					sb.Append ("=");
-					sb.Append (WebUtility.UrlEncode (entry.Value));
+					sb.Append (entry.Value.ToRfc3986());
 				}
 				return sb.ToString ();
 			}
