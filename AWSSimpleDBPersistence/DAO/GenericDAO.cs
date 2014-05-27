@@ -110,7 +110,7 @@ namespace AWSSimpleDBPersistence
 
 			foreach (T Entity in entities) {
 				Item Item = new Item ();
-				Item.ItemName = Entity.Id.ToString ();
+				Item.Name = Entity.Id.ToString ();
 				Items.Add (Item);
 
 				if (Items.Count == 25) {
@@ -274,7 +274,7 @@ namespace AWSSimpleDBPersistence
 			return value;
 		}
 
-		protected T MarshallAttributes (List<Attribute> attributes)
+		protected T MarshallAttributes (Attribute[] attributes)
 		{
 			T entity = (T)Activator.CreateInstance (typeof(T));
 
@@ -342,7 +342,7 @@ namespace AWSSimpleDBPersistence
 			Response response = await Client.GetAttributes (request);
 
 			if (response.GetType ().Equals (typeof(GetAttributesResponse))) {
-				T entity = MarshallAttributes (((GetAttributesResponse)response).GetAttributesResult.ToList ());
+				T entity = MarshallAttributes (((GetAttributesResponse)response).GetAttributesResult);
 				entity.Id = id;
 				return entity;
 			} else {
@@ -371,8 +371,8 @@ namespace AWSSimpleDBPersistence
 				NextToken = response.SelectResult.NextToken;
 
 				foreach (Item item in response.SelectResult.Item) {
-					T entity = MarshallAttributes (item.Attributes);
-					entity.Id = long.Parse (item.ItemName);
+					T entity = MarshallAttributes (item.Attribute);
+					entity.Id = long.Parse (item.Name);
 					entities.Add (entity);
 				}
 

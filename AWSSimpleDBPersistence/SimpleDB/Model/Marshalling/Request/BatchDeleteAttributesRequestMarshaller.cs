@@ -15,7 +15,7 @@ namespace AWSSimpleDBPersistence
 			for (int itemCount = 0; itemCount < request.Items.Count; itemCount++) {
 
 				Item item = request.Items [itemCount];
-				Arguments.Add ("Item." + (itemCount) + ".ItemName", item.ItemName);
+				Arguments.Add ("Item." + (itemCount) + ".ItemName", item.Name);
 
 				//TODO should this be implemtented?
 				/*for (int attributeCount = 0; attributeCount < item.Attributes.Count; attributeCount++) {

@@ -98,23 +98,6 @@ namespace AWSSimpleDBPersistence
 			}
 		}
 
-		private HttpRequestMessage ConfigureClient(HttpClient client, BaseMarshaller marshaller){
-
-			client.BaseAddress = new Uri("https://" + Region);
-			HttpRequestMessage requestMessage = new HttpRequestMessage (HttpMethod.Post,"");
-			requestMessage.Content = new FormUrlEncodedContent (marshaller.MarshallPost());
-			requestMessage.Content.Headers.ContentType.CharSet = "utf-8";
-			return requestMessage;
-		}
-
-
-
-		//----------------------------------------------------------------------------------------------------------------------------
-
-
-
-
-
 		public async Task<GetAttributesResponse> GetAttributes (GetAttributesRequest request)
 		{
 			using (Client = new HttpClient ()) {
@@ -136,7 +119,8 @@ namespace AWSSimpleDBPersistence
 
 				DeleteAttributesRequestMarshaller marshaller = new DeleteAttributesRequestMarshaller ();
 				marshaller.Configure (request);
-				HttpResponseMessage responseMessage = await Client.GetAsync (marshaller.Marshal ());
+
+				HttpResponseMessage responseMessage = await Client.SendAsync (ConfigureClient(Client,marshaller));
 
 				DeleteAttributtesResponseUnMarshaller unmarshaler = new DeleteAttributtesResponseUnMarshaller ();
 				unmarshaler.Configure (responseMessage);
@@ -151,7 +135,8 @@ namespace AWSSimpleDBPersistence
 
 				BatchPutAttributesRequestMarshaller marshaller = new BatchPutAttributesRequestMarshaller ();
 				marshaller.Configure (request);
-				HttpResponseMessage responseMessage = await Client.GetAsync (marshaller.Marshal ());
+
+				HttpResponseMessage responseMessage = await Client.SendAsync (ConfigureClient(Client,marshaller));
 
 				BatchPutAttributtesResponseUnMarshaller unmarshaler = new BatchPutAttributtesResponseUnMarshaller ();
 				unmarshaler.Configure (responseMessage);
@@ -165,7 +150,8 @@ namespace AWSSimpleDBPersistence
 
 				BatchDeleteAttributesRequestMarshaller marshaller = new BatchDeleteAttributesRequestMarshaller ();
 				marshaller.Configure (request);
-				HttpResponseMessage responseMessage = await Client.GetAsync (marshaller.Marshal ());
+
+				HttpResponseMessage responseMessage = await Client.SendAsync (ConfigureClient(Client,marshaller));
 
 				BatchDeleteAttributtesResponseUnMarshaller unmarshaler = new BatchDeleteAttributtesResponseUnMarshaller ();
 				unmarshaler.Configure (responseMessage);
@@ -179,12 +165,22 @@ namespace AWSSimpleDBPersistence
 
 				SelectRequestMarshaller marshaller = new SelectRequestMarshaller ();
 				marshaller.Configure (request);
-				HttpResponseMessage responseMessage = await Client.GetAsync (marshaller.Marshal ());
+
+				HttpResponseMessage responseMessage = await Client.SendAsync (ConfigureClient(Client,marshaller));
 
 				SelectResponseUnMarshaller unmarshaler = new SelectResponseUnMarshaller ();
 				unmarshaler.Configure (responseMessage);
 				return unmarshaler.UnMarshal ();
 			}
+		}
+
+		private HttpRequestMessage ConfigureClient(HttpClient client, BaseMarshaller marshaller){
+
+			client.BaseAddress = new Uri("https://" + Region);
+			HttpRequestMessage requestMessage = new HttpRequestMessage (HttpMethod.Post,"");
+			requestMessage.Content = new FormUrlEncodedContent (marshaller.MarshallPost());
+			requestMessage.Content.Headers.ContentType.CharSet = "utf-8";
+			return requestMessage;
 		}
 	}
 }
