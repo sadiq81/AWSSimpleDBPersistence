@@ -8,9 +8,8 @@ using Attribute = AWSSimpleDBPersistence.Attribute;
 namespace Test
 {
 	[TestFixture ()]
-	public class Test
+	public class TestClient
 	{
-		TestEntityDAO Dao;
 		SimpleDBClientCore Client;
 
 		[TestFixtureSetUp()]
@@ -19,7 +18,6 @@ namespace Test
 			ServiceContainer.Register<SimpleDBClientCore> (() => new SimpleDBClientCore (Properties.AWSAccessKey, Properties.AWSSecretKey, Region.EUWest_1));
 			ServiceContainer.Register<TestEntityDAO> (() => new TestEntityDAO ());
 			Client = ServiceContainer.Resolve<SimpleDBClientCore>();
-			Dao = ServiceContainer.Resolve<TestEntityDAO>();
 		}
 
 		[SetUp()]
@@ -33,19 +31,6 @@ namespace Test
 			DeleteDomainResponse response =  Client.DeleteDomain (new DeleteDomainRequest ("Test")).Result;
 			Assert.AreEqual (HttpStatusCode.OK, response.HttpStatusCode);
 		}
-
-		/*
-		 * ListDomains
-		 * CreateDomain
-		 * DeleteDomain
-		 * PutAttributes
-		 * GetAttributes
-		 * DeleteAttributes
-		 * BatchPutAttributes
-		 * BatchDeleteAttributes
-		 * SelectRequest
-		 * 
-		 */
 
 		[Test ()]
 		public  void TestDomainMetadata (){
@@ -179,7 +164,6 @@ namespace Test
 			Assert.AreEqual ("Test", response2.SelectResult.Item [1].Attribute [0].Name);
 			Assert.AreEqual ("true", response2.SelectResult.Item [1].Attribute [0].Value);
 			Assert.AreEqual (HttpStatusCode.OK, response2.HttpStatusCode);
-
 
 		}
 

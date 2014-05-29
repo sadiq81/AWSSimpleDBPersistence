@@ -103,6 +103,7 @@
     <Compile Include="SimpleDB\Model\Marshalling\Types\ITypeMarshaller.cs" />
     <Compile Include="SimpleDB\Model\Marshalling\Types\BaseTypeMarshaller.cs" />
     <Compile Include="SimpleDB\Utils\StringUtilities.cs" />
+    <Compile Include="SimpleDB\Model\SimpleDBIdAttribute.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <ItemGroup>
@@ -125,4 +126,13 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ProjectExtensions>
+    <MonoDevelop>
+      <Properties>
+        <Policies>
+          <DotNetNamingPolicy DirectoryNamespaceAssociation="Hierarchical" ResourceNamePolicy="FileFormatDefault" />
+        </Policies>
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
 </Project>

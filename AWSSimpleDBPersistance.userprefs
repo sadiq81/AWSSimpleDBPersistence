@@ -1,38 +1,26 @@
 ﻿<Properties GitUserInfo="UsingMD">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Test/Test.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="AWSSimpleDBPersistence/DAO/GenericDAO.cs">
     <Files>
-      <File FileName="Test/Test.cs" Line="26" Column="29" />
-      <File FileName="AWSSimpleDBPersistence/SimpleDB/SimpleDBClientCore.cs" Line="56" Column="50" />
-      <File FileName="AWSSimpleDBPersistence/SimpleDB/Model/Request/DomainMetadataRequest.cs" Line="1" Column="1" />
-      <File FileName="AWSSimpleDBPersistence/DAO/GenericDAO.cs" Line="1" Column="1" />
-      <File FileName="AWSSimpleDBPersistence/SimpleDB/Model/Marshalling/Response/BaseUnMarshaller.cs" Line="34" Column="1" />
-      <File FileName="AWSSimpleDBPersistence/SimpleDB/Model/Marshalling/Response/BatchDeleteAttributtesResponseUnMarshaller.cs" Line="1" Column="1" />
-      <File FileName="AWSSimpleDBPersistence/SimpleDB/Model/Marshalling/Response/BatchPutAttributtesResponseUnMarshaller.cs" Line="1" Column="1" />
-      <File FileName="AWSSimpleDBPersistence/SimpleDB/Model/Response/Response.cs" Line="10" Column="3" />
-      <File FileName="AWSSimpleDBPersistence/SimpleDB/Model/Marshalling/Request/BaseMarshaller.cs" Line="28" Column="7" />
-      <File FileName="AWSSimpleDBPersistence/SimpleDB/Model/Marshalling/Request/CreateDomainRequestMarshaller.cs" Line="14" Column="12" />
-      <File FileName="Test/Service/SHA256Service.cs" Line="1" Column="1" />
-      <File FileName="AWSSimpleDBPersistence/SimpleDB/Region.cs" Line="1" Column="1" />
-      <File FileName="AWSSimpleDBPersistence/SimpleDB/Utils/StringUtilities.cs" Line="18" Column="54" />
+      <File FileName="Test/TestDAO.cs" Line="1" Column="1" />
+      <File FileName="AWSSimpleDBPersistence/DAO/GenericDAO.cs" Line="317" Column="37" />
+      <File FileName="AWSSimpleDBPersistence/SimpleDB/Model/Marshalling/Response/BaseUnMarshaller.cs" Line="1" Column="1" />
+      <File FileName="Test/Domain/TestEntity.cs" Line="1" Column="1" />
+      <File FileName="AWSSimpleDBPersistence/SimpleDB/Model/Parameters/ListDomainsResult.cs" Line="1" Column="1" />
+      <File FileName="AWSSimpleDBPersistence/Domain/Entity.cs" Line="1" Column="1" />
+      <File FileName="AWSSimpleDBPersistence/SimpleDB/Model/Response/SelectResponse.cs" Line="1" Column="1" />
+      <File FileName="AWSSimpleDBPersistence/SimpleDB/Model/Parameters/SelectResult.cs" Line="1" Column="1" />
+      <File FileName="Test/TestClient.cs" Line="1" Column="1" />
+      <File FileName="AWSSimpleDBPersistence/SimpleDB/SimpleDBClientCore.cs" Line="1" Column="1" />
+      <File FileName="AWSSimpleDBPersistence/SimpleDB/Model/Request/GetAttributesRequest.cs" Line="1" Column="1" />
+      <File FileName="AWSSimpleDBPersistence/DAO/IGenericDAO.cs" Line="1" Column="1" />
+      <File FileName="AWSSimpleDBPersistence/SimpleDB/Model/Parameters/SelectQuery.cs" Line="1" Column="1" />
     </Files>
-    <Pads>
-      <Pad Id="MonoDevelop.NUnit.TestPad">
-        <State expanded="True">
-          <Node name="Test" expanded="True">
-            <Node name="Test" expanded="True">
-              <Node name="Test" expanded="True">
-                <Node name="TestDomainMetadata" selected="True" />
-              </Node>
-            </Node>
-          </Node>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="/Users/privat/Projects/AWSSimpleDBPersistence/Test/Test.cs" line="26" column="1" />
+      <Breakpoint file="/Users/privat/Projects/AWSSimpleDBPersistence/Test/TestDAO.cs" line="263" column="36" />
+      <Breakpoint file="/Users/privat/Projects/AWSSimpleDBPersistence/AWSSimpleDBPersistence/DAO/GenericDAO.cs" line="319" column="17" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches>

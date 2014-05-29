@@ -6,9 +6,9 @@ namespace AWSSimpleDBPersistence
 	{
 		public string Name { get; set; }
 
-		public int ZeroPadding{ get; set; }
+		public byte ZeroPadding{ get; set; }
 
-		public int Offset{ get; set; }
+		public double Offset{ get; set; }
 
 		public SimpleDBFieldAttribute (string name)
 		{
@@ -17,18 +17,46 @@ namespace AWSSimpleDBPersistence
 			this.Offset = 0;
 		}
 
-		public SimpleDBFieldAttribute (string name, int zeroPadding)
+		public SimpleDBFieldAttribute (string name, byte zeroPadding)
 		{
 			this.Name = name;
 			this.ZeroPadding = zeroPadding;
 			this.Offset = 0;
 		}
 
-		public SimpleDBFieldAttribute (string name, int zeroPadding, int offset)
+		public SimpleDBFieldAttribute (string name, byte zeroPadding, double offset)
 		{
 			this.Name = name;
 			this.ZeroPadding = zeroPadding;
 			this.Offset = offset;
+		}
+
+		public static string ApplyOffset (SimpleDBFieldAttribute attribute, decimal value)
+		{
+
+			decimal offset = (decimal)attribute.Offset; 
+			if (offset > 0) {
+				value = value + offset;
+				if (value < 0) {
+					throw new  FieldFormatException ("Negative value of attribute " + attribute.Name + " is greather than specified offset");
+				} 
+			}
+			return value.ToString ();
+		}
+
+
+		public static string ApplyPadding (SimpleDBFieldAttribute attribute, string value)
+		{
+			int padding = attribute.ZeroPadding;
+			int length = value.Length;
+			if (padding > 0) {
+				if (length > padding) {
+					throw new  FieldFormatException ("String length of value is greather than padding specified in attribute " + attribute.Name);
+				} else {
+					return value.PadLeft (padding, '0');
+				}
+			}
+			return value;
 		}
 	}
 }

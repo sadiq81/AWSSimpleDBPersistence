@@ -7,8 +7,6 @@ namespace AWSSimpleDBPersistence
 {
 	public interface IGenericDAO<T> where T : Entity
 	{
-		String GetTableName ();
-
 		Task<T> Get (T entity);
 
 		Task<T> Get (long id);

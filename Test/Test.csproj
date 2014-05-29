@@ -32,11 +32,12 @@
     <Reference Include="nunit.framework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Test.cs" />
     <Compile Include="Domain\TestEntity.cs" />
     <Compile Include="DAO\TestEntityDAO.cs" />
     <Compile Include="Service\SHA256Service.cs" />
     <Compile Include="Properties.cs" />
+    <Compile Include="TestClient.cs" />
+    <Compile Include="TestDAO.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>

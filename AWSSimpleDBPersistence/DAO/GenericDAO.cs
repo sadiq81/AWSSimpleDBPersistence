@@ -14,7 +14,7 @@ namespace AWSSimpleDBPersistence
 {
 	public abstract class GenericDAO<T> : IGenericDAO<T> where T : Entity
 	{
-		public string GetTableName ()
+		private string GetTableName ()
 		{
 			T entity = (T)Activator.CreateInstance (typeof(T));
 			SimpleDBDomainAttribute attribute = entity.GetType ().GetTypeInfo ().GetCustomAttribute <SimpleDBDomainAttribute> ();
@@ -209,14 +209,16 @@ namespace AWSSimpleDBPersistence
 		{
 
 			string value = "";
-
-			if (typeof(byte).Equals (propertyInfo.PropertyType) ||
-			    typeof(ushort).Equals (propertyInfo.PropertyType) ||
-			    typeof(uint).Equals (propertyInfo.PropertyType) ||
-			    typeof(ulong).Equals (propertyInfo.PropertyType)) {
-
-				value = ApplyPadding (attribute, propertyInfo.GetValue (entity).ToString ());
-			} else if (typeof(float).Equals (propertyInfo.PropertyType) ||
+			if (typeof(bool).Equals (propertyInfo.PropertyType)) {
+				value = propertyInfo.GetValue (entity).ToString ();
+			} 
+			else if (typeof(byte).Equals (propertyInfo.PropertyType) ||
+			           typeof(ushort).Equals (propertyInfo.PropertyType) ||
+			           typeof(uint).Equals (propertyInfo.PropertyType) ||
+			           typeof(ulong).Equals (propertyInfo.PropertyType)) {
+				value = SimpleDBFieldAttribute.ApplyPadding (attribute, propertyInfo.GetValue (entity).ToString ());
+			} 
+			else if (typeof(float).Equals (propertyInfo.PropertyType) ||
 			           typeof(double).Equals (propertyInfo.PropertyType) ||
 			           typeof(decimal).Equals (propertyInfo.PropertyType) ||
 			           typeof(sbyte).Equals (propertyInfo.PropertyType) ||
@@ -224,57 +226,25 @@ namespace AWSSimpleDBPersistence
 			           typeof(int).Equals (propertyInfo.PropertyType) ||
 			           typeof(long).Equals (propertyInfo.PropertyType)) {
 
-				value = ApplyOffset (attribute, Decimal.Parse (propertyInfo.GetValue (entity).ToString()));
-				value = ApplyPadding (attribute, value);
-			} else if (typeof(DateTime).Equals (propertyInfo.PropertyType)) {
+				value = SimpleDBFieldAttribute.ApplyOffset (attribute, Decimal.Parse (propertyInfo.GetValue (entity).ToString ()));
+				value = SimpleDBFieldAttribute.ApplyPadding (attribute, value);
+			} 
+			else if (typeof(DateTime).Equals (propertyInfo.PropertyType)) {
 				value = ((DateTime)propertyInfo.GetValue (entity)).ToString ("o");
-			} else {
+			} 
+			else if (typeof(string).Equals (propertyInfo.PropertyType)) {
+				value = (string)propertyInfo.GetValue (entity);
+			} 
+			else if (typeof(List<string>).Equals (propertyInfo.PropertyType)) {
 				value = Newtonsoft.Json.JsonConvert.SerializeObject (propertyInfo.GetValue (entity));
+			} 
+			else {
+				throw new ArgumentException ("Not able to parse the following type " + propertyInfo.GetType ().ToString ());
 			}
 			return value;
 		}
 
-		protected string ApplyOffset (SimpleDBFieldAttribute attribute, Decimal value)
-		{
-
-			int offset = attribute.Offset; 
-
-			if (offset > 0) {
-				value = value + offset;
-				if (value < 0) {
-					throw new  FieldFormatException ("Negative value of attribute " + attribute.Name + " is greather than specified offset");
-				} 
-			}
-
-			return value.ToString ();
-		}
-
-		protected string SubstractOffset (SimpleDBFieldAttribute attribute, long value)
-		{
-			int offset = attribute.Offset; 
-
-			if (offset > 0) {
-				value = value - offset;
-			}
-			return value.ToString ();
-
-		}
-
-		protected string ApplyPadding (SimpleDBFieldAttribute attribute, string value)
-		{
-			int padding = attribute.ZeroPadding;
-			int length = value.Length;
-			if (padding > 0) {
-				if (length > padding) {
-					throw new  FieldFormatException ("String length of value is greather than padding specified in attribute " + attribute.Name);
-				} else {
-					return value.PadLeft (padding, '0');
-				}
-			}
-			return value;
-		}
-
-		protected T MarshallAttributes (Attribute[] attributes)
+		protected T UnMarshallAttributes (Attribute[] attributes)
 		{
 			T entity = (T)Activator.CreateInstance (typeof(T));
 
@@ -296,35 +266,58 @@ namespace AWSSimpleDBPersistence
 				string value = attribute.Value;
 
 				PropertyInfo propertyInfo = dic [name];
+				if (propertyInfo == null){
+					throw new ArgumentException ("Field " + name + " from AWS SimpleDB does not exists in entity");
+				}
+				Type type = propertyInfo.PropertyType;
+				double offset = dic2 [name].Offset; 
 
-				if (typeof(byte).Equals (propertyInfo.PropertyType) ||
-				    typeof(ushort).Equals (propertyInfo.PropertyType) ||
-				    typeof(uint).Equals (propertyInfo.PropertyType) ||
-				    typeof(ulong).Equals (propertyInfo.PropertyType)) {
+				if (typeof(bool).Equals (propertyInfo.PropertyType)) {
+					bool pre = bool.Parse (value);
+					propertyInfo.SetValue (entity, pre);
+				} 
+				else if (typeof(byte).Equals (propertyInfo.PropertyType) ||
+				          typeof(ushort).Equals (propertyInfo.PropertyType) ||
+				          typeof(uint).Equals (propertyInfo.PropertyType) ||
+				          typeof(ulong).Equals (propertyInfo.PropertyType)) {
 
-					propertyInfo.SetValue (entity, ulong.Parse (value));
+					ulong pre = ulong.Parse (value);
+					var typed = Convert.ChangeType (pre, type);
+					propertyInfo.SetValue (entity, typed);
 
-				} else if (typeof(float).Equals (propertyInfo.PropertyType) ||
-				           typeof(double).Equals (propertyInfo.PropertyType) ||
-				           typeof(decimal).Equals (propertyInfo.PropertyType) ||
-				           typeof(sbyte).Equals (propertyInfo.PropertyType) ||
+				} 
+				else if (typeof(sbyte).Equals (propertyInfo.PropertyType) ||
 				           typeof(short).Equals (propertyInfo.PropertyType) ||
 				           typeof(int).Equals (propertyInfo.PropertyType) ||
-				           typeof(long).Equals (propertyInfo.PropertyType)) {
+				           typeof(long).Equals (propertyInfo.PropertyType) ||
+				           typeof(float).Equals (propertyInfo.PropertyType) ||
+				           typeof(double).Equals (propertyInfo.PropertyType) ||
+				           typeof(decimal).Equals (propertyInfo.PropertyType)) {
 
-					propertyInfo.SetValue (entity, SubstractOffset (dic2 [name], long.Parse (value)));
+					decimal pre = decimal.Parse (value);
+					if (offset > 0) {
+						pre = pre - (decimal)offset;
+					}
+					var typed = Convert.ChangeType (pre, type);
+					propertyInfo.SetValue (entity, typed);
 
-				} else if (typeof(DateTime).Equals (propertyInfo.PropertyType)) {
-						
-					propertyInfo.SetValue (entity, DateTime.ParseExact (value, "o", CultureInfo.InvariantCulture));
-
-				} else {
-
-					propertyInfo.SetValue (entity, Newtonsoft.Json.JsonConvert.DeserializeObject (value));
-
+				} 
+				else if (typeof(DateTime).Equals (type)) {
+					DateTime pre = DateTime.ParseExact (value, "o", CultureInfo.InvariantCulture);
+					propertyInfo.SetValue (entity, pre);
+				} 
+				else if (typeof(string).Equals (type)) {
+					string pre = value;
+					propertyInfo.SetValue (entity, pre);
+				} 
+				else if (typeof(List<string>).Equals (type)) {
+					List<string> pre = Newtonsoft.Json.JsonConvert.DeserializeObject<List<string>> (value);
+					propertyInfo.SetValue (entity, pre);
+				} 
+				else {
+					throw new ArgumentException ("Not able to parse the following type " + type.ToString ());
 				}
 			}
-
 			return entity;
 		}
 
@@ -342,7 +335,7 @@ namespace AWSSimpleDBPersistence
 			Response response = await Client.GetAttributes (request);
 
 			if (response.GetType ().Equals (typeof(GetAttributesResponse))) {
-				T entity = MarshallAttributes (((GetAttributesResponse)response).GetAttributesResult);
+				T entity = UnMarshallAttributes (((GetAttributesResponse)response).GetAttributesResult);
 				entity.Id = id;
 				return entity;
 			} else {
@@ -370,10 +363,12 @@ namespace AWSSimpleDBPersistence
 
 				NextToken = response.SelectResult.NextToken;
 
-				foreach (Item item in response.SelectResult.Item) {
-					T entity = MarshallAttributes (item.Attribute);
-					entity.Id = long.Parse (item.Name);
-					entities.Add (entity);
+				if (response.SelectResult.Item != null) {
+					foreach (Item item in response.SelectResult.Item) {
+						T entity = UnMarshallAttributes (item.Attribute);
+						entity.Id = long.Parse (item.Name);
+						entities.Add (entity);
+					}
 				}
 
 			} while(NextToken != null);
