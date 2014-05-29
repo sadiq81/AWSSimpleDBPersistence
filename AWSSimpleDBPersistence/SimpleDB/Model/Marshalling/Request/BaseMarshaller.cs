@@ -25,30 +25,12 @@ namespace AWSSimpleDBPersistence
 			this.Action = request.GetType ().Name.Replace ("Request", "");
 		}
 
-
-		public  string Marshal ()
+		public IEnumerable<KeyValuePair<string, string>> MarshallPost ()
 		{
-			StringBuilder sb = new StringBuilder ();
-
-			sb.Append (string.Format ("{0}://{1}/", Protocol, Region));
-			sb.Append (string.Format ("?Action={0}", Action));
-			sb.Append (string.Format ("&AWSAccessKeyId={0}", AWSAccessKeyId));
-
-			sb.Append (Items);
-
-			string signature = GenerateSignature ();
-			string encoded = WebUtility.UrlEncode (signature);
-
-			sb.Append (string.Format ("&Signature={0}", encoded));
-
-			return sb.ToString ();
-		}
-
-		public IEnumerable<KeyValuePair<string, string>> MarshallPost(){
 			SortedDictionary<string, string> content = new SortedDictionary<string, string> (Arguments);
 			content.Add ("Action", Action);
 			content.Add ("AWSAccessKeyId", AWSAccessKeyId);
-			content.Add("Signature",GenerateSignature());
+			content.Add ("Signature", GenerateSignature ());
 			return content;
 		}
 
@@ -59,7 +41,9 @@ namespace AWSSimpleDBPersistence
 			sb.Append (string.Format ("AWSAccessKeyId={0}", AWSAccessKeyId));
 			sb.Append (string.Format ("&Action={0}", Action));
 
-			sb.Append (Items);
+			if (Items != null) {
+				sb.Append (Items);
+			}
 
 			string signature = sb.ToString ();
 			ISHA256Service service = ServiceContainer.Resolve<ISHA256Service> ();
@@ -92,9 +76,9 @@ namespace AWSSimpleDBPersistence
 				while (enumerator.MoveNext ()) {
 					var entry = enumerator.Current;
 					sb.Append ("&");
-					sb.Append (entry.Key.ToRfc3986());
+					sb.Append (entry.Key.ToRfc3986 ());
 					sb.Append ("=");
-					sb.Append (entry.Value.ToRfc3986());
+					sb.Append (entry.Value.ToRfc3986 ());
 				}
 				return sb.ToString ();
 			}

@@ -7,9 +7,11 @@ namespace AWSSimpleDBPersistence
 {
 	public interface IGenericDAO<T> where T : Entity
 	{
-		Task<T> Get (T entity);
+		Task<T> Get (T entity, bool consistentRead);
 
-		Task<T> Get (long id);
+		Task<T> Get (long id, bool consistentRead);
+
+		Task<List<T>> GetAll (bool consistentRead);
 
 		Task<bool> CreateTable ();
 

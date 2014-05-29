@@ -1,10 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace AWSSimpleDBPersistence
 {
 	public interface IMarshaller
 	{
-		string Marshal ();
+		IEnumerable<KeyValuePair<string, string>> MarshallPost ();
 
 		string GenerateSignature ();
 

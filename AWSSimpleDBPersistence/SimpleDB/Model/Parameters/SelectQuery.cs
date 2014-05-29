@@ -16,7 +16,7 @@ namespace AWSSimpleDBPersistence
 
 		public string DomainName { get; set; }
 
-		private string QueryString ="";
+		private string QueryString = "";
 
 		private int NumberOfComparators { get; set; }
 
@@ -25,6 +25,8 @@ namespace AWSSimpleDBPersistence
 		private bool Ascending { get; set; }
 
 		private int Limit{ get; set; }
+
+		public bool GetAll{ get; set; }
 
 		public SelectQuery<T> Equal (string attribute, string value)
 		{
@@ -179,10 +181,10 @@ namespace AWSSimpleDBPersistence
 			string checkedValue = value;
 			PropertyInfo propertyInfo = CheckIfAttributeExists (attribute);
 			SimpleDBFieldAttribute attributes = propertyInfo.GetCustomAttribute<SimpleDBFieldAttribute> ();
-			if (attributes.Offset > 0){
+			if (attributes.Offset > 0) {
 				checkedValue = SimpleDBFieldAttribute.ApplyOffset (attributes, decimal.Parse (value));
 			}
-			if (attributes.ZeroPadding > 0){
+			if (attributes.ZeroPadding > 0) {
 				checkedValue = SimpleDBFieldAttribute.ApplyPadding (attributes, checkedValue);
 			}
 			return checkedValue;
@@ -202,11 +204,15 @@ namespace AWSSimpleDBPersistence
 		public override string ToString ()
 		{
 			StringBuilder sb = new StringBuilder ();
-			sb.Append ("Select * from " + DomainName + " where");
+			sb.Append ("Select * from " + DomainName);
+			if (GetAll) {
+				return sb.ToString ();
+			}
+			sb.Append (" where");
 			sb.Append (QueryString);
-			if (SortOrder != null){
-			sb.Append (" order by " + SortOrder);
-			sb.Append (Ascending ? " asc" : " desc");	
+			if (SortOrder != null) {
+				sb.Append (" order by " + SortOrder);
+				sb.Append (Ascending ? " asc" : " desc");	
 			}
 			sb.Append (Limit > 0 ? " limit " + Limit : "");		
 			return sb.ToString ();

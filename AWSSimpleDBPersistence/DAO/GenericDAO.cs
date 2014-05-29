@@ -197,6 +197,9 @@ namespace AWSSimpleDBPersistence
 				if (attribute != null) {
 
 					string value = MarshallField (propertyInfo, attribute, entity);
+					if (value == null || value.Length == 0){
+						continue;
+					}
 
 					ReplaceableAttribute replaceableAttribute = new ReplaceableAttribute (attribute.Name, value, true);
 					list.Add (replaceableAttribute);
@@ -207,18 +210,17 @@ namespace AWSSimpleDBPersistence
 
 		protected string MarshallField (PropertyInfo propertyInfo, SimpleDBFieldAttribute attribute, T entity)
 		{
-
 			string value = "";
 			if (typeof(bool).Equals (propertyInfo.PropertyType)) {
 				value = propertyInfo.GetValue (entity).ToString ();
-			} 
-			else if (typeof(byte).Equals (propertyInfo.PropertyType) ||
+			} else if (typeof(byte).Equals (propertyInfo.PropertyType) ||
 			           typeof(ushort).Equals (propertyInfo.PropertyType) ||
 			           typeof(uint).Equals (propertyInfo.PropertyType) ||
 			           typeof(ulong).Equals (propertyInfo.PropertyType)) {
+
 				value = SimpleDBFieldAttribute.ApplyPadding (attribute, propertyInfo.GetValue (entity).ToString ());
-			} 
-			else if (typeof(float).Equals (propertyInfo.PropertyType) ||
+
+			} else if (typeof(float).Equals (propertyInfo.PropertyType) ||
 			           typeof(double).Equals (propertyInfo.PropertyType) ||
 			           typeof(decimal).Equals (propertyInfo.PropertyType) ||
 			           typeof(sbyte).Equals (propertyInfo.PropertyType) ||
@@ -228,17 +230,14 @@ namespace AWSSimpleDBPersistence
 
 				value = SimpleDBFieldAttribute.ApplyOffset (attribute, Decimal.Parse (propertyInfo.GetValue (entity).ToString ()));
 				value = SimpleDBFieldAttribute.ApplyPadding (attribute, value);
-			} 
-			else if (typeof(DateTime).Equals (propertyInfo.PropertyType)) {
+
+			} else if (typeof(DateTime).Equals (propertyInfo.PropertyType)) {
 				value = ((DateTime)propertyInfo.GetValue (entity)).ToString ("o");
-			} 
-			else if (typeof(string).Equals (propertyInfo.PropertyType)) {
+			} else if (typeof(string).Equals (propertyInfo.PropertyType)) {
 				value = (string)propertyInfo.GetValue (entity);
-			} 
-			else if (typeof(List<string>).Equals (propertyInfo.PropertyType)) {
+			} else if (typeof(List<string>).Equals (propertyInfo.PropertyType)) {
 				value = Newtonsoft.Json.JsonConvert.SerializeObject (propertyInfo.GetValue (entity));
-			} 
-			else {
+			} else {
 				throw new ArgumentException ("Not able to parse the following type " + propertyInfo.GetType ().ToString ());
 			}
 			return value;
@@ -266,7 +265,7 @@ namespace AWSSimpleDBPersistence
 				string value = attribute.Value;
 
 				PropertyInfo propertyInfo = dic [name];
-				if (propertyInfo == null){
+				if (propertyInfo == null) {
 					throw new ArgumentException ("Field " + name + " from AWS SimpleDB does not exists in entity");
 				}
 				Type type = propertyInfo.PropertyType;
@@ -275,18 +274,16 @@ namespace AWSSimpleDBPersistence
 				if (typeof(bool).Equals (propertyInfo.PropertyType)) {
 					bool pre = bool.Parse (value);
 					propertyInfo.SetValue (entity, pre);
-				} 
-				else if (typeof(byte).Equals (propertyInfo.PropertyType) ||
-				          typeof(ushort).Equals (propertyInfo.PropertyType) ||
-				          typeof(uint).Equals (propertyInfo.PropertyType) ||
-				          typeof(ulong).Equals (propertyInfo.PropertyType)) {
+				} else if (typeof(byte).Equals (propertyInfo.PropertyType) ||
+				           typeof(ushort).Equals (propertyInfo.PropertyType) ||
+				           typeof(uint).Equals (propertyInfo.PropertyType) ||
+				           typeof(ulong).Equals (propertyInfo.PropertyType)) {
 
 					ulong pre = ulong.Parse (value);
 					var typed = Convert.ChangeType (pre, type);
 					propertyInfo.SetValue (entity, typed);
 
-				} 
-				else if (typeof(sbyte).Equals (propertyInfo.PropertyType) ||
+				} else if (typeof(sbyte).Equals (propertyInfo.PropertyType) ||
 				           typeof(short).Equals (propertyInfo.PropertyType) ||
 				           typeof(int).Equals (propertyInfo.PropertyType) ||
 				           typeof(long).Equals (propertyInfo.PropertyType) ||
@@ -301,37 +298,33 @@ namespace AWSSimpleDBPersistence
 					var typed = Convert.ChangeType (pre, type);
 					propertyInfo.SetValue (entity, typed);
 
-				} 
-				else if (typeof(DateTime).Equals (type)) {
+				} else if (typeof(DateTime).Equals (type)) {
 					DateTime pre = DateTime.ParseExact (value, "o", CultureInfo.InvariantCulture);
 					propertyInfo.SetValue (entity, pre);
-				} 
-				else if (typeof(string).Equals (type)) {
+				} else if (typeof(string).Equals (type)) {
 					string pre = value;
 					propertyInfo.SetValue (entity, pre);
-				} 
-				else if (typeof(List<string>).Equals (type)) {
+				} else if (typeof(List<string>).Equals (type)) {
 					List<string> pre = Newtonsoft.Json.JsonConvert.DeserializeObject<List<string>> (value);
 					propertyInfo.SetValue (entity, pre);
-				} 
-				else {
+				} else {
 					throw new ArgumentException ("Not able to parse the following type " + type.ToString ());
 				}
 			}
 			return entity;
 		}
 
-		public async Task<T> Get (T entity)
+		public async Task<T> Get (T entity, bool consistentRead)
 		{
-			return  await Get (entity.Id);
+			return  await Get (entity.Id, consistentRead);
 		}
 
-		public async Task<T> Get (long id)
+		public async Task<T> Get (long id, bool consistentRead)
 		{
 			GetAttributesRequest request = new GetAttributesRequest ();
 			request.DomainName = GetTableName ();
 			request.ItemName = id.ToString ();
-			request.ConsistentRead = true;
+			request.ConsistentRead = consistentRead;
 			Response response = await Client.GetAttributes (request);
 
 			if (response.GetType ().Equals (typeof(GetAttributesResponse))) {
@@ -343,6 +336,15 @@ namespace AWSSimpleDBPersistence
 			}
 
 
+		}
+
+		public Task<List<T>> GetAll (bool consistentRead)
+		{
+			SelectQuery<T> query = new SelectQuery<T> ();
+			query.DomainName = GetTableName ();
+			query.ConsistentRead = consistentRead;
+			query.GetAll = true;
+			return Select (query);
 		}
 
 		public async Task<List<T>> Select (SelectQuery<T> query)
