@@ -1,0 +1,21 @@
+%YAML 1.2
+---
+name: SimpleDB Persistence
+id: SimpleDBPersistence
+publisher: Eazy IT
+license: License.md
+icons: 
+  - icons/AWSSimpleDB_128x128.png
+  - icons/AWSSimpleDB_512x512.png
+publisher-url: http://www.eazyit.dk
+libraries: 
+  mobile: bin/SimpleDBPersistence.dll
+summary: Use AWS Simple DB for persistence
+details: Details.md
+screenshots: 
+  - screenshots/Screen Shot.png
+getting-started: GettingStarted.md
+version: 1.0.0
+samples: 
+  mobile Sample: /samples/SimpleDBTest/SimpleDBTest.sln
+...

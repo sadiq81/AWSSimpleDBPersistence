@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <ProjectGuid>{C444E2AC-1B57-4D86-89D5-2F171E990194}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <RootNamespace>SimpleDBPersistence</RootNamespace>
+    <AssemblyName>SimpleDBPersistence</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Profile7</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="AfterBuild" command="cp bin/Release/SimpleDBPersistence.dll &quot;Xamarin Component/bin&quot;" workingdir="${SolutionDir}" />
+      </CustomCommands>
+    </CustomCommands>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>full</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="AfterBuild" command="cp bin/Release/SimpleDBPersistence.dll &quot;Xamarin Component/bin/&quot;" workingdir="${SolutionDir}" externalConsole="True" />
+      </CustomCommands>
+    </CustomCommands>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="DAO\GenericDAO.cs" />
+    <Compile Include="DAO\IGenericDAO.cs" />
+    <Compile Include="Domain\Entity.cs" />
+    <Compile Include="Service\ISHA256Service.cs" />
+    <Compile Include="Service\ServiceContainer.cs" />
+    <Compile Include="SimpleDB\Region.cs" />
+    <Compile Include="SimpleDB\SimpleDBClientCore.cs" />
+    <Compile Include="SimpleDB\Model\SimpleDBDomainAttribute.cs" />
+    <Compile Include="SimpleDB\Model\SimpleDBFieldAttribute.cs" />
+    <Compile Include="SimpleDB\Model\SimpleDBIdAttribute.cs" />
+    <Compile Include="SimpleDB\Model\AWSException\AWSErrorException.cs" />
+    <Compile Include="SimpleDB\Model\AWSException\AttributeDoesNotExistInEntityException.cs" />
+    <Compile Include="SimpleDB\Model\AWSException\FieldFormatException.cs" />
+    <Compile Include="SimpleDB\Model\AWSException\InvalidParameterValue.cs" />
+    <Compile Include="SimpleDB\Model\AWSException\ToManyArgumentsException.cs" />
+    <Compile Include="SimpleDB\Model\Parameters\Attribute.cs" />
+    <Compile Include="SimpleDB\Model\Parameters\DomainMetadataResult.cs" />
+    <Compile Include="SimpleDB\Model\Parameters\Expected.cs" />
+    <Compile Include="SimpleDB\Model\Parameters\Item.cs" />
+    <Compile Include="SimpleDB\Model\Parameters\ListDomainsResult.cs" />
+    <Compile Include="SimpleDB\Model\Parameters\ReplaceableAttribute.cs" />
+    <Compile Include="SimpleDB\Model\Parameters\ReplaceableItem.cs" />
+    <Compile Include="SimpleDB\Model\Parameters\SelectQuery.cs" />
+    <Compile Include="SimpleDB\Model\Parameters\SelectResult.cs" />
+    <Compile Include="SimpleDB\Utils\StringUtilities.cs" />
+    <Compile Include="SimpleDB\Marshalling\Request\BaseMarshaller.cs" />
+    <Compile Include="SimpleDB\Marshalling\Request\BatchDeleteAttributesRequestMarshaller.cs" />
+    <Compile Include="SimpleDB\Marshalling\Request\BatchPutAttributesRequestMarshaller.cs" />
+    <Compile Include="SimpleDB\Marshalling\Request\CreateDomainRequestMarshaller.cs" />
+    <Compile Include="SimpleDB\Marshalling\Request\DeleteAttributesRequestMarshaller.cs" />
+    <Compile Include="SimpleDB\Marshalling\Request\DeleteDomainRequestMarshaller.cs" />
+    <Compile Include="SimpleDB\Marshalling\Request\DomainMetaDataRequestMarshaller.cs" />
+    <Compile Include="SimpleDB\Marshalling\Request\GetAttributesRequestMarshaller.cs" />
+    <Compile Include="SimpleDB\Marshalling\Request\IMarshaller.cs" />
+    <Compile Include="SimpleDB\Marshalling\Request\ListDomainsRequestMarshaller.cs" />
+    <Compile Include="SimpleDB\Marshalling\Request\PutAttributesRequestMarshaller.cs" />
+    <Compile Include="SimpleDB\Marshalling\Request\SelectRequestMarshaller.cs" />
+    <Compile Include="SimpleDB\Marshalling\Response\BaseUnMarshaller.cs" />
+    <Compile Include="SimpleDB\Marshalling\Response\BatchDeleteAttributtesResponseUnMarshaller.cs" />
+    <Compile Include="SimpleDB\Marshalling\Response\BatchPutAttributtesResponseUnMarshaller.cs" />
+    <Compile Include="SimpleDB\Marshalling\Response\CreateDomainResponseUnMarshaller.cs" />
+    <Compile Include="SimpleDB\Marshalling\Response\DeleteAttributtesResponseUnMarshaller.cs" />
+    <Compile Include="SimpleDB\Marshalling\Response\DeleteDomainResponseUnMarshaller.cs" />
+    <Compile Include="SimpleDB\Marshalling\Response\DomainMetadataResponseUnMarshaller.cs" />
+    <Compile Include="SimpleDB\Marshalling\Response\GetAttributtesResponseUnMarshaller.cs" />
+    <Compile Include="SimpleDB\Marshalling\Response\IUnMarshaller.cs" />
+    <Compile Include="SimpleDB\Marshalling\Response\ListDomainsResponseUnMarshaller.cs" />
+    <Compile Include="SimpleDB\Marshalling\Response\PutAttributtesResponseUnMarshaller.cs" />
+    <Compile Include="SimpleDB\Marshalling\Response\SelectResponseUnMarshaller.cs" />
+    <Compile Include="SimpleDB\Request\BatchDeleteAttributesRequest.cs" />
+    <Compile Include="SimpleDB\Request\BatchPutAttributesRequest.cs" />
+    <Compile Include="SimpleDB\Request\CreateDomainRequest.cs" />
+    <Compile Include="SimpleDB\Request\DeleteAttributesRequest.cs" />
+    <Compile Include="SimpleDB\Request\DeleteDomainRequest.cs" />
+    <Compile Include="SimpleDB\Request\DomainMetadataRequest.cs" />
+    <Compile Include="SimpleDB\Request\DomainRequest.cs" />
+    <Compile Include="SimpleDB\Request\GetAttributesRequest.cs" />
+    <Compile Include="SimpleDB\Request\ListDomainsRequest.cs" />
+    <Compile Include="SimpleDB\Request\PutAttributesRequest.cs" />
+    <Compile Include="SimpleDB\Request\SelectRequest.cs" />
+    <Compile Include="SimpleDB\Response\BatchDeleteAttributesResponse.cs" />
+    <Compile Include="SimpleDB\Response\BatchPutAttributesResponse.cs" />
+    <Compile Include="SimpleDB\Response\CreateDomainResponse.cs" />
+    <Compile Include="SimpleDB\Response\DeleteAttributesResponse.cs" />
+    <Compile Include="SimpleDB\Response\DeleteDomainResponse.cs" />
+    <Compile Include="SimpleDB\Response\DomainMetadataResponse.cs" />
+    <Compile Include="SimpleDB\Response\GetAttributesResponse.cs" />
+    <Compile Include="SimpleDB\Response\ListDomainsResponse.cs" />
+    <Compile Include="SimpleDB\Response\PutAttributesResponse.cs" />
+    <Compile Include="SimpleDB\Response\ResponseMetadata.cs" />
+    <Compile Include="SimpleDB\Response\SelectResponse.cs" />
+    <Compile Include="SimpleDB\Response\BaseResponse.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>packages\Newtonsoft.Json.6.0.3\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+</Project>
