@@ -3,11 +3,11 @@ SimpleDBPersistence
 
 Setup:
 
-Before programstart the ServiceContainer must be initialized with an AmazonSimpleDBClient and you need to implement a SHA256 HmacService
+Before programstart the ServiceContainer must be initialized with an SimpleDBClientCore and you need to implement a SHA256 HmacService
 
 For example like this:
 
-    ServiceContainer.Register<AmazonSimpleDBClient> (() => new AmazonSimpleDBClient ("AWSAccessKey", "AWSSecretKey", RegionEndpoint.EUWest1));
+    ServiceContainer.Register<SimpleDBClientCore> (() => new SimpleDBClientCore ("AWSAccessKey", "AWSSecretKey", RegionEndpoint.EUWest1));
     ServiceContainer.Register<ISHA256Service> (() => new SHA256Service ());
 
 Look in Sample for SHA256Service example
