@@ -25,6 +25,8 @@ namespace SimpleDBPersistence.SimpleDB.Model.Parameters
 
 		public bool GetAll{ get; set; }
 
+		public bool Count{ get; set; }
+
 		public SelectQuery<T> Equal (string attribute, string value)
 		{
 
@@ -202,9 +204,16 @@ namespace SimpleDBPersistence.SimpleDB.Model.Parameters
 		{
 			StringBuilder sb = new StringBuilder ();
 			sb.Append ("Select * from " + DomainName);
-			if (GetAll) {
+			if (GetAll && !Count) {
 				return sb.ToString ();
 			}
+			if (Count) {
+				sb.Replace ("*", "count(*)");
+			}
+			if (QueryString.Length == 0) {
+				return sb.ToString ();
+			}
+
 			sb.Append (" where");
 			sb.Append (QueryString);
 			if (SortOrder != null) {

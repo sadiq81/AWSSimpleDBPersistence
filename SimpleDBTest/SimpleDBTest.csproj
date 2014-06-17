@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F7893B6A-9F10-481C-B296-4FFD333114A8}</ProjectGuid>
+    <ProjectGuid>{2E3295A0-F304-4BDF-81D9-9206818FC061}</ProjectGuid>
     <OutputType>Library</OutputType>
     <RootNamespace>SimpleDBTest</RootNamespace>
     <AssemblyName>SimpleDBTest</AssemblyName>
@@ -30,23 +30,25 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="nunit.framework" />
-    <Reference Include="SimpleDBPersistence">
-      <HintPath>..\..\..\bin\Release\SimpleDBPersistence.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>packages\Newtonsoft.Json.6.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
-    <Compile Include="Properties.cs" />
-    <Compile Include="TestClient.cs" />
-    <Compile Include="TestDAO.cs" />
+    <Folder Include="DAO\" />
+    <Folder Include="Domain\" />
+    <Folder Include="Service\" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="DAO\TestEntityDAO.cs" />
     <Compile Include="Domain\TestEntity.cs" />
     <Compile Include="Service\SHA256Service.cs" />
+    <Compile Include="TestClient.cs" />
+    <Compile Include="TestDAO.cs" />
+    <Compile Include="Properties.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\SimpleDBPersistence\SimpleDBPersistence.csproj">
+      <Project>{6545E392-67A6-46FC-9B8C-4011A725A1ED}</Project>
+      <Name>SimpleDBPersistence</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>

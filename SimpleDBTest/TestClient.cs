@@ -19,7 +19,7 @@ namespace SimpleDBTest
 		public void BeforeAllTests ()
 		{
 			SimpleDBPersistence.Service.ServiceContainer.Register<ISHA256Service> (() => new SHA256Service ());
-			ServiceContainer.Register<SimpleDBClientCore> (() => new SimpleDBClientCore (Properties.AWSAccessKey, Properties.AWSSecretKey, Region.EUWest_1));
+			ServiceContainer.Register<SimpleDBClientCore> (() => new SimpleDBClientCore ("AKIAJCSIBUKJK42X5XLA", "de2Rssuss5rQrWLPbTvyEdQa6QaIrfmnnLMV8wY0", Region.EUWest_1));
 			ServiceContainer.Register<TestEntityDAO> (() => new TestEntityDAO ());
 			Client = ServiceContainer.Resolve<SimpleDBClientCore> ();
 		}

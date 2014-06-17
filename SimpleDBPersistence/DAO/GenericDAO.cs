@@ -376,6 +376,34 @@ namespace SimpleDBPersistence.DAO
 			return Select (query);
 		}
 
+		public async Task<long> CountAll (bool consistentRead)
+		{
+			SelectQuery<T> query = new SelectQuery<T> ();
+			query.DomainName = GetTableName ();
+			query.ConsistentRead = consistentRead;
+			query.GetAll = true;
+			query.Count = true;
+			return await Count (query);
+		}
+
+		public async Task<long> Count (SelectQuery<T> query)
+		{
+			query.DomainName = GetTableName ();
+			query.GetAll = true;
+			query.Count = true;
+
+			SelectRequest request = new SelectRequest ();
+			request.SelectExpression = query.ToString ();
+			request.ConsistentRead = query.ConsistentRead;
+			SelectResponse response = await Client.Select (request);
+
+			Item item = response.SelectResult.Item [0];
+			Attribute attribute = item.Attribute [0];
+			long count = long.Parse (attribute.Value);
+
+			return count;
+		}
+
 		public async Task<List<T>> Select (SelectQuery<T> query)
 		{
 			query.DomainName = GetTableName ();

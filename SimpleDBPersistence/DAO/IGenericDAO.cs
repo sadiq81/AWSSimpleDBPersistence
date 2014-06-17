@@ -13,6 +13,8 @@ namespace SimpleDBPersistence.DAO
 
 		Task<List<T>> GetAll (bool consistentRead);
 
+		Task<long> CountAll (bool consistentRead);
+
 		Task<bool> CreateTable ();
 
 		Task<bool> DeleteTable ();

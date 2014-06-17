@@ -22,7 +22,7 @@ namespace SimpleDBTest
 		public void BeforeAllTests ()
 		{
 			ServiceContainer.Register<ISHA256Service> (() => new SHA256Service ());
-			ServiceContainer.Register<SimpleDBClientCore> (() => new SimpleDBClientCore (Properties.AWSAccessKey, Properties.AWSSecretKey, Region.EUWest_1));
+			ServiceContainer.Register<SimpleDBClientCore> (() => new SimpleDBClientCore (Properties.AWSAccessKeyId, Properties.AWSSecretKey, Region.EUWest_1));
 			ServiceContainer.Register<TestEntityDAO> (() => new TestEntityDAO ());
 			Client = ServiceContainer.Resolve<SimpleDBClientCore> ();
 			DAO = ServiceContainer.Resolve<TestEntityDAO> ();
@@ -467,6 +467,49 @@ namespace SimpleDBTest
 
 			List<TestEntity> list = DAO.GetAll (true).Result;
 			Assert.AreEqual (2, list.Count);
+		}
+
+		[Test ()]
+		public void TestCountAll ()
+		{
+			bool result = DAO.CreateTable ().Result;
+			Assert.AreEqual (true, result);
+
+			TestEntity entity = new TestEntity ();
+			entity.Id = 0;
+
+			TestEntity entity1 = new TestEntity ();
+			entity1.Id = 1;
+
+			bool result3 = DAO.SaveOrReplaceMultiple (new List<TestEntity> (){ entity, entity1 }).Result;
+			Assert.AreEqual (true, result3);
+
+			long count = DAO.CountAll (true).Result;
+			Assert.AreEqual (2, count);
+		}
+
+		[Test ()]
+		public void TestCount ()
+		{
+			bool result = DAO.CreateTable ().Result;
+			Assert.AreEqual (true, result);
+
+			TestEntity entity = new TestEntity ();
+			entity.Id = 0;
+
+			TestEntity entity1 = new TestEntity ();
+			entity1.Id = 1;
+			entity.TestString = "TEST";
+
+			bool result3 = DAO.SaveOrReplaceMultiple (new List<TestEntity> (){ entity, entity1 }).Result;
+			Assert.AreEqual (true, result3);
+
+			SelectQuery<TestEntity> query = new SelectQuery<TestEntity> ();
+			query.ConsistentRead = true;
+			query.Equal ("TestString", "TEST");
+
+			long count = DAO.Count (query).Result;
+			Assert.AreEqual (1, count);
 		}
 
 		private void AssertTestEntity (TestEntity retreived)
