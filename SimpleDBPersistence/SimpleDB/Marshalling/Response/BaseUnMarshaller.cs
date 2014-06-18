@@ -34,7 +34,7 @@ namespace SimpleDBPersistence.SimpleDB.Marshalling.Response
 				Response.ContentLength = Message.Content.Headers.ContentLength;
 				return Response;
 			} else {
-				Serializer = new XmlSerializer (typeof(BaseResponse));
+				Serializer = new XmlSerializer (typeof(BaseResponse), new XmlRootAttribute ("response"));
 				BaseResponse response = (BaseResponse)Serializer.Deserialize (doc.CreateReader ());
 				response.HttpStatusCode = Message.StatusCode;
 				response.ContentLength = Message.Content.Headers.ContentLength;

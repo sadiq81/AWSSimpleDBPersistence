@@ -1,8 +1,10 @@
 ﻿using System.Net;
 using System.Collections.Generic;
+using System.Xml.Serialization;
 
 namespace SimpleDBPersistence.SimpleDB.Response
 {
+	[XmlRoot ("Response")]
 	public class BaseResponse
 	{
 		public ResponseMetadata ResponseMetadata{ get; set; }

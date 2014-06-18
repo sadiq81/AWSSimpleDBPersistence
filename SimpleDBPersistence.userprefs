@@ -1,20 +1,16 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="SimpleDBTest/TestClient.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.IPhoneRetina.7.1" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="SimpleDBPersistence/SimpleDB/Marshalling/Response/BaseUnMarshaller.cs">
     <Files>
-      <File FileName="SimpleDBPersistence/MyClass.cs" Line="1" Column="1" />
-      <File FileName="SimpleDBPersistence/SimpleDB/SimpleDBClientCore.cs" Line="4" Column="25" />
-      <File FileName="SimpleDBPersistence/SimpleDB/Response/CreateDomainResponse.cs" Line="1" Column="1" />
-      <File FileName="SimpleDBPersistence/SimpleDB/Request/BatchDeleteAttributesRequest.cs" Line="6" Column="50" />
-      <File FileName="SimpleDBPersistence/SimpleDB/Request/SelectRequest.cs" Line="1" Column="1" />
-      <File FileName="SimpleDBPersistence/SimpleDB/Model/Parameters/SelectResult.cs" Line="1" Column="1" />
-      <File FileName="SimpleDBPersistence/SimpleDB/Model/Parameters/SelectQuery.cs" Line="8" Column="35" />
-      <File FileName="SimpleDBPersistence/DAO/GenericDAO.cs" Line="395" Column="1" />
-      <File FileName="SimpleDBTest/TestClient.cs" Line="1" Column="1" />
+      <File FileName="Xamarin Component/samples/SimpleDBSample/SimpleDBSample.iOS/MasterViewController.cs" Line="1" Column="1" />
+      <File FileName="Xamarin Component/samples/SimpleDBSample/SimpleDBSample.iOS/Main.cs" Line="24" Column="1" />
+      <File FileName="SimpleDBPersistence/SimpleDB/Marshalling/Response/BaseUnMarshaller.cs" Line="38" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="/Users/privat/Projects/SimpleDBPersistence/SimpleDBPersistence/SimpleDB/Marshalling/Response/BaseUnMarshaller.cs" line="38" column="1" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>
