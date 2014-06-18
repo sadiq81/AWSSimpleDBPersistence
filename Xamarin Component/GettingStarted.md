@@ -73,3 +73,4 @@ Save Entities like so:
 	entity.TestList = new List<string> (new[]{ "hello", "dolly", "the", "sheep" });   
 	DAO.SaveOrReplace (entity).Result;
 	
+See more examples and full source code at https://github.com/sadiq81/AWSSimpleDBPersistence
