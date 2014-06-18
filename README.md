@@ -73,12 +73,5 @@ Save Entities like so:
 	entity.TestList = new List<string> (new[]{ "hello", "dolly", "the", "sheep" });   
 	DAO.SaveOrReplace (entity).Result;
 	
-If you like the framework dont hesitate to contribute with pull request or donations 
-
-<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
-<input type="hidden" name="cmd" value="_s-xclick">
-<input type="hidden" name="hosted_button_id" value="Y4NLGVLU6RSZQ">
-<input type="image" src="https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
-<img alt="" border="0" src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" width="1" height="1">
-</form>
+If you like the framework dont hesitate to contribute with pull request or donations at https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Y4NLGVLU6RSZQ
 
