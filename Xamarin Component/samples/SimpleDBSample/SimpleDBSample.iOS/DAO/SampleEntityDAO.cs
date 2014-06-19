@@ -8,12 +8,6 @@ namespace SimpleDBSample.iOS
 	{
 		public SampleEntityDAO ()
 		{
-			Init ();
-		}
-
-		private async Task Init ()
-		{
-			await CreateTable ();
 		}
 	}
 }

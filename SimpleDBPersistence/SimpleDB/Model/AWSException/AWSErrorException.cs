@@ -1,5 +1,6 @@
 ﻿using System;
 using SimpleDBPersistence.SimpleDB.Response;
+using System.Text;
 
 namespace SimpleDBPersistence.SimpleDB.Model.AWSException
 {
@@ -14,7 +15,11 @@ namespace SimpleDBPersistence.SimpleDB.Model.AWSException
 
 		public override string ToString ()
 		{
-			return string.Format ("[AWSErrorException: RequestID={0}, HttpStatusCode={1}, Errors={2}]", Response.ResponseMetadata.RequestId, Response.HttpStatusCode, Response.Errors);
+			StringBuilder sb = new StringBuilder ();
+			foreach (BaseResponse.Error error in Response.Errors) {
+				sb.Append (error.ToString () + " ");
+			}
+			return string.Format ("[AWSErrorException: HttpStatusCode={0}, Errors={1}]", Response.HttpStatusCode, sb.ToString ());
 		}
 	}
 }

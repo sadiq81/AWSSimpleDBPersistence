@@ -37,13 +37,8 @@ namespace SimpleDBPersistence.DAO
 			CreateDomainRequest request = new CreateDomainRequest ();
 			request.DomainName = GetTableName ();
 			BaseResponse response = await Client.CreateDomain (request);
+			return HttpStatusCode.OK.Equals (response.HttpStatusCode);
 
-			//TODO Fails because its a batch attribute response
-			if (response.GetType ().Equals (typeof(CreateDomainResponse))) {
-				return HttpStatusCode.OK.Equals (response.HttpStatusCode);
-			} else {
-				throw new AWSErrorException (response);
-			}
 		}
 
 		public async Task<bool> DeleteTable ()
@@ -51,13 +46,7 @@ namespace SimpleDBPersistence.DAO
 			DeleteDomainRequest request = new DeleteDomainRequest ();
 			request.DomainName = GetTableName ();
 			BaseResponse response = await Client.DeleteDomain (request);
-
-			//TODO Fails because its a batch attribute response
-			if (response.GetType ().Equals (typeof(DeleteDomainResponse))) {
-				return HttpStatusCode.OK.Equals (response.HttpStatusCode);
-			} else {
-				throw new AWSErrorException (response);
-			}
+			return HttpStatusCode.OK.Equals (response.HttpStatusCode);
 		}
 
 		public async Task<bool> SaveOrReplace (T entity)
@@ -73,13 +62,8 @@ namespace SimpleDBPersistence.DAO
 			request.ReplaceableAttributes = BuildReplaceableAttributes (entity);
 
 			BaseResponse response = await Client.PutAttributes (request);
+			return HttpStatusCode.OK.Equals (response.HttpStatusCode);
 
-			//TODO Fails because its a batch attribute response
-			if (response.GetType ().Equals (typeof(PutAttributesResponse))) {
-				return HttpStatusCode.OK.Equals (response.HttpStatusCode);
-			} else {
-				throw new AWSErrorException (response);
-			}
 		}
 
 		public async Task<bool> Delete (T entity)
@@ -89,12 +73,7 @@ namespace SimpleDBPersistence.DAO
 			request.ItemName = entity.Id.ToString ();
 
 			BaseResponse response = await Client.DeleteAttributes (request);
-
-			if (response.GetType ().Equals (typeof(DeleteAttributesResponse))) {
-				return HttpStatusCode.OK.Equals (response.HttpStatusCode);
-			} else {
-				throw new AWSErrorException (response);
-			}
+			return HttpStatusCode.OK.Equals (response.HttpStatusCode);
 
 		}
 
@@ -355,16 +334,9 @@ namespace SimpleDBPersistence.DAO
 			request.ItemName = id.ToString ();
 			request.ConsistentRead = consistentRead;
 			BaseResponse response = await Client.GetAttributes (request);
-
-			if (response.GetType ().Equals (typeof(GetAttributesResponse))) {
-				T entity = UnMarshallAttributes (((GetAttributesResponse)response).GetAttributesResult);
-				entity.Id = id;
-				return entity;
-			} else {
-				throw new AWSErrorException (response);
-			}
-
-
+			T entity = UnMarshallAttributes (((GetAttributesResponse)response).GetAttributesResult);
+			entity.Id = id;
+			return entity;
 		}
 
 		public Task<List<T>> GetAll (bool consistentRead)

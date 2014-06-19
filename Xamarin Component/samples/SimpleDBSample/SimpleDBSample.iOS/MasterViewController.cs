@@ -6,6 +6,7 @@ using MonoTouch.Foundation;
 using MonoTouch.UIKit;
 using SimpleDBPersistence.Service;
 using System.Threading.Tasks;
+using SimpleDBPersistence.SimpleDB.Model.AWSException;
 
 namespace SimpleDBSample.iOS
 {
@@ -17,7 +18,6 @@ namespace SimpleDBSample.iOS
 		{
 			Title = NSBundle.MainBundle.LocalizedString ("Master", "Master");
 
-
 			// Custom initialization
 		}
 
@@ -28,11 +28,16 @@ namespace SimpleDBSample.iOS
 			entity.Id = DateTime.Now.Ticks;
 			entity.SampleString = DateTime.Now.ToString ("s");
 
-			if (await ServiceContainer.Resolve<SampleEntityDAO> ().SaveOrReplace (entity)) {
+			try {
+				await ServiceContainer.Resolve<SampleEntityDAO> ().SaveOrReplace (entity);
 				dataSource.Objects.Insert (0, entity);
 				using (var indexPath = NSIndexPath.FromRowSection (0, 0))
 					TableView.InsertRows (new NSIndexPath[] { indexPath }, UITableViewRowAnimation.Automatic);
+			} catch (AWSErrorException e) {
+				UIAlertView alert = new UIAlertView ("Error", e.ToString (), null, "OK", null);
+				alert.Show ();
 			}
+
 		}
 
 		public override void DidReceiveMemoryWarning ()
@@ -62,6 +67,7 @@ namespace SimpleDBSample.iOS
 				RefreshControl.EndRefreshing ();
 				TableView.ReloadData ();
 			};
+
 		}
 
 		class DataSource : UITableViewSource
@@ -73,12 +79,27 @@ namespace SimpleDBSample.iOS
 			public DataSource (MasterViewController controller)
 			{
 				this.controller = controller;
-				ServiceContainer.Resolve<SampleEntityDAO> ().CreateTable ();
+				Initialize ();
+			}
+
+			private async void Initialize ()
+			{
+				try {
+					await ServiceContainer.Resolve<SampleEntityDAO> ().CreateTable ();
+				} catch (AWSErrorException e) {
+					UIAlertView alert = new UIAlertView ("Error", e.ToString (), null, "OK", null);
+					alert.Show ();
+				}
 			}
 
 			public async Task RefreshData ()
 			{
-				this.Objects = await ServiceContainer.Resolve<SampleEntityDAO> ().GetAll (true);
+				try {
+					this.Objects = await ServiceContainer.Resolve<SampleEntityDAO> ().GetAll (true);
+				} catch (AWSErrorException e) {
+					UIAlertView alert = new UIAlertView ("Error", e.ToString (), null, "OK", null);
+					alert.Show ();
+				}
 			}
 
 			public IList<SampleEntity> Objects {
@@ -117,8 +138,14 @@ namespace SimpleDBSample.iOS
 			{
 				if (editingStyle == UITableViewCellEditingStyle.Delete) {
 					// Delete the row from the data source.
-					objects.RemoveAt (indexPath.Row);
-					controller.TableView.DeleteRows (new NSIndexPath[] { indexPath }, UITableViewRowAnimation.Fade);
+					try {
+						ServiceContainer.Resolve<SampleEntityDAO> ().Delete (objects [indexPath.Row]);
+						objects.RemoveAt (indexPath.Row);
+						controller.TableView.DeleteRows (new NSIndexPath[] { indexPath }, UITableViewRowAnimation.Fade);
+					} catch (AWSErrorException e) {
+						UIAlertView alert = new UIAlertView ("Error", e.ToString (), null, "OK", null);
+						alert.Show ();
+					}
 				} else if (editingStyle == UITableViewCellEditingStyle.Insert) {
 					// Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
 				}
