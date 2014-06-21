@@ -13,7 +13,4 @@
     <Compile Include="$(MSBuildThisFileDirectory)Domain\SampleEntity.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\SHA256Service.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)ViewModel\" />
-  </ItemGroup>
 </Project>

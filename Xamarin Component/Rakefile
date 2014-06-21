@@ -25,8 +25,14 @@ task :default => "xamarin-component/xamarin-component.exe" do
 		--getting-started="GettingStarted.md" \
 		--icon="icons/SimpleDBPersistence_128x128.png" \
 		--icon="icons/SimpleDBPersistence_512x512.png" \
-		--library="mobile":"bin/Newtonsoft.Json.dll" \
-		--library="mobile":"bin/SimpleDBPersistence.dll" \
+		--library="android":"bin/Newtonsoft.Json.dll" \
+		--library="android":"bin/SimpleDBPersistence.dll" \
+		--library="ios":"bin/Newtonsoft.Json.dll" \
+		--library="ios":"bin/SimpleDBPersistence.dll" \
+		--library="winphone-7.0	":"bin/Newtonsoft.Json.dll" \
+		--library="winphone-7.0	":"bin/SimpleDBPersistence.dll" \
+		--library="winphone-7.1	":"bin/Newtonsoft.Json.dll" \
+		--library="winphone-7.1	":"bin/SimpleDBPersistence.dll" \
 		--sample="iOS Sample. Demonstrates SimpleDB on iOS.":"samples/SimpleDBSample/SimpleDBSample.sln" \
 		--sample="Android Sample. Demonstrates SimpleDB on Android.":"samples/SimpleDBSample/SimpleDBSample.sln" \
 
