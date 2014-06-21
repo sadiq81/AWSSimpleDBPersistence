@@ -2,7 +2,7 @@
 using SimpleDBPersistence.Domain;
 using SimpleDBPersistence.SimpleDB.Model;
 
-namespace SimpleDBSample.iOS
+namespace SimpleDBSample.Core
 {
 	[SimpleDBDomain ("SampleEntity")]
 	public class SampleEntity : Entity

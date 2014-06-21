@@ -3,7 +3,7 @@ using SimpleDBPersistence.Service;
 using System.Text;
 using System.Security.Cryptography;
 
-namespace SimpleDBSample.iOS
+namespace SimpleDBSample.Core
 {
 	public class SHA256Service : ISHA256Service
 	{

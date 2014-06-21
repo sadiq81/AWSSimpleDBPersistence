@@ -7,6 +7,7 @@ using MonoTouch.UIKit;
 using SimpleDBPersistence.Service;
 using System.Threading.Tasks;
 using SimpleDBPersistence.SimpleDB.Model.AWSException;
+using SimpleDBSample.Core;
 
 namespace SimpleDBSample.iOS
 {

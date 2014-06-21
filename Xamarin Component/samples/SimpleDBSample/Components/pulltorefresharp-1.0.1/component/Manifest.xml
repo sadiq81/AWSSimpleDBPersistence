@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<component format="1" id="pulltorefresharp">
+  <name>PullToRefresharp</name>
+  <publisher>Brett Duncavage</publisher>
+  <publisher-url>http://github.com/bduncavage/PullToRefresharp</publisher-url>
+  <version>1.0.1</version>
+  <summary>Add pull-to-refresh to your Xamarin.Android apps.</summary>
+  <samples>
+    <sample id="Sample.Android">
+      <name>Android Sample.</name>
+      <summary>Demonstrates basic usage with ListView, GridView, and ScrollView</summary>
+    </sample>
+  </samples>
+</component>

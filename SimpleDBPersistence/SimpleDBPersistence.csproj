@@ -22,12 +22,16 @@
     <ConsolePause>false</ConsolePause>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>full</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <ConsolePause>false</ConsolePause>
+    <CustomCommands>
+      <CustomCommands>
+        <Command type="AfterBuild" command="cp &quot;SimpleDBPersistence/bin/Release/SimpleDBPersistence.dll&quot; &quot;Xamarin Component/bin&quot;" workingdir="${SolutionDir}" />
+      </CustomCommands>
+    </CustomCommands>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -103,15 +107,23 @@
     <Compile Include="SimpleDB\Response\ResponseMetadata.cs" />
     <Compile Include="SimpleDB\Response\SelectResponse.cs" />
     <Compile Include="SimpleDB\Utils\StringUtilities.cs" />
+    <Compile Include="Service\SHA256Service.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.6.0.3\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="crypto">
+      <HintPath>..\packages\Portable.BouncyCastle.1.7.0\lib\portable-net4+sl5+wp8+win8\crypto.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Service\hmac_sha2.c" />
+    <None Include="Service\hmac_sha2.h" />
+    <None Include="Service\sha2.c" />
+    <None Include="Service\sha2.h" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="DAO\" />

@@ -25,9 +25,10 @@ task :default => "xamarin-component/xamarin-component.exe" do
 		--getting-started="GettingStarted.md" \
 		--icon="icons/SimpleDBPersistence_128x128.png" \
 		--icon="icons/SimpleDBPersistence_512x512.png" \
-		--library="ios":"bin/Newtonsoft.Json.dll" \
-		--library="ios":"bin/SimpleDBPersistence.dll" \
+		--library="mobile":"bin/Newtonsoft.Json.dll" \
+		--library="mobile":"bin/SimpleDBPersistence.dll" \
 		--sample="iOS Sample. Demonstrates SimpleDB on iOS.":"samples/SimpleDBSample/SimpleDBSample.sln" \
+		--sample="Android Sample. Demonstrates SimpleDB on Android.":"samples/SimpleDBSample/SimpleDBSample.sln" \
 
 		END
 	puts "* Creating #{COMPONENT}..."

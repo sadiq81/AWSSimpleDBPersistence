@@ -3,6 +3,10 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleDBSample.iOS", "SimpleDBSample.iOS\SimpleDBSample.iOS.csproj", "{F12F6081-1365-4E5D-B4A1-6C990EF57538}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleDBSample.Droid", "SimpleDBSample.Droid\SimpleDBSample.Droid.csproj", "{F5C3EECC-4674-4103-987E-20997A43E408}"
+EndProject
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "SimpleDBSample.Core", "SimpleDBSample.Core\SimpleDBSample.Core.shproj", "{81BD76C5-A49A-46AB-8DD7-67D00C4B20EA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|iPhoneSimulator = Debug|iPhoneSimulator
@@ -25,6 +29,18 @@ Global
 		{F12F6081-1365-4E5D-B4A1-6C990EF57538}.Release|iPhone.Build.0 = Release|iPhone
 		{F12F6081-1365-4E5D-B4A1-6C990EF57538}.Release|iPhoneSimulator.ActiveCfg = Release|iPhoneSimulator
 		{F12F6081-1365-4E5D-B4A1-6C990EF57538}.Release|iPhoneSimulator.Build.0 = Release|iPhoneSimulator
+		{F5C3EECC-4674-4103-987E-20997A43E408}.Ad-Hoc|iPhone.ActiveCfg = Release|Any CPU
+		{F5C3EECC-4674-4103-987E-20997A43E408}.Ad-Hoc|iPhone.Build.0 = Release|Any CPU
+		{F5C3EECC-4674-4103-987E-20997A43E408}.AppStore|iPhone.ActiveCfg = Release|Any CPU
+		{F5C3EECC-4674-4103-987E-20997A43E408}.AppStore|iPhone.Build.0 = Release|Any CPU
+		{F5C3EECC-4674-4103-987E-20997A43E408}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{F5C3EECC-4674-4103-987E-20997A43E408}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{F5C3EECC-4674-4103-987E-20997A43E408}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{F5C3EECC-4674-4103-987E-20997A43E408}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{F5C3EECC-4674-4103-987E-20997A43E408}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{F5C3EECC-4674-4103-987E-20997A43E408}.Release|iPhone.Build.0 = Release|Any CPU
+		{F5C3EECC-4674-4103-987E-20997A43E408}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{F5C3EECC-4674-4103-987E-20997A43E408}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		StartupItem = SimpleDBSample.iOS\SimpleDBSample.iOS.csproj

@@ -114,17 +114,10 @@
     <Compile Include="DetailViewController.designer.cs">
       <DependentUpon>DetailViewController.cs</DependentUpon>
     </Compile>
-    <Compile Include="Services\SHA256Service.cs" />
-    <Compile Include="Domain\SampleEntity.cs" />
-    <Compile Include="DAO\SampleEntityDAO.cs" />
   </ItemGroup>
   <ItemGroup>
     <InterfaceDefinition Include="MainStoryboard.storyboard" />
   </ItemGroup>
+  <Import Project="..\SimpleDBSample.Core\SimpleDBSample.Core.projitems" Label="Shared" Condition="Exists('..\SimpleDBSample.Core\SimpleDBSample.Core.projitems')" />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <Folder Include="DAO\" />
-    <Folder Include="Domain\" />
-    <Folder Include="Services\" />
-  </ItemGroup>
 </Project>

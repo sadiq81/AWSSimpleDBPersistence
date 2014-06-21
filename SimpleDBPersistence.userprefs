@@ -1,16 +1,10 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.IPhoneRetina.7.1" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Xamarin Component/samples/SimpleDBSample/SimpleDBSample.iOS/Main.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="SimpleDBPersistence/Service/hmac_sha2.c">
     <Files>
-      <File FileName="Xamarin Component/samples/SimpleDBSample/SimpleDBSample.iOS/MasterViewController.cs" Line="38" Column="1" />
-      <File FileName="Xamarin Component/samples/SimpleDBSample/SimpleDBSample.iOS/Main.cs" Line="16" Column="4" />
-      <File FileName="SimpleDBPersistence/SimpleDB/Model/AWSException/AWSErrorException.cs" Line="22" Column="121" />
-      <File FileName="SimpleDBPersistence/SimpleDB/Marshalling/Response/BaseUnMarshaller.cs" Line="38" Column="1" />
-      <File FileName="SimpleDBPersistence/SimpleDB/SimpleDBClientCore.cs" Line="39" Column="1" />
-      <File FileName="Xamarin Component/samples/SimpleDBSample/SimpleDBSample.iOS/DAO/SampleEntityDAO.cs" Line="7" Column="37" />
-      <File FileName="SimpleDBPersistence/DAO/GenericDAO.cs" Line="403" Column="6" />
-      <File FileName="SimpleDBPersistence/SimpleDB/Response/BaseResponse.cs" Line="16" Column="15" />
-      <File FileName="SimpleDBPersistence/SimpleDB/Response/ResponseMetadata.cs" Line="4" Column="2" />
+      <File FileName="SimpleDBPersistence/Service/SHA256Service.cs" Line="39" Column="3" />
+      <File FileName="Xamarin Component/samples/SimpleDBSample/SimpleDBSample.iOS/Services/SHA256Service.cs" Line="4" Column="7" />
+      <File FileName="SimpleDBPersistence/Service/hmac_sha2.c" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
