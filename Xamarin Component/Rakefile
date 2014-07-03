@@ -3,7 +3,7 @@ require "rake/clean"
 CLEAN.include "*.xam"
 CLEAN.include "xamarin-component"
 
-COMPONENT = "SimpleDBPersistence-1.0.xam"
+COMPONENT = "SimpleDBPersistence-1.0.1.xam"
 
 file "xamarin-component/xamarin-component.exe" do
 	puts "* Downloading xamarin-component..."
