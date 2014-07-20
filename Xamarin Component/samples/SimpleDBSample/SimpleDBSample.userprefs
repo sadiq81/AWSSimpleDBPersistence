@@ -1,6 +1,27 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug|iPhoneSimulator" PreferredExecutionTarget="MonoDevelop.IPhone.IPhoneSimulatorTarget.IPhoneRetina.7.1" />
-  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workbench>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State expanded="True">
+          <Node name="SimpleDBSample.Droid" expanded="True">
+            <Node name="References" expanded="True">
+              <Node name="From Packages" expanded="True" />
+            </Node>
+            <Node name="Packages" expanded="True" />
+            <Node name="ComponentReferenceFolder" expanded="True" />
+            <Node name="Activity" expanded="True" />
+            <Node name="Application" expanded="True" />
+            <Node name="Assets" expanded="True" />
+            <Node name="Properties" expanded="True">
+              <Node name="AndroidManifest.xml" selected="True" />
+            </Node>
+          </Node>
+          <Node name="SimpleDBSample.iOS" expanded="True" />
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Breakpoint file="/Users/privat/Projects/SimpleDBPersistence/Xamarin Component/samples/SimpleDBSample/SimpleDBSample.Droid/MainActivity.cs" line="42" column="1" />
