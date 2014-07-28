@@ -6,7 +6,7 @@ namespace SimpleDBPersistence.Domain
 	public abstract class Entity
 	{
 		[SimpleDBIdAttribute]
-		public long Id { get; set; }
+		public string Id { get; set; }
 
 		[SimpleDBFieldAttribute ("Created")]
 		public DateTime Created{ get; set; }

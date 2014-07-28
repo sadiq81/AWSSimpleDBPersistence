@@ -107,24 +107,10 @@
     <Compile Include="SimpleDB\Response\ResponseMetadata.cs" />
     <Compile Include="SimpleDB\Response\SelectResponse.cs" />
     <Compile Include="SimpleDB\Utils\StringUtilities.cs" />
-    <Compile Include="Service\SHA256Service.cs" />
+    <Compile Include="SimpleDB\Model\AWSException\AWSConnectionException.cs" />
+    <Compile Include="SimpleDB\Model\SimpleDBListAttribute.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-  <ItemGroup>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.3\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="crypto">
-      <HintPath>..\packages\Portable.BouncyCastle.1.7.0\lib\portable-net4+sl5+wp8+win8\crypto.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-    <None Include="Service\hmac_sha2.c" />
-    <None Include="Service\hmac_sha2.h" />
-    <None Include="Service\sha2.c" />
-    <None Include="Service\sha2.h" />
-  </ItemGroup>
   <ItemGroup>
     <Folder Include="DAO\" />
     <Folder Include="Domain\" />
@@ -140,4 +126,12 @@
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\HalalGuide\packages\Newtonsoft.Json.6.0.3\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
 </Project>

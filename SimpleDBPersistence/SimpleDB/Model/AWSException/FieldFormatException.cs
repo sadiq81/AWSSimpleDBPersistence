@@ -2,7 +2,7 @@
 
 namespace SimpleDBPersistence.SimpleDB.Model.AWSException
 {
-	public class FieldFormatException : Exception
+	public class FieldFormatException : AWSErrorException
 	{
 		private string FormatError;
 
@@ -11,10 +11,9 @@ namespace SimpleDBPersistence.SimpleDB.Model.AWSException
 			this.FormatError = formatError;
 		}
 
-		public override string Message {
-			get {
-				return FormatError;
-			}
+		public override string ToString ()
+		{
+			return string.Format ("[FieldFormatException] : {0} ", FormatError);
 		}
 	}
 }

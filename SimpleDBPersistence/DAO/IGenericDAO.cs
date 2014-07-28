@@ -9,7 +9,7 @@ namespace SimpleDBPersistence.DAO
 	{
 		Task<T> Get (T entity, bool consistentRead);
 
-		Task<T> Get (long id, bool consistentRead);
+		Task<T> Get (string id, bool consistentRead);
 
 		Task<List<T>> GetAll (bool consistentRead);
 

@@ -2,8 +2,14 @@
 
 namespace SimpleDBPersistence.SimpleDB.Model.AWSException
 {
-	public class InvalidParameterValue : Exception
+	public class InvalidParameterValue : AWSErrorException
 	{
+
+		public override string ToString ()
+		{
+			return string.Format ("[InvalidParameterValue: ErrorMessage={0}]", ErrorMessage);
+		}
+
 		public string ErrorMessage {
 			get {
 				return "Value value for parameter Name is invalid. Value exceeds maximum length of 1024 or \n" +

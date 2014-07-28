@@ -8,6 +8,10 @@ namespace SimpleDBPersistence.SimpleDB.Model.AWSException
 	{
 		public BaseResponse Response { get; set; }
 
+		public AWSErrorException ()
+		{
+		}
+
 		public AWSErrorException (BaseResponse response)
 		{
 			this.Response = response;
@@ -16,10 +20,14 @@ namespace SimpleDBPersistence.SimpleDB.Model.AWSException
 		public override string ToString ()
 		{
 			StringBuilder sb = new StringBuilder ();
-			foreach (BaseResponse.Error error in Response.Errors) {
-				sb.Append (error.ToString () + " ");
+
+			if (Response != null && Response.Errors != null) {
+				foreach (BaseResponse.Error error in Response.Errors) {
+					sb.Append (error + " ");
+				}
 			}
-			return string.Format ("[AWSErrorException: HttpStatusCode={0}, Errors={1}]", Response.HttpStatusCode, sb.ToString ());
+
+			return string.Format ("[AWSErrorException: HttpStatusCode={0}, Errors={1}]", Response.HttpStatusCode, sb);
 		}
 	}
 }

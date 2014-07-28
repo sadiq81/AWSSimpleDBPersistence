@@ -10,6 +10,12 @@ namespace SimpleDBPersistence.SimpleDB.Model.Parameters
 		{
 			this.Replace = replace;
 		}
+
+		public override string ToString ()
+		{
+			return string.Format ("[ReplaceableAttribute: Name={0}, Value={1} ,Replace={2}]", Name, Value, Replace);
+		}
+		
 	}
 }
 

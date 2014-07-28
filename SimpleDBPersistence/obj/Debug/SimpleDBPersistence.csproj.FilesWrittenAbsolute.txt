@@ -1,0 +1,6 @@
+/Users/Privat/AWSSimpleDBPersistence/SimpleDBPersistence/obj/Debug/.NETPortable,Version=v4.5,Profile=Profile7.AssemblyAttribute.cs
+/Users/Privat/AWSSimpleDBPersistence/SimpleDBPersistence/bin/Debug/SimpleDBPersistence.dll.mdb
+/Users/Privat/AWSSimpleDBPersistence/SimpleDBPersistence/bin/Debug/SimpleDBPersistence.dll
+/Users/Privat/AWSSimpleDBPersistence/SimpleDBPersistence/obj/Debug/SimpleDBPersistence.dll
+/Users/Privat/AWSSimpleDBPersistence/SimpleDBPersistence/obj/Debug/SimpleDBPersistence.dll.mdb
+/Users/Privat/AWSSimpleDBPersistence/SimpleDBPersistence/bin/Debug/Newtonsoft.Json.dll

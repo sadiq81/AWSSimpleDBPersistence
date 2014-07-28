@@ -14,6 +14,7 @@ using SimpleDBPersistence.SimpleDB.Response;
 using SimpleDBPersistence.SimpleDB.Model.AWSException;
 using SimpleDBPersistence.SimpleDB.Model.Parameters;
 using Attribute = SimpleDBPersistence.SimpleDB.Model.Parameters.Attribute;
+using System.Collections;
 
 namespace SimpleDBPersistence.DAO
 {
@@ -194,6 +195,16 @@ namespace SimpleDBPersistence.DAO
 			string value = "";
 			Type type = propertyInfo.PropertyType;
 
+			bool enumFound = false;
+
+			try {
+				enumFound = Enum.IsDefined (type, propertyInfo.GetValue (entity).ToString ());
+			} catch (ArgumentException e) {
+				//DO nothing
+			} catch (NullReferenceException e) {
+				return value;
+			}
+
 			if (propertyInfo.GetValue (entity) == null) {
 				return value;
 			}
@@ -225,17 +236,15 @@ namespace SimpleDBPersistence.DAO
 			} else if (typeof(string).Equals (type)) {
 				value = (string)propertyInfo.GetValue (entity);
 
-			} else if (typeof(List<string>).Equals (type)) {
-				if (((List<string>)propertyInfo.GetValue (entity)).Count == 0) {
-					value = "";
-				} else {
-					value = Newtonsoft.Json.JsonConvert.SerializeObject (propertyInfo.GetValue (entity));
-				}
+			} else if (enumFound) {
+
+				value = propertyInfo.GetValue (entity).ToString ();
 
 			} else {
-				throw new ArgumentException ("Not able to parse the following type " + propertyInfo.GetType ().ToString ());
 
-			}
+				value = Newtonsoft.Json.JsonConvert.SerializeObject (propertyInfo.GetValue (entity));
+
+			} 
 			return value;
 		}
 
@@ -265,6 +274,18 @@ namespace SimpleDBPersistence.DAO
 					throw new ArgumentException ("Field " + name + " from AWS SimpleDB does not exists in entity");
 				}
 				Type type = Nullable.GetUnderlyingType (propertyInfo.PropertyType) ?? propertyInfo.PropertyType;
+
+				bool enumFound = false;
+
+				try {
+					enumFound = Enum.IsDefined (type, propertyInfo.GetValue (entity).ToString ());
+				} catch (ArgumentException e) {
+					//DO nothing
+				} catch (NullReferenceException e) {
+					int i = 0;
+				}
+
+
 				double offset = dic2 [name].Offset; 
 
 				if (typeof(bool?).Equals (type) || typeof(bool).Equals (type)) {
@@ -310,14 +331,19 @@ namespace SimpleDBPersistence.DAO
 					}
 
 				} else if (typeof(string).Equals (type)) {
-					string pre = value;
-					propertyInfo.SetValue (entity, pre);
-				} else if (typeof(List<string>).Equals (type)) {
-					List<string> pre = Newtonsoft.Json.JsonConvert.DeserializeObject<List<string>> (value);
-					propertyInfo.SetValue (entity, pre);
+
+					propertyInfo.SetValue (entity, value);
+
+				} else if (enumFound) {
+
+					propertyInfo.SetValue (entity, Enum.Parse (type, value));
+
 				} else {
-					throw new ArgumentException ("Not able to parse the following type " + type.ToString ());
-				}
+
+					object test = Newtonsoft.Json.JsonConvert.DeserializeObject (value, type);
+					propertyInfo.SetValue (entity, test);
+
+				} 
 			}
 			return entity;
 		}
@@ -327,7 +353,7 @@ namespace SimpleDBPersistence.DAO
 			return  await Get (entity.Id, consistentRead);
 		}
 
-		public async Task<T> Get (long id, bool consistentRead)
+		public async Task<T> Get (string id, bool consistentRead)
 		{
 			GetAttributesRequest request = new GetAttributesRequest ();
 			request.DomainName = GetTableName ();
@@ -397,7 +423,7 @@ namespace SimpleDBPersistence.DAO
 				if (response.SelectResult.Item != null) {
 					foreach (Item item in response.SelectResult.Item) {
 						T entity = UnMarshallAttributes (item.Attribute);
-						entity.Id = long.Parse (item.Name);
+						entity.Id = item.Name;
 						entities.Add (entity);
 					}
 				}

@@ -10,13 +10,20 @@ using System.Linq;
 
 namespace SimpleDBPersistence.SimpleDB.Model.AWSException
 {
-	public class AttributeDoesNotExistInEntityException : Exception
+	public class AttributeDoesNotExistInEntityException : AWSErrorException
 	{
-		public override string Message {
-			get {
-				return "Attribute does not exists in the query entity";
-			}
+		private readonly string Attribute;
+
+		public AttributeDoesNotExistInEntityException (string attribute)
+		{
+			this.Attribute = attribute;
 		}
+
+		public override string ToString ()
+		{
+			return string.Format ("[AttributeDoesNotExistInEntityException: Attribute does not exists in the query entity {0}", Attribute);
+		}
+
 	}
 }
 

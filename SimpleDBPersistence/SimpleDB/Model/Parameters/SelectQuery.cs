@@ -4,6 +4,8 @@ using System.Reflection;
 using System.Linq;
 using SimpleDBPersistence.Domain;
 using SimpleDBPersistence.SimpleDB.Model.AWSException;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace SimpleDBPersistence.SimpleDB.Model.Parameters
 {
@@ -17,11 +19,11 @@ namespace SimpleDBPersistence.SimpleDB.Model.Parameters
 
 		private int NumberOfComparators { get; set; }
 
-		private string SortOrder { get; set; }
+		public string SortOrder { get; set; }
 
 		private bool Ascending { get; set; }
 
-		private int Limit{ get; set; }
+		public int Limit{ get; set; }
 
 		public bool GetAll{ get; set; }
 
@@ -40,17 +42,51 @@ namespace SimpleDBPersistence.SimpleDB.Model.Parameters
 			return this;
 		}
 
-
-		public SelectQuery<T> Or (string attribute1, string value1, string attribute2, string value2)
+		//TODO Create new TestCASE
+		public SelectQuery<T> Or (string attribute, string[] values)
 		{
-			value1 = ApplyAttributes (attribute1, value1);
-			value2 = ApplyAttributes (attribute2, value2);
+			string[] conditions = new string[values.Length * 2];
 
-			if (QueryString.Length == 0) {
-				QueryString += string.Format (" ({0} = '{1}' or {2} = '{3}')", attribute1, value1, attribute2, value2);
-			} else {
-				QueryString += string.Format (" and ({0} = '{1}' or {2} = '{3}')", attribute1, value1, attribute2, value2);
+			for (int i = 0; i < values.Length * 2; i += 2) {
+				conditions [i] = attribute;
+				conditions [i + 1] = values [i / 2];
 			}
+
+			return Or (conditions);
+		}
+
+
+		//TODO Create new TestCASE
+		public SelectQuery<T> Or (string[] conditions)
+		{
+			if (conditions.Length < 2 || conditions.Length % 2 != 0) {
+				throw new ArgumentException ("Must be at least to coditions and there must equal many attributes and values");
+			}
+
+			List<string> attributes = new List<string> ();
+			List<string> values = new List<string> ();
+
+			for (int i = 0; i < conditions.Length; i += 2) {
+				attributes.Add (conditions [i]);
+				values.Add (ApplyAttributes (conditions [i], conditions [i + 1]));
+			}
+
+			if (QueryString.Length != 0) {
+
+				QueryString += " and ";
+
+			} 
+
+			QueryString += "(";
+
+			for (int i = 0; i < attributes.Count; i++) {
+				QueryString += string.Format (" {0} = '{1}' or", attributes [i], values [i]);
+			}
+
+			QueryString = QueryString.Substring (0, QueryString.Length - 3);
+
+			QueryString += ")";
+
 			return this;
 		}
 
@@ -139,6 +175,16 @@ namespace SimpleDBPersistence.SimpleDB.Model.Parameters
 			return this;
 		}
 
+		public SelectQuery<T> NotNull (string attribute)
+		{
+			if (QueryString.Length == 0) {
+				QueryString += string.Format (" {0} is not null", attribute);
+			} else {
+				QueryString += string.Format (" and {0} is not null", attribute);
+			}
+			return this;
+		}
+
 		public SelectQuery<T> Between (string attribute, string lower, string upper)
 		{
 			lower = ApplyAttributes (attribute, lower);
@@ -197,7 +243,7 @@ namespace SimpleDBPersistence.SimpleDB.Model.Parameters
 					return propertyInfo;
 				}
 			}
-			throw new AttributeDoesNotExistInEntityException ();
+			throw new AttributeDoesNotExistInEntityException (attribute);
 		}
 
 		public override string ToString ()
@@ -210,17 +256,18 @@ namespace SimpleDBPersistence.SimpleDB.Model.Parameters
 			if (Count) {
 				sb.Replace ("*", "count(*)");
 			}
-			if (QueryString.Length == 0) {
-				return sb.ToString ();
+			if (QueryString.Length != 0) {
+				sb.Append (" where");
+				sb.Append (QueryString);
 			}
 
-			sb.Append (" where");
-			sb.Append (QueryString);
 			if (SortOrder != null) {
 				sb.Append (" order by " + SortOrder);
 				sb.Append (Ascending ? " asc" : " desc");	
 			}
+
 			sb.Append (Limit > 0 ? " limit " + Limit : "");		
+
 			return sb.ToString ();
 		}
 	}

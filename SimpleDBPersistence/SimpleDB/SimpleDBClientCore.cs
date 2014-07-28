@@ -5,6 +5,8 @@ using SimpleDBPersistence.SimpleDB.Response;
 using SimpleDBPersistence.SimpleDB.Request;
 using SimpleDBPersistence.SimpleDB.Marshalling.Request;
 using SimpleDBPersistence.SimpleDB.Marshalling.Response;
+using System.Net;
+using SimpleDBPersistence.SimpleDB.Model.AWSException;
 
 namespace SimpleDBPersistence.SimpleDB
 {
@@ -32,7 +34,13 @@ namespace SimpleDBPersistence.SimpleDB
 				CreateDomainRequestMarshaller marshaller = new CreateDomainRequestMarshaller ();
 				marshaller.Configure (request);
 
-				HttpResponseMessage responseMessage = await Client.SendAsync (ConfigureClient (Client, marshaller));
+				HttpResponseMessage responseMessage;
+
+				try {
+					responseMessage = await Client.SendAsync (ConfigureClient (Client, marshaller));
+				} catch (WebException e) {
+					throw new AWSConnectionException (e);
+				}
 
 				CreateDomainResponseUnMarshaller unmarshaler = new CreateDomainResponseUnMarshaller ();
 				unmarshaler.Configure (responseMessage);
@@ -47,7 +55,13 @@ namespace SimpleDBPersistence.SimpleDB
 				DeleteDomainRequestMarshaller marshaller = new DeleteDomainRequestMarshaller ();
 				marshaller.Configure (request);
 
-				HttpResponseMessage responseMessage = await Client.SendAsync (ConfigureClient (Client, marshaller));
+				HttpResponseMessage responseMessage;
+
+				try {
+					responseMessage = await Client.SendAsync (ConfigureClient (Client, marshaller));
+				} catch (WebException e) {
+					throw new AWSConnectionException (e);
+				}
 
 				DeleteDomainResponseUnMarshaller unmarshaler = new DeleteDomainResponseUnMarshaller ();
 				unmarshaler.Configure (responseMessage);
@@ -63,7 +77,13 @@ namespace SimpleDBPersistence.SimpleDB
 				DomainMetadataRequestMarshaller marshaller = new DomainMetadataRequestMarshaller ();
 				marshaller.Configure (request);
 
-				HttpResponseMessage responseMessage = await Client.SendAsync (ConfigureClient (Client, marshaller));
+				HttpResponseMessage responseMessage;
+
+				try {
+					responseMessage = await Client.SendAsync (ConfigureClient (Client, marshaller));
+				} catch (WebException e) {
+					throw new AWSConnectionException (e);
+				}
 
 				DomainMetadataResponseUnMarshaller unmarshaler = new DomainMetadataResponseUnMarshaller ();
 				unmarshaler.Configure (responseMessage);
@@ -77,7 +97,13 @@ namespace SimpleDBPersistence.SimpleDB
 				ListDomainsRequestMarshaller marshaller = new ListDomainsRequestMarshaller ();
 				marshaller.Configure (request);
 
-				HttpResponseMessage responseMessage = await Client.SendAsync (ConfigureClient (Client, marshaller));
+				HttpResponseMessage responseMessage;
+
+				try {
+					responseMessage = await Client.SendAsync (ConfigureClient (Client, marshaller));
+				} catch (WebException e) {
+					throw new AWSConnectionException (e);
+				}
 
 				ListDomainsResponseUnMarshaller unmarshaler = new ListDomainsResponseUnMarshaller ();
 				unmarshaler.Configure (responseMessage);
@@ -92,7 +118,13 @@ namespace SimpleDBPersistence.SimpleDB
 				PutAttributesRequestMarshaller marshaller = new PutAttributesRequestMarshaller ();
 				marshaller.Configure (request);
 		
-				HttpResponseMessage responseMessage = await Client.SendAsync (ConfigureClient (Client, marshaller));
+				HttpResponseMessage responseMessage;
+
+				try {
+					responseMessage = await Client.SendAsync (ConfigureClient (Client, marshaller));
+				} catch (WebException e) {
+					throw new AWSConnectionException (e);
+				}
 
 				PutAttributtesResponseUnMarshaller unmarshaler = new PutAttributtesResponseUnMarshaller ();
 				unmarshaler.Configure (responseMessage);
@@ -108,7 +140,13 @@ namespace SimpleDBPersistence.SimpleDB
 				GetAttributesRequestMarshaller marshaller = new GetAttributesRequestMarshaller ();
 				marshaller.Configure (request);
 
-				HttpResponseMessage responseMessage = await Client.SendAsync (ConfigureClient (Client, marshaller));
+				HttpResponseMessage responseMessage;
+
+				try {
+					responseMessage = await Client.SendAsync (ConfigureClient (Client, marshaller));
+				} catch (WebException e) {
+					throw new AWSConnectionException (e);
+				}
 
 				GetAttributtesResponseUnMarshaller unmarshaler = new GetAttributtesResponseUnMarshaller ();
 				unmarshaler.Configure (responseMessage);
@@ -123,7 +161,13 @@ namespace SimpleDBPersistence.SimpleDB
 				DeleteAttributesRequestMarshaller marshaller = new DeleteAttributesRequestMarshaller ();
 				marshaller.Configure (request);
 
-				HttpResponseMessage responseMessage = await Client.SendAsync (ConfigureClient (Client, marshaller));
+				HttpResponseMessage responseMessage;
+
+				try {
+					responseMessage = await Client.SendAsync (ConfigureClient (Client, marshaller));
+				} catch (WebException e) {
+					throw new AWSConnectionException (e);
+				}
 
 				DeleteAttributtesResponseUnMarshaller unmarshaler = new DeleteAttributtesResponseUnMarshaller ();
 				unmarshaler.Configure (responseMessage);
@@ -139,7 +183,13 @@ namespace SimpleDBPersistence.SimpleDB
 				BatchPutAttributesRequestMarshaller marshaller = new BatchPutAttributesRequestMarshaller ();
 				marshaller.Configure (request);
 
-				HttpResponseMessage responseMessage = await Client.SendAsync (ConfigureClient (Client, marshaller));
+				HttpResponseMessage responseMessage;
+
+				try {
+					responseMessage = await Client.SendAsync (ConfigureClient (Client, marshaller));
+				} catch (WebException e) {
+					throw new AWSConnectionException (e);
+				}
 
 				BatchPutAttributtesResponseUnMarshaller unmarshaler = new BatchPutAttributtesResponseUnMarshaller ();
 				unmarshaler.Configure (responseMessage);
@@ -154,7 +204,13 @@ namespace SimpleDBPersistence.SimpleDB
 				BatchDeleteAttributesRequestMarshaller marshaller = new BatchDeleteAttributesRequestMarshaller ();
 				marshaller.Configure (request);
 
-				HttpResponseMessage responseMessage = await Client.SendAsync (ConfigureClient (Client, marshaller));
+				HttpResponseMessage responseMessage;
+
+				try {
+					responseMessage = await Client.SendAsync (ConfigureClient (Client, marshaller));
+				} catch (WebException e) {
+					throw new AWSConnectionException (e);
+				}
 
 				BatchDeleteAttributtesResponseUnMarshaller unmarshaler = new BatchDeleteAttributtesResponseUnMarshaller ();
 				unmarshaler.Configure (responseMessage);
@@ -168,8 +224,13 @@ namespace SimpleDBPersistence.SimpleDB
 
 				SelectRequestMarshaller marshaller = new SelectRequestMarshaller ();
 				marshaller.Configure (request);
+				HttpResponseMessage responseMessage;
 
-				HttpResponseMessage responseMessage = await Client.SendAsync (ConfigureClient (Client, marshaller));
+				try {
+					responseMessage = await Client.SendAsync (ConfigureClient (Client, marshaller));
+				} catch (WebException e) {
+					throw new AWSConnectionException (e);
+				}
 
 				SelectResponseUnMarshaller unmarshaler = new SelectResponseUnMarshaller ();
 				unmarshaler.Configure (responseMessage);
