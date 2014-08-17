@@ -8,8 +8,9 @@
     <OutputType>Library</OutputType>
     <RootNamespace>SimpleDBPersistence</RootNamespace>
     <AssemblyName>SimpleDBPersistence</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Profile7</TargetFrameworkProfile>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <ReleaseVersion>1.0.0</ReleaseVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -29,9 +30,14 @@
     <ConsolePause>false</ConsolePause>
     <CustomCommands>
       <CustomCommands>
-        <Command type="AfterBuild" command="cp &quot;SimpleDBPersistence/bin/Release/SimpleDBPersistence.dll&quot; &quot;Xamarin Component/bin&quot;" workingdir="${SolutionDir}" />
+        <Command type="AfterBuild" command="cp &quot;/Users/Privat/AWSSimpleDBPersistence/SimpleDBPersistence/bin/Release/SimpleDBPersistence.dll&quot; &quot;/Users/Privat/AWSSimpleDBPersistence/Xamarin Component/bin&quot;" workingdir="" />
       </CustomCommands>
     </CustomCommands>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Ubertester|iPhone' ">
+    <Optimize>false</Optimize>
+    <OutputPath>bin\iPhone\Ubertester</OutputPath>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />

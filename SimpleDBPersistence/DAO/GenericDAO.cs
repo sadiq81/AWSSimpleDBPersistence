@@ -11,10 +11,8 @@ using SimpleDBPersistence.SimpleDB;
 using SimpleDBPersistence.Service;
 using SimpleDBPersistence.SimpleDB.Request;
 using SimpleDBPersistence.SimpleDB.Response;
-using SimpleDBPersistence.SimpleDB.Model.AWSException;
 using SimpleDBPersistence.SimpleDB.Model.Parameters;
 using Attribute = SimpleDBPersistence.SimpleDB.Model.Parameters.Attribute;
-using System.Collections;
 
 namespace SimpleDBPersistence.DAO
 {
@@ -33,7 +31,7 @@ namespace SimpleDBPersistence.DAO
 
 		private readonly SimpleDBClientCore Client = ServiceContainer.Resolve<SimpleDBClientCore> ();
 
-		public async Task<bool> CreateTable ()
+		public virtual async Task<bool> CreateTable ()
 		{
 			CreateDomainRequest request = new CreateDomainRequest ();
 			request.DomainName = GetTableName ();
@@ -42,7 +40,7 @@ namespace SimpleDBPersistence.DAO
 
 		}
 
-		public async Task<bool> DeleteTable ()
+		public  virtual async Task<bool> DeleteTable ()
 		{
 			DeleteDomainRequest request = new DeleteDomainRequest ();
 			request.DomainName = GetTableName ();
@@ -50,7 +48,7 @@ namespace SimpleDBPersistence.DAO
 			return HttpStatusCode.OK.Equals (response.HttpStatusCode);
 		}
 
-		public async Task<bool> SaveOrReplace (T entity)
+		public virtual  async Task<bool> SaveOrReplace (T entity)
 		{
 			if (entity.Created == DateTime.MinValue) {
 				entity.Created = DateTime.Now;
@@ -67,7 +65,7 @@ namespace SimpleDBPersistence.DAO
 
 		}
 
-		public async Task<bool> Delete (T entity)
+		public virtual  async Task<bool> Delete (T entity)
 		{
 			DeleteAttributesRequest request = new DeleteAttributesRequest ();
 			request.DomainName = GetTableName ();
@@ -78,7 +76,7 @@ namespace SimpleDBPersistence.DAO
 
 		}
 
-		public async Task<bool> DeleteMultiple (List<T> entities)
+		public virtual  async Task<bool> DeleteMultiple (List<T> entities)
 		{
 			if (entities.Count == 0) {
 				return true;
@@ -120,7 +118,7 @@ namespace SimpleDBPersistence.DAO
 			return success;
 		}
 
-		public async Task<bool> SaveOrReplaceMultiple (List<T> entities)
+		public virtual  async Task<bool> SaveOrReplaceMultiple (List<T> entities)
 		{
 			if (entities.Count == 0) {
 				return true;
@@ -269,7 +267,7 @@ namespace SimpleDBPersistence.DAO
 				string name = attribute.Name;
 				string value = attribute.Value;
 
-				PropertyInfo propertyInfo = dic [name];
+				PropertyInfo propertyInfo = dic [name]; //TODO Crashes if not present
 				if (propertyInfo == null) {
 					throw new ArgumentException ("Field " + name + " from AWS SimpleDB does not exists in entity");
 				}
@@ -282,7 +280,7 @@ namespace SimpleDBPersistence.DAO
 				} catch (ArgumentException e) {
 					//DO nothing
 				} catch (NullReferenceException e) {
-					int i = 0;
+
 				}
 
 
@@ -348,12 +346,12 @@ namespace SimpleDBPersistence.DAO
 			return entity;
 		}
 
-		public async Task<T> Get (T entity, bool consistentRead)
+		public  virtual async Task<T> Get (T entity, bool consistentRead)
 		{
 			return  await Get (entity.Id, consistentRead);
 		}
 
-		public async Task<T> Get (string id, bool consistentRead)
+		public virtual  async Task<T> Get (string id, bool consistentRead)
 		{
 			GetAttributesRequest request = new GetAttributesRequest ();
 			request.DomainName = GetTableName ();
@@ -365,7 +363,7 @@ namespace SimpleDBPersistence.DAO
 			return entity;
 		}
 
-		public Task<List<T>> GetAll (bool consistentRead)
+		public virtual  Task<List<T>> GetAll (bool consistentRead)
 		{
 			SelectQuery<T> query = new SelectQuery<T> ();
 			query.DomainName = GetTableName ();
@@ -374,7 +372,7 @@ namespace SimpleDBPersistence.DAO
 			return Select (query);
 		}
 
-		public async Task<long> CountAll (bool consistentRead)
+		public virtual  async Task<long> CountAll (bool consistentRead)
 		{
 			SelectQuery<T> query = new SelectQuery<T> ();
 			query.DomainName = GetTableName ();
@@ -384,7 +382,7 @@ namespace SimpleDBPersistence.DAO
 			return await Count (query);
 		}
 
-		public async Task<long> Count (SelectQuery<T> query)
+		public virtual  async Task<long> Count (SelectQuery<T> query)
 		{
 			query.DomainName = GetTableName ();
 			query.GetAll = true;
@@ -402,7 +400,7 @@ namespace SimpleDBPersistence.DAO
 			return count;
 		}
 
-		public async Task<List<T>> Select (SelectQuery<T> query)
+		public virtual  async Task<List<T>> Select (SelectQuery<T> query)
 		{
 			query.DomainName = GetTableName ();
 
@@ -431,21 +429,6 @@ namespace SimpleDBPersistence.DAO
 			} while(NextToken != null);
 
 			return entities;
-		}
-
-		public static bool IsNumber (object value)
-		{
-			return value is sbyte
-			|| value is byte
-			|| value is short
-			|| value is ushort
-			|| value is int
-			|| value is uint
-			|| value is long
-			|| value is ulong
-			|| value is float
-			|| value is double
-			|| value is decimal;
 		}
 	}
 }
