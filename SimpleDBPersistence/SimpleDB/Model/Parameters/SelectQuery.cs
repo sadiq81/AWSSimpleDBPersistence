@@ -221,6 +221,18 @@ namespace SimpleDBPersistence.SimpleDB.Model.Parameters
 		}
 		*/
 
+		public SelectQuery<T> SetSortOrder (string sortOrder)
+		{
+			SortOrder = sortOrder;
+			return this;
+		}
+
+		public SelectQuery<T> SetLimit (int limit)
+		{
+			Limit = limit;
+			return this;
+		}
+
 		private string ApplyAttributes (string attribute, string value)
 		{
 			string checkedValue = value;

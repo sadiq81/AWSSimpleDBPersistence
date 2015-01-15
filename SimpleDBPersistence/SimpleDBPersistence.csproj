@@ -44,8 +44,6 @@
     <Compile Include="DAO\GenericDAO.cs" />
     <Compile Include="DAO\IGenericDAO.cs" />
     <Compile Include="Domain\Entity.cs" />
-    <Compile Include="Service\ISHA256Service.cs" />
-    <Compile Include="Service\ServiceContainer.cs" />
     <Compile Include="SimpleDB\Region.cs" />
     <Compile Include="SimpleDB\SimpleDBClientCore.cs" />
     <Compile Include="SimpleDB\Marshalling\Request\BaseMarshaller.cs" />
@@ -115,8 +113,11 @@
     <Compile Include="SimpleDB\Utils\StringUtilities.cs" />
     <Compile Include="SimpleDB\Model\AWSException\AWSConnectionException.cs" />
     <Compile Include="SimpleDB\Model\SimpleDBListAttribute.cs" />
+    <Compile Include="SimpleDB\Utils\Constants.cs" />
+    <Compile Include="Service\SHA256ServicePCL.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <Import Project="..\..\HalalGuide\packages\Xamarin.Forms.1.1.1.6206\build\portable-win+net45+wp80+MonoAndroid10+MonoTouch10\Xamarin.Forms.targets" Condition="Exists('..\..\HalalGuide\packages\Xamarin.Forms.1.1.1.6206\build\portable-win+net45+wp80+MonoAndroid10+MonoTouch10\Xamarin.Forms.targets')" />
   <ItemGroup>
     <Folder Include="DAO\" />
     <Folder Include="Domain\" />
@@ -135,6 +136,37 @@
   <ItemGroup>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\..\HalalGuide\packages\Newtonsoft.Json.6.0.3\lib\portable-net45+wp80+win8+wpa81\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Validation">
+      <HintPath>..\..\HalalGuide\packages\Validation.2.0.4.14103\lib\portable-windows8+net40+sl5+wp8+wpa81+wp81+MonoAndroid+MonoTouch\Validation.dll</HintPath>
+    </Reference>
+    <Reference Include="PCLCrypto.Abstractions">
+      <HintPath>..\..\HalalGuide\packages\PCLCrypto.0.5.1.14165\lib\portable-net40+sl50+win+wpa81+wp80\PCLCrypto.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="PCLCrypto">
+      <HintPath>..\..\HalalGuide\packages\PCLCrypto.0.5.1.14165\lib\portable-net40+sl50+win+wpa81+wp80\PCLCrypto.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="SimpleInjector.Diagnostics">
+      <HintPath>..\..\HalalGuide\packages\SimpleInjector.2.5.0\lib\portable-net4+sl4+wp8+win8\SimpleInjector.Diagnostics.dll</HintPath>
+    </Reference>
+    <Reference Include="SimpleInjector">
+      <HintPath>..\..\HalalGuide\packages\SimpleInjector.2.5.0\lib\portable-net4+sl4+wp8+win8\SimpleInjector.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Core">
+      <HintPath>..\..\HalalGuide\packages\Xamarin.Forms.1.1.1.6206\lib\portable-win+net45+wp80+MonoAndroid10+MonoTouch10\Xamarin.Forms.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Xaml">
+      <HintPath>..\..\HalalGuide\packages\Xamarin.Forms.1.1.1.6206\lib\portable-win+net45+wp80+MonoAndroid10+MonoTouch10\Xamarin.Forms.Xaml.dll</HintPath>
+    </Reference>
+    <Reference Include="ExifLib">
+      <HintPath>..\..\HalalGuide\packages\ExifLib.PCL.1.0.0\lib\portable-net45+sl50+win+WindowsPhoneApp81+wp80+MonoAndroid10+MonoTouch10\ExifLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Labs">
+      <HintPath>..\..\HalalGuide\packages\Xamarin.Forms.Labs.1.1.0\lib\portable-net45+netcore45+wp8+MonoAndroid1+MonoTouch1\Xamarin.Forms.Labs.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Forms.Labs.Services.SimpleContainer">
+      <HintPath>..\..\HalalGuide\packages\Xamarin.Forms.Labs.Services.SimpleContainer.1.1.0\lib\portable-net45+netcore45+wp8+MonoAndroid1+MonoTouch1\Xamarin.Forms.Labs.Services.SimpleContainer.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

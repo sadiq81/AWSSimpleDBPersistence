@@ -1,5 +1,6 @@
 ﻿using System;
 using SimpleDBPersistence.SimpleDB.Model.AWSException;
+using System.Globalization;
 
 namespace SimpleDBPersistence.SimpleDB.Model
 {
@@ -34,7 +35,6 @@ namespace SimpleDBPersistence.SimpleDB.Model
 
 		public static string ApplyOffset (SimpleDBFieldAttribute attribute, decimal value)
 		{
-
 			decimal offset = (decimal)attribute.Offset; 
 			if (offset > 0) {
 				value = value + offset;
@@ -42,7 +42,7 @@ namespace SimpleDBPersistence.SimpleDB.Model
 					throw new  FieldFormatException ("Negative value of attribute " + attribute.Name + " is greather than specified offset");
 				} 
 			}
-			return value.ToString ();
+			return value.ToString (CultureInfo.InvariantCulture);
 		}
 
 

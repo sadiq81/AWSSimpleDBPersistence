@@ -6,13 +6,17 @@ namespace SimpleDBPersistence.Domain
 	public abstract class Entity
 	{
 		[SimpleDBIdAttribute]
-		public string Id { get; set; }
+		public virtual string Id { get; set; }
 
-		[SimpleDBFieldAttribute ("Created")]
-		public DateTime Created{ get; set; }
+		public const string CreatedIdentifier = "Created";
 
-		[SimpleDBFieldAttribute ("Updated")]
-		public DateTime LastUpdated{ get; set; }
+		[SimpleDBFieldAttribute (CreatedIdentifier)]
+		public virtual DateTime Created{ get; set; }
+
+		public const string UpdatedIdentifier = "Updated";
+
+		[SimpleDBFieldAttribute (UpdatedIdentifier)]
+		public virtual DateTime LastUpdated{ get; set; }
 
 		public override string ToString ()
 		{

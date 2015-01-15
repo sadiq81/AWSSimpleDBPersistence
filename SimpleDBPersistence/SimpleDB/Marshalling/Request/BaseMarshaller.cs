@@ -4,6 +4,7 @@ using System.Text;
 using SimpleDBPersistence.SimpleDB.Request;
 using SimpleDBPersistence.Service;
 using SimpleDBPersistence.SimpleDB.Utils;
+using Xamarin.Forms.Labs.Services;
 
 namespace SimpleDBPersistence.SimpleDB.Marshalling.Request
 {
@@ -48,8 +49,8 @@ namespace SimpleDBPersistence.SimpleDB.Marshalling.Request
 			}
 
 			string signature = sb.ToString ();
-			ISHA256Service service = ServiceContainer.Resolve<ISHA256Service> ();
-			string hashed = service.CreateHash (signature, AWSSecretKey);
+			SHA256ServicePCL crypto = new SHA256ServicePCL ();
+			string hashed = crypto.CreateHash (signature, AWSSecretKey);
 			return hashed;
 		}
 
@@ -88,7 +89,7 @@ namespace SimpleDBPersistence.SimpleDB.Marshalling.Request
 
 		protected  SimpleDBClientCore Client {
 			get {
-				return ServiceContainer.Resolve<SimpleDBClientCore> ();
+				return Resolver.Resolve<SimpleDBClientCore> ();
 			}
 		}
 	}

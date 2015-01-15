@@ -13,6 +13,7 @@ using SimpleDBPersistence.SimpleDB.Request;
 using SimpleDBPersistence.SimpleDB.Response;
 using SimpleDBPersistence.SimpleDB.Model.Parameters;
 using Attribute = SimpleDBPersistence.SimpleDB.Model.Parameters.Attribute;
+using Xamarin.Forms.Labs.Services;
 
 namespace SimpleDBPersistence.DAO
 {
@@ -29,7 +30,12 @@ namespace SimpleDBPersistence.DAO
 			}
 		}
 
-		private readonly SimpleDBClientCore Client = ServiceContainer.Resolve<SimpleDBClientCore> ();
+
+		SimpleDBClientCore Client {
+			get { 
+				return Resolver.Resolve<SimpleDBClientCore> ();
+			}
+		}
 
 		public virtual async Task<bool> CreateTable ()
 		{
@@ -51,9 +57,9 @@ namespace SimpleDBPersistence.DAO
 		public virtual  async Task<bool> SaveOrReplace (T entity)
 		{
 			if (entity.Created == DateTime.MinValue) {
-				entity.Created = DateTime.Now;
+				entity.Created = DateTime.UtcNow;
 			}
-			entity.LastUpdated = DateTime.Now;
+			entity.LastUpdated = DateTime.UtcNow;
 
 			PutAttributesRequest request = new PutAttributesRequest ();
 			request.DomainName = GetTableName ();
@@ -128,9 +134,9 @@ namespace SimpleDBPersistence.DAO
 
 			foreach (Entity entity in entities) {
 				if (entity.Created == DateTime.MinValue) {
-					entity.Created = DateTime.Now;
+					entity.Created = DateTime.UtcNow;
 				}
-				entity.LastUpdated = DateTime.Now;
+				entity.LastUpdated = DateTime.UtcNow;
 			}
 
 			BaseResponse response;
@@ -225,7 +231,7 @@ namespace SimpleDBPersistence.DAO
 			           typeof(int?).Equals (type) || typeof(int).Equals (type) ||
 			           typeof(long?).Equals (type) || typeof(long).Equals (type)) {
 
-				value = SimpleDBFieldAttribute.ApplyOffset (attribute, Decimal.Parse (propertyInfo.GetValue (entity).ToString ()));
+				value = SimpleDBFieldAttribute.ApplyOffset (attribute, Convert.ToDecimal (propertyInfo.GetValue (entity)));
 				value = SimpleDBFieldAttribute.ApplyPadding (attribute, value);
 
 			} else if (typeof(DateTime).Equals (type)) {
@@ -313,7 +319,7 @@ namespace SimpleDBPersistence.DAO
 				           typeof(long?).Equals (type) || typeof(long).Equals (type)) {
 
 					decimal pre;
-					if (decimal.TryParse (value, out pre)) {
+					if (decimal.TryParse (value, NumberStyles.Number, CultureInfo.InvariantCulture, out pre)) {
 						if (offset > 0) {
 							pre = pre - (decimal)offset;
 						}

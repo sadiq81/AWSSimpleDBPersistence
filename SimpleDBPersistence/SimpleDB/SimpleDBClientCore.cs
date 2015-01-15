@@ -18,8 +18,6 @@ namespace SimpleDBPersistence.SimpleDB
 
 		public string Region { get; set; }
 
-		private HttpClient Client;
-
 		public SimpleDBClientCore (string aWSAccessKeyId, string aWSSecretKey, string region)
 		{
 			this.AWSAccessKeyId = aWSAccessKeyId;
@@ -29,7 +27,7 @@ namespace SimpleDBPersistence.SimpleDB
 
 		public async Task<CreateDomainResponse> CreateDomain (CreateDomainRequest request)
 		{
-			using (Client = new HttpClient ()) {
+			using (HttpClient Client = new HttpClient ()) {
 
 				CreateDomainRequestMarshaller marshaller = new CreateDomainRequestMarshaller ();
 				marshaller.Configure (request);
@@ -50,7 +48,7 @@ namespace SimpleDBPersistence.SimpleDB
 
 		public async Task<DeleteDomainResponse> DeleteDomain (DeleteDomainRequest request)
 		{
-			using (Client = new HttpClient ()) {
+			using (HttpClient Client = new HttpClient ()) {
 
 				DeleteDomainRequestMarshaller marshaller = new DeleteDomainRequestMarshaller ();
 				marshaller.Configure (request);
@@ -73,7 +71,7 @@ namespace SimpleDBPersistence.SimpleDB
 
 		public async Task<DomainMetadataResponse> DomainMetadata (DomainMetadataRequest request)
 		{
-			using (Client = new HttpClient ()) {
+			using (HttpClient Client = new HttpClient ()) {
 				DomainMetadataRequestMarshaller marshaller = new DomainMetadataRequestMarshaller ();
 				marshaller.Configure (request);
 
@@ -93,7 +91,7 @@ namespace SimpleDBPersistence.SimpleDB
 
 		public async Task<ListDomainsResponse> ListDomains (ListDomainsRequest request)
 		{
-			using (Client = new HttpClient ()) {
+			using (HttpClient Client = new HttpClient ()) {
 				ListDomainsRequestMarshaller marshaller = new ListDomainsRequestMarshaller ();
 				marshaller.Configure (request);
 
@@ -113,7 +111,7 @@ namespace SimpleDBPersistence.SimpleDB
 
 		public async Task<PutAttributesResponse> PutAttributes (PutAttributesRequest request)
 		{
-			using (Client = new HttpClient ()) {
+			using (HttpClient Client = new HttpClient ()) {
 
 				PutAttributesRequestMarshaller marshaller = new PutAttributesRequestMarshaller ();
 				marshaller.Configure (request);
@@ -135,7 +133,7 @@ namespace SimpleDBPersistence.SimpleDB
 
 		public async Task<GetAttributesResponse> GetAttributes (GetAttributesRequest request)
 		{
-			using (Client = new HttpClient ()) {
+			using (HttpClient Client = new HttpClient ()) {
 
 				GetAttributesRequestMarshaller marshaller = new GetAttributesRequestMarshaller ();
 				marshaller.Configure (request);
@@ -156,7 +154,7 @@ namespace SimpleDBPersistence.SimpleDB
 
 		public async Task<DeleteAttributesResponse> DeleteAttributes (DeleteAttributesRequest request)
 		{
-			using (Client = new HttpClient ()) {
+			using (HttpClient Client = new HttpClient ()) {
 
 				DeleteAttributesRequestMarshaller marshaller = new DeleteAttributesRequestMarshaller ();
 				marshaller.Configure (request);
@@ -178,7 +176,7 @@ namespace SimpleDBPersistence.SimpleDB
 
 		public async Task<BatchPutAttributesResponse> BatchPutAttributes (BatchPutAttributesRequest request)
 		{
-			using (Client = new HttpClient ()) {
+			using (HttpClient Client = new HttpClient ()) {
 
 				BatchPutAttributesRequestMarshaller marshaller = new BatchPutAttributesRequestMarshaller ();
 				marshaller.Configure (request);
@@ -199,7 +197,7 @@ namespace SimpleDBPersistence.SimpleDB
 
 		public async Task<BatchDeleteAttributesResponse> BatchDeleteAttributes (BatchDeleteAttributesRequest request)
 		{
-			using (Client = new HttpClient ()) {
+			using (HttpClient Client = new HttpClient ()) {
 
 				BatchDeleteAttributesRequestMarshaller marshaller = new BatchDeleteAttributesRequestMarshaller ();
 				marshaller.Configure (request);
@@ -220,17 +218,13 @@ namespace SimpleDBPersistence.SimpleDB
 
 		public async Task<SelectResponse> Select (SelectRequest request)
 		{
-			using (Client = new HttpClient ()) {
+			using (HttpClient Client = new HttpClient ()) {
 
 				SelectRequestMarshaller marshaller = new SelectRequestMarshaller ();
 				marshaller.Configure (request);
 				HttpResponseMessage responseMessage;
 
-				try {
-					responseMessage = await Client.SendAsync (ConfigureClient (Client, marshaller));
-				} catch (WebException e) {
-					throw new AWSConnectionException (e);
-				}
+				responseMessage = await Client.SendAsync (ConfigureClient (Client, marshaller));
 
 				SelectResponseUnMarshaller unmarshaler = new SelectResponseUnMarshaller ();
 				unmarshaler.Configure (responseMessage);
@@ -240,7 +234,6 @@ namespace SimpleDBPersistence.SimpleDB
 
 		private HttpRequestMessage ConfigureClient (HttpClient client, BaseMarshaller marshaller)
 		{
-
 			client.BaseAddress = new Uri ("https://" + Region);
 			HttpRequestMessage requestMessage = new HttpRequestMessage (HttpMethod.Post, "");
 			requestMessage.Content = new FormUrlEncodedContent (marshaller.MarshallPost ());
